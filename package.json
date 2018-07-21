@@ -3,10 +3,25 @@
   "version": "0.0.1",
   "description": "Backend for aura (vocnea)",
   "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:dev": "$(npm bin)/nodemon server.js"
+  },
   "repository": {
     "url": "ssh://aura-development@vs-ssh.visualstudio.com:22/Aura/_ssh/backend",
     "type": "git"
   },
   "author": "Moritz Hoffmann <moritz1@gmx.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "jsonwebtoken": "^8.3.0",
+    "koa": "^2.5.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-jwt": "^3.3.2",
+    "koa-logger": "^3.2.0",
+    "koa-router": "^7.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  }
 }
