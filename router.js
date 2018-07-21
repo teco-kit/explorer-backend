@@ -5,12 +5,12 @@ const router = {
 	protected:   new Router(),
 };
 
-router.unprotected.get('authorize', (ctx, next) => {
-	ctx.body = 'unprotected';
+router.unprotected.get('/test', (ctx, next) => {
+	ctx.body = {success: 'true', message: 'Hello World!'};
 });
 
-router.protected.get('addData', (ctx, next) => {
-	ctx.body = 'protected';
+router.protected.get('/testAuth', (ctx, next) => {
+	ctx.body = {success: 'true', message: 'Access Granted'};
 });
 
 module.exports = router;

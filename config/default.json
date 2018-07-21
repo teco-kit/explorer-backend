@@ -1,0 +1,10 @@
+{
+	"server":{
+		"auth":{
+			"jwksUri": "https://xuio.eu.auth0.com/.well-known/jwks.json",
+			"jwksReqPerMin": 10,
+			"issuer": "https://xuio.eu.auth0.com/",
+			"audience": "testapi"
+		}
+	}
+}
