@@ -1,19 +1,19 @@
-const Koa         = require('koa');
-const Router      = require('koa-router');
-const Logger      = require('koa-logger');
-const Bodyparser  = require('koa-bodyparser');
-const JWT         = require('koa-jwt');
-const JwksRsa     = require('jwks-rsa');
-const Config      = require('config');
+const Koa          = require('koa');
+const Router       = require('koa-router');
+const Logger       = require('koa-logger');
+const Bodyparser   = require('koa-bodyparser');
+const JWT          = require('koa-jwt');
+const JwksRsa      = require('jwks-rsa');
+const Config       = require('config');
 
 // parse config
-const config      = Config.get('server');
+const config       = Config.get('server');
 
 // import routes
-const router      = require('./router.js');
+const router       = require('./router.js');
 
 // instantiate koa
-const koa         = new Koa();
+const koa          = new Koa();
 
 // setup koa middlewares
 koa.use(Logger());
