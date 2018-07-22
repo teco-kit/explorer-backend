@@ -3,8 +3,11 @@ const Router       = require('koa-router');
 const Logger       = require('koa-logger');
 const Bodyparser   = require('koa-bodyparser');
 const JWT          = require('koa-jwt');
+const KoaAjv       = require('koa-ajv');
 const JwksRsa      = require('jwks-rsa');
 const Config       = require('config');
+
+const Schema       = require('./schema.js');
 
 // parse config
 const config       = Config.get('server');
@@ -18,6 +21,7 @@ const koa          = new Koa();
 // setup koa middlewares
 koa.use(Logger());
 koa.use(Bodyparser());
+koa.use(KoaAjv({routes: Schema.routes, strict: false}));
 
 // handle koa-jwt errors
 koa.use(function(ctx, next){
