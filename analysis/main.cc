@@ -1,23 +1,23 @@
 #include <napi.h>
+#include <iostream>
 
 Napi::Promise SumAsyncPromise(const Napi::CallbackInfo& info) {
 	Napi::Env env = info.Env();
 
+	uint32_t samples = info[0].As<Napi::Number>().Uint32Value();
+
+	Napi::Uint16Array deltas = info[2].As<Napi::Uint16Array>();
+	Napi::Float32Array values = info[1].As<Napi::Float32Array>();
+
+	std::cout << "processing data..." << std::endl;
+	std::cout << "samples: " << samples   << std::endl;
+
 	auto deferred = Napi::Promise::Deferred::New(env);
 
-	if (info.Length() != 2)
-		deferred.Reject(
-		Napi::TypeError::New(
-			env,
-			"Invalid argument count. Use 2 Arguments"
-		).Value());
-	else {
-		double arg0 = info[0].As<Napi::Number>().DoubleValue();
-		double arg1 = info[1].As<Napi::Number>().DoubleValue();
-		Napi::Number num = Napi::Number::New(env, arg0 + arg1);
+	// proof of concept; do a simple calculation
+	Napi::Number num = Napi::Number::New(env, deltas[0] + deltas[1]);
 
-		deferred.Resolve(num);
-	}
+	deferred.Resolve(num);
 
 	return deferred.Promise();
 }

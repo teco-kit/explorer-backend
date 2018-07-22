@@ -20,9 +20,21 @@ router.protected.post('/analyze', async (ctx, next) => {
 
 	console.log(`New Analyze Request: ${ctx.request.body.samples} samples`);
 
-	const ret = await Analysis.analyze(0, 0);
+	const data = {
+		startTime: ctx.request.body.startTime,
+		samples: ctx.request.body.samples,
+		values: new Float32Array(ctx.request.body.samples),
+		deltas: new Uint16Array(ctx.request.body.samples),
+	}
 
-	ctx.body = {success: 'true', message: `Output: ${ret}`};
+	for(let i=0; i<data.samples; i++){
+		data.deltas[i]=ctx.request.body.data[i][0];
+		data.values[i]=ctx.request.body.data[i][1];
+	}
+
+	const ret = await Analysis.analyze(data.samples, data.values, data.deltas);
+
+	ctx.body = {success: 'true', message: `return: ${ret}`};
 });
 
 module.exports = router;

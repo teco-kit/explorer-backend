@@ -2,7 +2,9 @@
 	"targets": [
 		{
 			"target_name": "analysis",
-			"sources": [ "analysis/main.cc" ],
+			"sources": [
+				"analysis/main.cc"
+			],
 			"include_dirs": [
 				"<!@(node -p \"require('node-addon-api').include\")"
 			],
