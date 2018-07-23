@@ -19,8 +19,7 @@ module.exports = {
 							type: 'integer'
 						},
 						{
-							type: 'number',
-							// multipleOf: 0.001
+							type: 'integer'
 						}
 					],
 					additionalItems: false,

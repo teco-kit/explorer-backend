@@ -22,7 +22,7 @@ router.protected.post('/analyze', async (ctx) => {
 	const data = {
 		startTime: ctx.request.body.startTime,
 		samples: ctx.request.body.samples,
-		values: new Float32Array(ctx.request.body.samples),
+		values: new Uint16Array(ctx.request.body.samples),
 		deltas: new Uint16Array(ctx.request.body.samples),
 	};
 

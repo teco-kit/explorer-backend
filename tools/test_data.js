@@ -2,19 +2,6 @@ function getRandomInt(max) {
 	return Math.floor(Math.random() * Math.floor(max));
 }
 
-function rfloat(min, max) {
-	if (max === undefined) {
-		max = min;
-		min = 0;
-	}
-
-	if (typeof min !== 'number' || typeof max !== 'number') {
-		throw new TypeError('Expected all arguments to be numbers');
-	}
-
-	return Math.random() * (max - min) + min;
-}
-
 // amount of sleep +- 15min
 const duration = 8 * 60 * 60 - (60 * 60) + getRandomInt(0.5 * 60 * 60);
 // samples/s
@@ -31,7 +18,7 @@ const store = new Array(n);
 for(let i = 0; i < n; i++){
 	store[i] = [
 		1000 / freq - 50 + getRandomInt(100),
-		parseFloat(rfloat(5).toFixed(2)),
+		parseInt(250 - 150 + getRandomInt(300), 10),
 	];
 }
 
