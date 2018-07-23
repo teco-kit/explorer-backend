@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const Result = new mongoose.Schema({
-	user: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'User'
-	},
 	sleep_score: Number,
 	detected_issues: [
 		{
