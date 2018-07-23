@@ -1,5 +1,4 @@
 const Koa          = require('koa');
-const Router       = require('koa-router');
 const Logger       = require('koa-logger');
 const Bodyparser   = require('koa-bodyparser');
 const JWT          = require('koa-jwt');
@@ -25,19 +24,17 @@ const koa          = new Koa();
 // setup koa middlewares
 koa.use(Logger());
 koa.use(Bodyparser());
-koa.use(KoaAjv({routes: Schema.routes, strict: false}));
+koa.use(KoaAjv({routes: Schema, strict: false}));
 
 // handle koa-jwt errors
-koa.use(function(ctx, next){
-	return next().catch((err) => {
-		if (401 == err.status) {
-			ctx.status = 401;
-			ctx.body = {success: false, message: "authentification failed"};
-		} else {
-			throw err;
-		}
-	});
-});
+koa.use((ctx, next) => next().catch((err) => {
+	if(err.status === 401){
+		ctx.status = 401;
+		ctx.body = {success: false, message: 'authentification failed'};
+	}else{
+		throw err;
+	}
+}));
 
 // unprotected routes
 koa.use(router.unprotected.routes());

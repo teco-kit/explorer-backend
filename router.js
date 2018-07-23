@@ -5,19 +5,18 @@ const Analysis = require('./build/Release/analysis');
 
 const router = {
 	unprotected: new Router(),
-	protected:   new Router(),
+	protected: new Router(),
 };
 
-router.unprotected.get('/test', (ctx, next) => {
+router.unprotected.get('/test', (ctx) => {
 	ctx.body = {success: 'true', message: 'Hello World!'};
 });
 
-router.protected.get('/testAuth', (ctx, next) => {
+router.protected.get('/testAuth', (ctx) => {
 	ctx.body = {success: 'true', message: 'Access Granted'};
 });
 
-router.protected.post('/analyze', async (ctx, next) => {
-
+router.protected.post('/analyze', async (ctx) => {
 	console.log(`New Analyze Request: ${ctx.request.body.samples} samples`);
 
 	const data = {
@@ -25,11 +24,10 @@ router.protected.post('/analyze', async (ctx, next) => {
 		samples: ctx.request.body.samples,
 		values: new Float32Array(ctx.request.body.samples),
 		deltas: new Uint16Array(ctx.request.body.samples),
-	}
+	};
 
-	for(let i=0; i<data.samples; i++){
-		data.deltas[i]=ctx.request.body.data[i][0];
-		data.values[i]=ctx.request.body.data[i][1];
+	for(let i = 0; i < data.samples; i++){
+		[data.deltas[i], data.values[i]] = ctx.request.body.data[i];
 	}
 
 	const ret = await Analysis.analyze(data.samples, data.values, data.deltas);
