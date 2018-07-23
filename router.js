@@ -1,8 +1,5 @@
 const Router    = require('koa-router');
 
-// load CPP analysis plugin
-const Analysis = require('./build/Release/analysis');
-
 const router = {
 	unprotected: new Router(),
 	protected: new Router(),
@@ -30,7 +27,7 @@ router.protected.post('/analyze', async (ctx) => {
 		[data.deltas[i], data.values[i]] = ctx.request.body.data[i];
 	}
 
-	const ret = await Analysis.analyze(data.samples, data.values, data.deltas);
+	const ret = 1337;
 
 	ctx.body = {success: 'true', message: `return: ${ret}`};
 });

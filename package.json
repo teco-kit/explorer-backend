@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node server.js",
     "start:dev": "$(npm bin)/nodemon server.js --ignore tools --ignore build --ignore analysis",
-    "compile": "$(npm bin)/node-gyp rebuild",
     "lint": "$(npm bin)/eslint ."
   },
   "repository": {
@@ -16,6 +15,7 @@
   "author": "Moritz Hoffmann <mhoffmann@teco.edu>",
   "license": "MIT",
   "dependencies": {
+    "@tensorflow/tfjs-node": "^0.1.9",
     "config": "^1.30.0",
     "eslint_d": "^6.0.1",
     "global": "^4.3.2",
@@ -27,7 +27,6 @@
     "koa-logger": "^3.2.0",
     "koa-router": "^7.4.0",
     "mongoose": "^5.2.4",
-    "node-addon-api": "^1.4.0",
     "node-gyp": "^3.7.0"
   },
   "devDependencies": {

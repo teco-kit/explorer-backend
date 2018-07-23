@@ -6,9 +6,6 @@ Backend for AURA, previously known as VOCNEA.
 git clone <repo>
 yarn install
 yarn start
-
-# recompile c++ sources:
-yarn compile
 ```
 
 # Deploy
