@@ -5,6 +5,9 @@
 			"jwksReqPerMin": 10,
 			"issuer": "https://xuio.eu.auth0.com/",
 			"audience": "testapi"
+		},
+		"mongo":{
+			"url": "mongodb://localhost:27017/aura_dev"
 		}
 	}
 }

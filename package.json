@@ -23,12 +23,11 @@
     "koa-jwt": "^3.3.2",
     "koa-logger": "^3.2.0",
     "koa-router": "^7.4.0",
+    "mongoose": "^5.2.4",
     "node-addon-api": "^1.4.0",
     "node-gyp": "^3.7.0"
   },
   "devDependencies": {
-    "moment": "^2.22.2",
-    "nodemon": "^1.18.3",
-    "random-float": "^1.0.0"
+    "nodemon": "^1.18.3"
   }
 }

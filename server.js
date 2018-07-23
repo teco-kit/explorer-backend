@@ -6,6 +6,7 @@ const JWT          = require('koa-jwt');
 const KoaAjv       = require('koa-ajv');
 const JwksRsa      = require('jwks-rsa');
 const Config       = require('config');
+const Mongoose     = require('mongoose');
 
 const Schema       = require('./schema.js');
 
@@ -14,6 +15,9 @@ const config       = Config.get('server');
 
 // import routes
 const router       = require('./router.js');
+
+// connect to Mongo
+Mongoose.connect(config.mongo.url, {useNewUrlParser: true});
 
 // instantiate koa
 const koa          = new Koa();
