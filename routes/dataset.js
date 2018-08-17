@@ -15,7 +15,7 @@ datasetRouter.post('/submit', async (ctx) => {
 		user: ctx.state.user.doc._id,
 		dataset: dataset._id,
 	});
-	console.log(`New Dataset: ${dataset._id.toString()}, New Analysis: ${analysis._id.toString()}`);
+	console.log(`New Dataset: ${dataset._id.toString()} \nNew Analysis: ${analysis._id.toString()}`);
 });
 
 module.exports = datasetRouter;

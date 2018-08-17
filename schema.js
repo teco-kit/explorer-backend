@@ -11,24 +11,19 @@ module.exports = {
 				description: 'Sample Count'
 			},
 			data: {
-				type: 'array',
-				items: {
-					type: 'array',
-					items: [
-						{
-							type: 'integer'
-						},
-						{
-							type: 'integer'
-						}
-					],
-					additionalItems: false,
-					description: '[delta, val]'
+				type: 'object',
+				delta: {
+					type: 'string',
+					description: 'Delta Buffer'
+				},
+				value: {
+					type: 'string',
+					description: 'Value Buffer'
 				},
 				description: 'Data Array'
 			}
 		},
-		description: 'data',
+		description: 'Main Object',
 		required: [
 			'startTime',
 			'samples',

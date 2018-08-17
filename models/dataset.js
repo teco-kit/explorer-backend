@@ -3,12 +3,10 @@ const mongoose = require('mongoose');
 const Dataset = new mongoose.Schema({
 	startTime: Date,
 	samples: Number,
-	data: [
-		{
-			delta: Number,
-			value: Number,
-		}
-	],
+	data: {
+		delta: Buffer,
+		value: Buffer,
+	},
 });
 
 module.exports = {

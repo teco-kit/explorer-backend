@@ -29,7 +29,11 @@ const koa          = new Koa();
 
 // setup koa middlewares
 koa.use(Logger());
-koa.use(Bodyparser());
+koa.use(Bodyparser({
+	formLimit: '1mb',
+	jsonLimit: '10mb',
+	textLimit: '10mb'
+}));
 koa.use(KoaAjv({routes: Schema, strict: false}));
 
 // unprotected routes
