@@ -27,6 +27,7 @@ const Analysis = new mongoose.Schema({
 	state: {
 		type: String,
 		enum: ['queued', 'processing', 'done'],
+		default: 'queued',
 	},
 });
 

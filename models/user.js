@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
+const findOrCreate = require('mongoose-findorcreate');
 
 const User = new mongoose.Schema({
-	username: String,
+	sub: String,
+	nickname: String,
 	created_at: {
 		type: Date,
 		required: true,
 		default: Date.now
 	},
-	plattform: {
+	platform: {
 		type: String,
 		enum: ['Android', 'iOS', 'Windows'],
 	},
@@ -18,6 +20,8 @@ const User = new mongoose.Schema({
 		ref: 'Device'
 	},
 });
+
+User.plugin(findOrCreate);
 
 module.exports = {
 	model: mongoose.model('User', User),
