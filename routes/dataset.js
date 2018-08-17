@@ -7,11 +7,10 @@ const model = {
 // mounted at /dataset
 const datasetRouter = new Router();
 
-datasetRouter.post('/submit', async (ctx) => {
-	console.log(`New Dataset added to queue: ${ctx.request.body.samples} samples`);
-
+datasetRouter.post('/submit', (ctx) => {
 	const dataset = new model.Dataset(ctx.request.body);
-	dataset.save();
+
+	dataset.save().then(() => console.log(`New Dataset added to queue: ${ctx.request.body.samples} samples, mongo ID: ${dataset._id.toString()}`));
 
 	ctx.body = {success: 'true', id: dataset._id.toString()};
 });
