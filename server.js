@@ -13,7 +13,7 @@ const Schema       = require('./schema.js');
 const config       = Config.get('server');
 
 // import routes
-const router       = require('./router.js');
+const router       = require('./routes/router.js');
 
 // connect to Mongo
 Mongoose.connect(config.mongo.url, {useNewUrlParser: true});

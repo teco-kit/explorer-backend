@@ -12,6 +12,7 @@
 		"node"
 	],
 	"rules": {
+		"global-require": 0,
 		"space-before-blocks": [0, "never"],
 		"no-plusplus": 0,
 		"keyword-spacing": 0,

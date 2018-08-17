@@ -1,5 +1,5 @@
 module.exports = {
-	'POST /analyze': {
+	'POST /dataset/submit': {
 		type: 'object',
 		properties: {
 			startTime: {
