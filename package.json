@@ -15,6 +15,7 @@
   "author": "Moritz Hoffmann <mhoffmann@teco.edu>",
   "license": "MIT",
   "dependencies": {
+    "amqplib": "^0.5.2",
     "config": "^1.30.0",
     "eslint_d": "^6.0.1",
     "global": "^4.3.2",

@@ -8,6 +8,9 @@
 		},
 		"mongo":{
 			"url": "mongodb://localhost:27017/aura_dev"
+		},
+		"ampq":{
+			"url": "amqp://localhost"
 		}
 	}
 }
