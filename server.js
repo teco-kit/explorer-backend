@@ -31,14 +31,22 @@ koa.use(KoaProtoBuf.protobufSender());
 koa.use(router.unprotected.routes());
 
 // handle koa-jwt errors
-koa.use((ctx, next) => next().catch((err) => {
-	if(err.status === 401){
-		ctx.status = 401;
-		ctx.body = {success: false, message: 'authentification failed'};
-	}else{
-		throw err;
-	}
-}));
+koa.use((ctx, next) => next().catch(err => new Promise((resolve, reject) => {
+	// discard post data
+	ctx.req.on('data', () => {
+		// discard data
+	});
+	ctx.req.on('end', () => {
+		if(err.status === 401){
+			ctx.status = 401;
+			ctx.body = {success: false, message: 'authentification failed'};
+			resolve();
+		}else{
+			reject();
+			throw err;
+		}
+	});
+})));
 
 // protected routes
 koa.use(KoaJWT({
