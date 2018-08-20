@@ -1,14 +1,10 @@
 const Koa          = require('koa');
 const Logger       = require('koa-logger');
-const Bodyparser   = require('koa-bodyparser');
 const KoaJWT       = require('koa-jwt');
-const KoaAjv       = require('koa-ajv');
+const KoaProtoBuf  = require('koa-protobuf');
 const JwksRsa      = require('jwks-rsa');
 const Config       = require('config');
 const Mongoose     = require('mongoose');
-
-// json validation
-const Schema       = require('./schema.js');
 
 // parse config
 const config       = Config.get('server');
@@ -29,12 +25,7 @@ const koa          = new Koa();
 
 // setup koa middlewares
 koa.use(Logger());
-koa.use(Bodyparser({
-	formLimit: '1mb',
-	jsonLimit: '10mb',
-	textLimit: '10mb'
-}));
-koa.use(KoaAjv({routes: Schema, strict: false}));
+koa.use(KoaProtoBuf.protobufSender());
 
 // unprotected routes
 koa.use(router.unprotected.routes());
@@ -75,7 +66,7 @@ koa.use(async (ctx, next) => {
 			nickname: ctx.state.user.nickname,
 		});
 	}
-	next();
+	await next();
 });
 
 koa.use(router.protected.routes());

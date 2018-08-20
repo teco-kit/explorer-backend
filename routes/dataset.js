@@ -1,11 +1,14 @@
-const Router    = require('koa-router');
-const Amqp      = require('amqplib/callback_api');
-const Config    = require('config');
+const Router      = require('koa-router');
+const Amqp        = require('amqplib/callback_api');
+const Config      = require('config');
+const KoaProtoBuf = require('koa-protobuf');
 
 const model = {
 	Dataset: require('../models/dataset').model,
 	Analysis: require('../models/analysis').model,
 };
+
+const proto = require('../protocol');
 
 // parse config
 const config       = Config.get('server');
@@ -23,9 +26,22 @@ Amqp.connect(config.ampq.url, (err, conn) => {
 // mounted at /dataset
 const datasetRouter = new Router();
 
-datasetRouter.post('/submit', async (ctx) => {
+datasetRouter.post('/submit', KoaProtoBuf.protobufParser(proto.DatasetRequest), async (ctx) => {
+
 	ctx.body = {success: 'true', state: 0};
-	const dataset = await model.Dataset.create(ctx.request.body);
+
+	const newDataset = {
+		startTime: new Date(+ctx.request.proto.dataset.startTime),
+		sensorData: [],
+	};
+
+	for(let i = 0; i < ctx.request.proto.dataset.sensorData.length; i++){
+		newDataset.sensorData.push({
+			data: proto.SensorData_t.encode(ctx.request.proto.dataset.sensorData[i]).finish()
+		});
+	}
+
+	const dataset = await model.Dataset.create(newDataset);
 	const analysis = await model.Analysis.create({
 		user: ctx.state.user.doc._id,
 		dataset: dataset._id,

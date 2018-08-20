@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "start:dev": "$(npm bin)/nodemon server.js --ignore tools --ignore build --ignore analysis",
-    "lint": "$(npm bin)/eslint ."
+    "lint": "$(npm bin)/eslint .",
+    "protobuf:compile": "$(npm bin)/pbjs protocol/Dataset.proto -t static-module -w es6 --es6 -o ./protocol.js"
   },
   "repository": {
     "url": "ssh://aura-development@vs-ssh.visualstudio.com:22/Aura/_ssh/backend",
@@ -17,17 +18,20 @@
   "dependencies": {
     "amqplib": "^0.5.2",
     "config": "^1.30.0",
+    "content-type": "^1.0.4",
     "eslint_d": "^6.0.1",
     "global": "^4.3.2",
     "jwks-rsa": "^1.3.0",
     "koa": "^2.5.2",
-    "koa-ajv": "^0.1.1",
     "koa-bodyparser": "^4.2.1",
     "koa-jwt": "^3.3.2",
     "koa-logger": "^3.2.0",
+    "koa-protobuf": "^0.1.0",
     "koa-router": "^7.4.0",
     "mongoose": "^5.2.4",
-    "mongoose-findorcreate": "^3.0.0"
+    "pretty-bytes": "^5.1.0",
+    "protobufjs": "^6.8.8",
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "eslint": "^5.2.0",
