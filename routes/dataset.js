@@ -27,7 +27,6 @@ Amqp.connect(config.ampq.url, (err, conn) => {
 const datasetRouter = new Router();
 
 datasetRouter.post('/submit', KoaProtoBuf.protobufParser(proto.DatasetRequest), async (ctx) => {
-
 	ctx.body = {success: 'true', state: 0};
 
 	const newDataset = {
@@ -37,7 +36,7 @@ datasetRouter.post('/submit', KoaProtoBuf.protobufParser(proto.DatasetRequest), 
 
 	for(let i = 0; i < ctx.request.proto.dataset.sensorData.length; i++){
 		newDataset.sensorData.push({
-			data: proto.SensorData_t.encode(ctx.request.proto.dataset.sensorData[i]).finish()
+			data: proto.SensorData_t.encode(ctx.request.proto.dataset.sensorData[i]).finish(),
 		});
 	}
 
