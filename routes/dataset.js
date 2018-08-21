@@ -27,8 +27,6 @@ Amqp.connect(config.ampq.url, (err, conn) => {
 const datasetRouter = new Router();
 
 datasetRouter.post('/submit', KoaProtoBuf.protobufParser(proto.DatasetRequest), async (ctx) => {
-	ctx.body = {success: 'true', state: 0};
-
 	const newDataset = {
 		startTime: new Date(+ctx.request.proto.dataset.startTime),
 		sensorData: [],
@@ -36,7 +34,12 @@ datasetRouter.post('/submit', KoaProtoBuf.protobufParser(proto.DatasetRequest), 
 
 	for(let i = 0; i < ctx.request.proto.dataset.sensorData.length; i++){
 		newDataset.sensorData.push({
-			data: proto.SensorData_t.encode(ctx.request.proto.dataset.sensorData[i]).finish(),
+			sensorType: (ctx.request.proto.dataset.sensorData[i].SensorType === 0) ? 'VOC' : 'IMU',
+			sensorId: ctx.request.proto.dataset.sensorData[i].SensorId,
+			numSamples: ctx.request.proto.dataset.sensorData[i].numSamples,
+			data: proto.SensorDataset_t.encode({
+				samples: ctx.request.proto.dataset.sensorData[i].samples,
+			}).finish(),
 		});
 	}
 
@@ -51,6 +54,12 @@ datasetRouter.post('/submit', KoaProtoBuf.protobufParser(proto.DatasetRequest), 
 		analysis_id: analysis._id.toHexString(),
 	};
 	msgChannel.sendToQueue(q, Buffer.from(JSON.stringify(msg)), {persistent: true});
+
+	ctx.body = proto.DatasetResponse.encode({
+		success: true,
+		status: 'QUEUED',
+		id: msg.analysis_id,
+	}).finish();
 });
 
 module.exports = datasetRouter;
