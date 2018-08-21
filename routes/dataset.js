@@ -55,6 +55,7 @@ datasetRouter.post('/submit', KoaProtoBuf.protobufParser(proto.DatasetRequest), 
 	};
 	msgChannel.sendToQueue(q, Buffer.from(JSON.stringify(msg)), {persistent: true});
 
+	ctx.set('Content-Type', 'application/x-protobuf');
 	ctx.body = proto.DatasetResponse.encode({
 		success: true,
 		status: 'QUEUED',
