@@ -12,6 +12,9 @@ const config       = Config.get('server');
 // import routes
 const router       = require('./routes/router.js');
 
+// import protocol
+const proto = require('./protocol');
+
 // connect to Mongo
 Mongoose.connect(config.mongo.url, {useNewUrlParser: true});
 
@@ -39,7 +42,10 @@ koa.use((ctx, next) => next().catch(err => new Promise((resolve, reject) => {
 	ctx.req.on('end', () => {
 		if(err.status === 401){
 			ctx.status = 401;
-			ctx.body = {success: false, message: 'authentification failed'};
+			ctx.body = proto.DatasetResponse.encode({
+				success: false,
+				id: 'authentification failed',
+			}).finish();
 			resolve();
 		}else{
 			reject();
@@ -72,6 +78,7 @@ koa.use(async (ctx, next) => {
 		ctx.state.user.doc = await model.User.create({
 			sub: ctx.state.user.sub,
 			nickname: ctx.state.user.nickname,
+			role: 'user',
 		});
 	}
 	await next();

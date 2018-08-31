@@ -2,6 +2,7 @@ const Router      = require('koa-router');
 const Amqp        = require('amqplib/callback_api');
 const Config      = require('config');
 const KoaProtoBuf = require('koa-protobuf');
+const Mongoose    = require('mongoose');
 
 const model = {
 	Dataset: require('../models/dataset').model,
@@ -56,11 +57,36 @@ datasetRouter.post('/submit', KoaProtoBuf.protobufParser(proto.DatasetRequest), 
 	msgChannel.sendToQueue(q, Buffer.from(JSON.stringify(msg)), {persistent: true});
 
 	ctx.set('Content-Type', 'application/x-protobuf');
-	ctx.body = proto.DatasetResponse.encode({
+
+	const buffer = proto.DatasetResponse.encode({
 		success: true,
 		status: 'QUEUED',
 		id: msg.analysis_id,
 	}).finish();
+	console.log(buffer);
+	ctx.body = buffer;
+});
+
+datasetRouter.post('/get', KoaProtoBuf.protobufParser(proto.DatasetGet), async (ctx) => {
+	if(ctx.state.user.doc.role !== 'admin'){
+		console.log(`User ${ctx.state.user.nickname} is not an Admin!`);
+		ctx.status = 401;
+		return;
+	}
+
+	const datasetID = Mongoose.Types.ObjectId.createFromHexString(ctx.request.proto.id);
+
+	const { dataset } = await model.Analysis.findById(datasetID).populate('dataset');
+
+	ctx.set('Content-Type', 'application/x-protobuf');
+
+	ctx.body = proto.DatasetGetResponse.encode({
+		id: datasetID.toHexString(),
+		startTime: dataset.startTime.getTime(),
+		numSamples: dataset.sensorData[0].numSamples,
+		data: dataset.sensorData[0].data,
+	}).finish();
+	console.log(ctx.body);
 });
 
 module.exports = datasetRouter;
