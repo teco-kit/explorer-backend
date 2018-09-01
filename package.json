@@ -16,6 +16,7 @@
   "author": "Moritz Hoffmann <mhoffmann@teco.edu>",
   "license": "MIT",
   "dependencies": {
+    "@koa/cors": "2",
     "amqplib": "^0.5.2",
     "config": "^1.30.0",
     "content-type": "^1.0.4",
