@@ -27,6 +27,7 @@ Amqp.connect(config.ampq.url, (err, conn) => {
 // mounted at /dataset
 const datasetRouter = new Router();
 
+// submit new dataset
 datasetRouter.post('/submit', KoaProtoBuf.protobufParser(proto.DatasetRequest), async (ctx) => {
 	const newDataset = {
 		startTime: new Date(+ctx.request.proto.dataset.startTime),
@@ -63,18 +64,22 @@ datasetRouter.post('/submit', KoaProtoBuf.protobufParser(proto.DatasetRequest), 
 		status: 'QUEUED',
 		id: msg.analysis_id,
 	}).finish();
-	console.log(buffer);
 	ctx.body = buffer;
 });
 
-datasetRouter.post('/get', KoaProtoBuf.protobufParser(proto.DatasetGet), async (ctx) => {
+// assert admin
+datasetRouter.use(async (ctx, next) => {
 	if(ctx.state.user.doc.role !== 'admin'){
 		console.log(`User ${ctx.state.user.nickname} is not an Admin!`);
 		ctx.status = 401;
-		return;
+	}else{
+		await next();
 	}
+});
 
-	const datasetID = Mongoose.Types.ObjectId.createFromHexString(ctx.request.proto.id);
+// get dataset
+datasetRouter.get('/get/:id', async (ctx) => {
+	const datasetID = Mongoose.Types.ObjectId.createFromHexString(ctx.params.id);
 
 	const { dataset } = await model.Analysis.findById(datasetID).populate('dataset');
 
@@ -86,7 +91,22 @@ datasetRouter.post('/get', KoaProtoBuf.protobufParser(proto.DatasetGet), async (
 		numSamples: dataset.sensorData[0].numSamples,
 		data: dataset.sensorData[0].data,
 	}).finish();
-	console.log(ctx.body);
+});
+
+// list datasets
+datasetRouter.get('/list', async (ctx) => {
+	const analyses = await model.Analysis.find({}).populate('dataset').populate('user');
+
+	const output = [];
+	analyses.forEach((analysis) => {
+		output.push({
+			id: analysis._id,
+			user: analysis.user.nickname,
+			numSamples: analysis.dataset.sensorData[0].numSamples,
+			startTime: analysis.dataset.startTime,
+		});
+	});
+	ctx.body = output;
 });
 
 module.exports = datasetRouter;
