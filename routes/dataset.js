@@ -28,7 +28,7 @@ Amqp.connect(config.ampq.url, (err, conn) => {
 const datasetRouter = new Router();
 
 // submit new dataset
-datasetRouter.post('/datasets', KoaProtoBuf.protobufParser(proto.DatasetRequest), async (ctx) => {
+datasetRouter.post('/', KoaProtoBuf.protobufParser(proto.DatasetRequest), async (ctx) => {
 	const newDataset = {
 		startTime: new Date(+ctx.request.proto.dataset.startTime),
 		sensorData: [],
@@ -78,7 +78,7 @@ datasetRouter.use(async (ctx, next) => {
 });
 
 // get dataset
-datasetRouter.get('/datasets/:id', async (ctx) => {
+datasetRouter.get('/:id', async (ctx) => {
 	const datasetID = Mongoose.Types.ObjectId.createFromHexString(ctx.params.id);
 
 	const { dataset } = await model.Analysis.findById(datasetID).populate('dataset');
@@ -94,14 +94,14 @@ datasetRouter.get('/datasets/:id', async (ctx) => {
 });
 
 // delete dataset
-datasetRouter.delete('datasets/:id', async (ctx) => {
+datasetRouter.delete('/:id', async (ctx) => {
 	const datasetID = Mongoose.Types.ObjectId.createFromHexString(ctx.params.id);
 	
 	await model.Analysis.findById(datasetID).remove();
 });
 
 // list datasets
-datasetRouter.get('/datasets', async (ctx) => {
+datasetRouter.get('/', async (ctx) => {
 	const analyses = await model.Analysis.find({}).populate('dataset').populate('user');
 
 	const output = [];
