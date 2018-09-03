@@ -9,7 +9,7 @@
     "lint": "$(npm bin)/eslint .",
     "protobuf:compile": "$(npm bin)/pbjs protocol/Dataset.proto -t static-module -w es6 --es6 -o ./protocol.js",
     "docker:build": "docker build . -t registry.aura.rest/edge",
-    "docker:push": "docker push registry.aura.rest/edge"
+    "docker:push": "docker push registry.aura.rest/edge",
     "docker:deploy" : "docker build . -t registry.aura.rest/edge && docker push registry.aura.rest/edge"
   },
   "repository": {
