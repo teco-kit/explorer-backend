@@ -98,8 +98,6 @@ datasetRouter.delete('datasets/:id', async (ctx) => {
 	const datasetID = Mongoose.Types.ObjectId.createFromHexString(ctx.params.id);
 	
 	await model.Analysis.findById(datasetID).remove();
-
-	ctx.finish();
 });
 
 // list datasets
