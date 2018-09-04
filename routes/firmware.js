@@ -22,7 +22,7 @@ firmwareRouter.use(async (ctx, next) => {
 });
 
 // submit new firmware
-firmwareRouter.post('/:buildversion', async (ctx) => {
+firmwareRouter.put('/:buildversion', async (ctx) => {
 	// assert octet/stream
 	if(!ctx.is('application/octet-stream')){
 		ctx.status = 415;
