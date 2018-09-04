@@ -11,6 +11,9 @@
 		},
 		"ampq":{
 			"url": "amqp://localhost"
+		},
+		"firmware": {
+			"authKey": "1337"
 		}
 	}
 }

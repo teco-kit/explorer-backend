@@ -10,7 +10,7 @@
     "protobuf:compile": "$(npm bin)/pbjs protocol/Dataset.proto -t static-module -w es6 --es6 -o ./protocol.js",
     "docker:build": "docker build . -t registry.aura.rest/edge",
     "docker:push": "docker push registry.aura.rest/edge",
-    "docker:deploy" : "docker build . -t registry.aura.rest/edge && docker push registry.aura.rest/edge"
+    "docker:deploy": "docker build . -t registry.aura.rest/edge && docker push registry.aura.rest/edge"
   },
   "repository": {
     "url": "ssh://aura-development@vs-ssh.visualstudio.com:22/Aura/_ssh/backend",
@@ -32,6 +32,7 @@
     "koa-logger": "^3.2.0",
     "koa-protobuf": "^0.1.0",
     "koa-router": "^7.4.0",
+    "md5": "^2.2.1",
     "mongoose": "^5.2.4",
     "pretty-bytes": "^5.1.0",
     "protobufjs": "^6.8.8",

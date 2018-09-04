@@ -9,7 +9,11 @@ const router = {
 // subroutes to be mounted
 const subroutes = {
 	dataset: require('./dataset'),
+	firmware: require('./firmware'),
 };
+
+// firmware routes
+router.unprotected.use('/firmware', subroutes.firmware.routes(), subroutes.firmware.allowedMethods());
 
 // dataset routes
 router.protected.use('/dataset', subroutes.dataset.routes(), subroutes.dataset.allowedMethods());
