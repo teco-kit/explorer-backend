@@ -1,6 +1,7 @@
 const Router      = require('koa-router');
 const Config      = require('config');
 const md5         = require('md5');
+const swig        = require('swig');
 
 const model = {
 	Firmware: require('../models/firmware').model,
@@ -11,6 +12,21 @@ const config       = Config.get('server');
 
 // mounted at /firmware
 const firmwareRouter = new Router();
+
+firmwareRouter.get('/badge', async (ctx) => {
+	const latestVersion = await model.Firmware.find({}, ['-binary'], {lean: true})
+		.then(res => res.map(item => item.version))
+		.then(res => Math.max(...res));
+
+	ctx.set('Content-Type', 'image/svg+xml');
+	ctx.set('Cache-Control', 'no-cache');
+
+	ctx.body = swig.renderFile('templates/badge.svg', {
+		left: 'Firmware',
+		right: latestVersion.toString(),
+		color: 'rgb(150, 255, 66)',
+	});
+});
 
 // assert authKey (?auth=<key>)
 firmwareRouter.use(async (ctx, next) => {
