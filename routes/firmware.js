@@ -17,7 +17,7 @@ firmwareRouter.get('/badge.svg', async (ctx) => {
 		.then(res => res.map(item => item.version))
 		.then(res => Math.max(...res));
 
-	ctx.redirect(`https://img.shields.io/badge/firmware-${latestVersion}-4DA851.svg?style=plastic`);
+	ctx.redirect(`https://img.shields.io/badge/firmware-${latestVersion}-4DA851.svg?style=popout`);
 });
 
 // assert authKey (?auth=<key>)
