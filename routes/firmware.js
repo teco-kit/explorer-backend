@@ -1,7 +1,6 @@
 const Router      = require('koa-router');
 const Config      = require('config');
 const md5         = require('md5');
-const swig        = require('swig');
 
 const model = {
 	Firmware: require('../models/firmware').model,
@@ -18,14 +17,7 @@ firmwareRouter.get('/badge.svg', async (ctx) => {
 		.then(res => res.map(item => item.version))
 		.then(res => Math.max(...res));
 
-	ctx.set('Content-Type', 'image/svg+xml');
-	ctx.set('Cache-Control', 'no-cache');
-
-	ctx.body = swig.renderFile('templates/badge.svg', {
-		left: 'Firmware',
-		right: latestVersion.toString(),
-		color: 'rgb(150, 255, 66)',
-	});
+	ctx.redirect(`https://img.shields.io/badge/firmware-${latestVersion}-4DA851.svg?style=plastic`);
 });
 
 // assert authKey (?auth=<key>)
