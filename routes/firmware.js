@@ -13,7 +13,7 @@ const config       = Config.get('server');
 // mounted at /firmware
 const firmwareRouter = new Router();
 
-firmwareRouter.get('/badge', async (ctx) => {
+firmwareRouter.get('/badge.svg', async (ctx) => {
 	const latestVersion = await model.Firmware.find({}, ['-binary'], {lean: true})
 		.then(res => res.map(item => item.version))
 		.then(res => Math.max(...res));
