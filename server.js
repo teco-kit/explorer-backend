@@ -3,6 +3,7 @@ const Logger       = require('koa-logger');
 const KoaJWT       = require('koa-jwt');
 const KoaProtoBuf  = require('koa-protobuf');
 const KoaCors      = require('@koa/cors');
+const KoaStatic    = require('koa-static');
 const JwksRsa      = require('jwks-rsa');
 const Config       = require('config');
 const Mongoose     = require('mongoose');
@@ -31,6 +32,7 @@ const koa          = new Koa();
 koa.use(Logger());
 koa.use(KoaProtoBuf.protobufSender());
 koa.use(KoaCors());
+koa.use(KoaStatic('./public', {maxage: 1}));
 
 // unprotected routes
 koa.use(router.unprotected.routes());
