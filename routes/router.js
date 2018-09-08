@@ -15,6 +15,14 @@ const subroutes = {
 // firmware routes
 router.unprotected.use('/firmware', subroutes.firmware.routes(), subroutes.firmware.allowedMethods());
 
+// authed route for explorer
+router.protected.get('/authed', (ctx) => {
+	ctx.status = 200;
+	ctx.body = {
+		authed: true
+	};
+});
+
 // dataset routes
 router.protected.use('/dataset', subroutes.dataset.routes(), subroutes.dataset.allowedMethods());
 
