@@ -165,6 +165,13 @@ datasetRouter.post('/:id/annotate', KoaBodyParser(), async (ctx) => {
 datasetRouter.get('/:id/result', async (ctx) => {
 	const analysisID = Mongoose.Types.ObjectId.createFromHexString(ctx.params.id);
 	const analysis = await model.Analysis.findById(analysisID).populate('annotations').populate('dataset');
+
+	if(analysis.annotations.length === 0){
+		ctx.status = 202;
+		ctx.body = {success: false, message: 'no annotations found'};
+		return;
+	}
+
 	const annotation = analysis.annotations[analysis.annotations.length - 1];
 
 	const start = analysis.dataset.startTime;
