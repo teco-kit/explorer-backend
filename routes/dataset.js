@@ -1,12 +1,15 @@
-const Router      = require('koa-router');
-const Amqp        = require('amqplib/callback_api');
-const Config      = require('config');
-const KoaProtoBuf = require('koa-protobuf');
-const Mongoose    = require('mongoose');
+const Router        = require('koa-router');
+const Amqp          = require('amqplib/callback_api');
+const Config        = require('config');
+const KoaProtoBuf   = require('koa-protobuf');
+const KoaBodyParser = require('koa-bodyparser');
+const Mongoose      = require('mongoose');
+const JsonValidate  = require('jsonschema').validate;
 
 const model = {
 	Dataset: require('../models/dataset').model,
 	Analysis: require('../models/analysis').model,
+	Annotation: require('../models/annotation').model,
 };
 
 const proto = require('../protocol');
@@ -118,6 +121,44 @@ datasetRouter.get('/', async (ctx) => {
 		});
 	});
 	ctx.body = output;
+});
+
+// annotate dataset
+datasetRouter.post('/:id/annotate', KoaBodyParser(), async (ctx) => {
+	const res = JsonValidate(ctx.request.body, {
+		type: 'array',
+		items: {
+			type: 'object',
+			properties: {
+				from: {type: 'date-time'},
+				to: {type: 'date-time'},
+				state: {
+					type: 'string',
+					enum: ['apnea', 'hypopnea', 'noise'],
+				}
+			}
+		},
+	});
+
+	if(!res.valid){
+		ctx.status = 415;
+		ctx.body = {success: false, message: 'Invalid Schema'};
+	}
+
+	const analysisID = Mongoose.Types.ObjectId.createFromHexString(ctx.params.id);
+
+	const annotation = await model.Annotation.create({
+		type: 'manual',
+		bands: ctx.request.body,
+	});
+
+	await model.Analysis.findByIdAndUpdate(analysisID, {
+		$push: {
+			annotations: annotation._id
+		}
+	});
+
+	ctx.body = {success: true, message: 'annotation saved'};
 });
 
 module.exports = datasetRouter;
