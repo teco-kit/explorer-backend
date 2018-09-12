@@ -171,7 +171,7 @@ datasetRouter.get('/:id/result', async (ctx) => {
 
 	const bands = [];
 
-	for(let band of annotation.bands) {
+	for(const band of annotation.bands) {
 		// calculate delta in hours
 		const delta = (band.from - start) / 3.6e6;
 		const bin = parseInt(delta, 10);
@@ -188,8 +188,8 @@ datasetRouter.get('/:id/result', async (ctx) => {
 		}
 	};
 
-	for(let [i, bin] of bands.entries()){
-		for(let type of Object.keys(res.result)){
+	for(const [i, bin] of bands.entries()){
+		for(const type of Object.keys(res.result)){
 			res.result[type][i] = bin.filter(elem => elem.state === type).length;
 		}
 	}

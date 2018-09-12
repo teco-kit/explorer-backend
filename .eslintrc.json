@@ -13,6 +13,7 @@
 	],
 	"rules": {
 		"global-require": 0,
+		"no-restricted-syntax": [0, "ForOfStatement"],
 		"space-before-blocks": [0, "never"],
 		"no-plusplus": 0,
 		"keyword-spacing": 0,
