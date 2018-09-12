@@ -161,4 +161,43 @@ datasetRouter.post('/:id/annotate', KoaBodyParser(), async (ctx) => {
 	ctx.body = {success: true, message: 'annotation saved'};
 });
 
+// get annotation
+datasetRouter.get('/:id/result', async (ctx) => {
+	const analysisID = Mongoose.Types.ObjectId.createFromHexString(ctx.params.id);
+	const analysis = await model.Analysis.findById(analysisID).populate('annotations').populate('dataset');
+	const annotation = analysis.annotations[analysis.annotations.length - 1];
+
+	const start = analysis.dataset.startTime;
+
+	const bands = [];
+
+	for(let band of annotation.bands) {
+		// calculate delta in hours
+		const delta = (band.from - start) / 3.6e6;
+		const bin = parseInt(delta, 10);
+		bands[bin] = bands[bin] || [];
+		bands[bin].push(band);
+	}
+
+	const res = {
+		startTime: analysis.dataset.startTime,
+		result: {
+			apnea: Array(bands.length),
+			hypopnea: Array(bands.length),
+			noise: Array(bands.length),
+		}
+	};
+
+	let i = 0;
+
+	for(let bin of bands){
+		for(let type of Object.keys(res.result)){
+			res.result[type][i] = bin.filter(elem => elem.state === type).length;
+		}
+		i++;
+	}
+
+	ctx.body = res;
+});
+
 module.exports = datasetRouter;
