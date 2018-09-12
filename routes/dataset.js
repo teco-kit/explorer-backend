@@ -188,13 +188,10 @@ datasetRouter.get('/:id/result', async (ctx) => {
 		}
 	};
 
-	let i = 0;
-
-	for(let bin of bands){
+	for(let [i, bin] of bands.entries()){
 		for(let type of Object.keys(res.result)){
 			res.result[type][i] = bin.filter(elem => elem.state === type).length;
 		}
-		i++;
 	}
 
 	ctx.body = res;
