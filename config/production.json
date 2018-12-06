@@ -17,7 +17,7 @@
 		},
 		"emulator": {
 			"authKey": "1337",
-			"deviceid": "0xC0FFEE00000000F"
+			"deviceid": "0xC0FFEE0000000000"
 		}
 	}
 }
