@@ -14,6 +14,10 @@
 		},
 		"firmware": {
 			"authKey": "9514908e-9797-489c-967a-4e204f90ea5c"
+		},
+		"emulator": {
+			"authKey": "1337",
+			"deviceid": "0xC0FFEE00000000F"
 		}
 	}
 }

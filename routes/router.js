@@ -10,10 +10,14 @@ const router = {
 const subroutes = {
 	dataset: require('./dataset'),
 	firmware: require('./firmware'),
+	emulator: require('./emulator'),
 };
 
 // firmware routes
 router.unprotected.use('/firmware', subroutes.firmware.routes(), subroutes.firmware.allowedMethods());
+
+// emulator routes for testing
+router.unprotected.use('/emulator', subroutes.emulator.routes(), subroutes.emulator.allowedMethods());
 
 // authed route for explorer
 router.protected.get('/authed', (ctx) => {
