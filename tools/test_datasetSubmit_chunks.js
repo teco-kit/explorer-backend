@@ -21,7 +21,7 @@ async function getID(){
 
 	const response = JSON.parse(await request({
 		method: 'GET',
-		url: 'https://edge.aura.rest/emulator/dataset_id',
+		url: 'https://edge.ng.aura.rest/emulator/dataset_id',
 		qs: {
 			auth: '1337'
 		},
@@ -41,6 +41,21 @@ function getSamples(n){
 const numChunks = dataset.data.length / samplesPerPacket;
 
 for(let i = 0; i < numChunks; i++){
+	let chunkid = chunks.length;
+
+	if(process.argv[3] === 'missing'){
+		// missing chunks
+		if(chunkid > 10){
+			chunkid += 1;
+		}
+		if(chunkid > 20){
+			chunkid += 1;
+		}
+		if(chunkid > 30){
+			chunkid += 1;
+		}
+	}
+
 	const arr = [chunks.length, ...getSamples(samplesPerPacket)];
 	const data = Buffer.from(Uint32Array.from(arr).buffer);
 
@@ -58,9 +73,13 @@ const body = {
 };
 
 async function submit(){
+	const id = await getID();
+
+	console.log(`got ID: ${id}`);
+
 	const options = {
 		method: 'POST',
-		url: `https://edge.ng.aura.rest/dataset/${await getID()}`,
+		url: `https://edge.ng.aura.rest/dataset/${id}`,
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
@@ -69,8 +88,8 @@ async function submit(){
 	};
 
 
-	request(options).then((err, res, bod) => {
-		console.log(bod);
+	request(options).then((res) => {
+		console.log(JSON.parse(res));
 	});
 }
 

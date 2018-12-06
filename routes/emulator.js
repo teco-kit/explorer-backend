@@ -4,12 +4,10 @@ const Config        = require('config');
 const config        = Config.get('server');
 
 const model = {
-	Dataset: require('../models/dataset').model,
+	Analysis: require('../models/analysis').model,
 };
 
-const deviceId = config.emulator.deviceid.split('x')[1];
-
-const datasetOffset = `${deviceId}0000`;
+const deviceId = config.emulator.deviceid.split('x')[1].toLowerCase();
 
 const emulatorRouter = new Router();
 
@@ -24,17 +22,15 @@ emulatorRouter.use(async (ctx, next) => {
 });
 
 emulatorRouter.get('/dataset_id', async (ctx) => {
-	const datasets = await model.Dataset.find({
-		id: new RegExp(`^${deviceId}`),
+	const datasets = await model.Analysis.find({
+		id: {$regex: `^${deviceId}`}
 	});
-
-	console.log(datasetOffset, datasets);
 
 	const count = datasets.length;
 
 	const offset = Buffer.alloc(2);
 
-	offset.writeUInt16BE(0, count);
+	offset.writeUInt16BE(count, 0);
 
 	ctx.body = {
 		datasets: count,

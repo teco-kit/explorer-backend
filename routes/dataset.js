@@ -70,6 +70,7 @@ datasetRouter.post('/', KoaProtoBuf.protobufParser(proto.DatasetRequest), async 
 	ctx.body = buffer;
 });
 
+// submit chunks
 datasetRouter.post('/:id', KoaBodyParser(), async (ctx) => {
 	// decode
 	let { startTime, data } = ctx.request.body;
@@ -107,6 +108,8 @@ datasetRouter.post('/:id', KoaBodyParser(), async (ctx) => {
 		}
 	}
 	// TODO: 1 sample is missing. Investigate
+
+	// TODO: check for missing chunks
 
 	// encode
 	const newDataset = {
