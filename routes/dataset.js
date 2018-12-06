@@ -70,6 +70,88 @@ datasetRouter.post('/', KoaProtoBuf.protobufParser(proto.DatasetRequest), async 
 	ctx.body = buffer;
 });
 
+datasetRouter.post('/:id', KoaBodyParser(), async (ctx) => {
+	// decode
+	let { startTime, data } = ctx.request.body;
+	const { interval, numChunks, MTU } = ctx.request.body;
+
+	startTime = new Date(startTime);
+
+	data = Buffer.from(data, 'base64');
+
+	const samplesPerChunk = (MTU / 4) - 1;
+
+	const samples = [];
+
+	const ids = [];
+
+	for(let i = 0; i < numChunks; i++){
+		const start = MTU * i;
+		const end = MTU * (i + 1);
+		const chunkBuffer = data.slice(start, end);
+		const chunk = new Uint32Array(
+			chunkBuffer.buffer,
+			chunkBuffer.byteOffset,
+			chunkBuffer.byteLength / Uint32Array.BYTES_PER_ELEMENT
+		);
+
+		ids.push(chunk[0]);
+
+		for(let j = 0; j < samplesPerChunk; j++){
+			const sample = chunk[j + 1];
+			if(sample !== undefined){
+				samples.push(sample);
+			}else{
+				// console.log('undef');
+			}
+		}
+	}
+	// TODO: 1 sample is missing. Investigate
+
+	// encode
+	const newDataset = {
+		startTime: startTime,
+		sensorData: [],
+	};
+
+	const samplesSet = [{}];
+
+	for(const sample of samples){
+		samplesSet.push({
+			voc: {
+				value: sample,
+				voc: sample,
+			},
+			delta: interval,
+		});
+	}
+
+	newDataset.sensorData.push({
+		sensorType: 'VOC',
+		sensorId: 0,
+		numSamples: samples.length,
+		data: proto.SensorDataset_t.encode({
+			samples: samplesSet,
+		}).finish(),
+	});
+
+	const [, datasetID] = ctx.params.id.split('x');
+
+	const dataset = await model.Dataset.create(newDataset);
+	const analysis = await model.Analysis.create({
+		user: ctx.state.user.doc._id,
+		dataset: dataset._id,
+		id: datasetID,
+	});
+
+	console.log(`New Dataset: ${dataset._id.toString()} \nNew Analysis: mongo#${analysis._id.toString()} id#0x${datasetID}`);
+
+	ctx.body = {
+		success: true,
+		msg: 'okay',
+	};
+});
+
 // assert admin
 datasetRouter.use(async (ctx, next) => {
 	if(ctx.state.user.doc.role !== 'admin'){

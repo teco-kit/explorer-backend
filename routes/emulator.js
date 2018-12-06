@@ -7,9 +7,9 @@ const model = {
 	Dataset: require('../models/dataset').model,
 };
 
-const deviceId = parseInt(config.emulator.deviceid, 16);
+const deviceId = config.emulator.deviceid.split('x')[1];
 
-const datasetOffset = parseInt(`${config.emulator.deviceid}0000`, 16);
+const datasetOffset = `${deviceId}0000`;
 
 const emulatorRouter = new Router();
 
@@ -24,14 +24,22 @@ emulatorRouter.use(async (ctx, next) => {
 });
 
 emulatorRouter.get('/dataset_id', async (ctx) => {
-	const count = (await model.Dataset.find({
-		id: {$gte: datasetOffset},
-	})).length;
+	const datasets = await model.Dataset.find({
+		id: new RegExp(`^${deviceId}`),
+	});
+
+	console.log(datasetOffset, datasets);
+
+	const count = datasets.length;
+
+	const offset = Buffer.alloc(2);
+
+	offset.writeUInt16BE(0, count);
 
 	ctx.body = {
 		datasets: count,
-		deviceid: `0x${deviceId.toString(16)}`,
-		datasetid: `0x${(datasetOffset + count).toString(16)}`,
+		deviceid: `0x${deviceId}`,
+		datasetid: `0x${deviceId}${offset.toString('hex')}`,
 	};
 });
 
