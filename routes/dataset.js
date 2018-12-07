@@ -3,8 +3,13 @@ const Amqp          = require('amqplib/callback_api');
 const Config        = require('config');
 const KoaProtoBuf   = require('koa-protobuf');
 const KoaBodyParser = require('koa-bodyparser');
+const KoaMulter     = require('koa-multer');
 const Mongoose      = require('mongoose');
 const JsonValidate  = require('jsonschema').validate;
+
+const multer = KoaMulter({
+	storage: KoaMulter.memoryStorage(),
+});
 
 const model = {
 	Dataset: require('../models/dataset').model,
@@ -71,14 +76,18 @@ datasetRouter.post('/', KoaProtoBuf.protobufParser(proto.DatasetRequest), async 
 });
 
 // submit chunks
-datasetRouter.post('/:id', KoaBodyParser(), async (ctx) => {
+datasetRouter.post('/:id', multer.fields([
+	{ name: 'meta', maxCount: 1 },
+	{ name: 'data', maxCount: 1 }
+]), async (ctx) => {
+	const meta = JSON.parse(ctx.req.files.meta[0].buffer.toString());
+	const data = ctx.req.files.data[0].buffer;
+
 	// decode
-	let { startTime, data } = ctx.request.body;
-	const { interval, numChunks, MTU } = ctx.request.body;
+	let { startTime } = meta;
+	const { interval, numChunks, MTU } = meta;
 
 	startTime = new Date(startTime);
-
-	data = Buffer.from(data, 'base64');
 
 	const samplesPerChunk = (MTU / 4) - 1;
 
