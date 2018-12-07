@@ -178,7 +178,7 @@ datasetRouter.use(async (ctx, next) => {
 
 // get dataset
 datasetRouter.get('/:id', async (ctx) => {
-	const [{dataset}] = await model.Analysis.find({ id: ctx.params.id.split('x')[1]}).populate('dataset');
+	const {dataset} = await model.Analysis.findOne({ id: ctx.params.id.split('x')[1]}).populate('dataset');
 
 	ctx.set('Content-Type', 'application/x-protobuf');
 
@@ -192,7 +192,7 @@ datasetRouter.get('/:id', async (ctx) => {
 
 // delete dataset
 datasetRouter.delete('/:id', async (ctx) => {
-	const [analysis] = await model.Analysis.find({id: ctx.params.id.split('x')[1]});
+	const analysis = await model.Analysis.findOne({id: ctx.params.id.split('x')[1]});
 	await model.Dataset.findById(analysis.dataset).remove();
 	await analysis.remove();
 
@@ -237,14 +237,12 @@ datasetRouter.post('/:id/annotate', KoaBodyParser(), async (ctx) => {
 		ctx.body = {success: false, message: 'Invalid Schema'};
 	}
 
-	const analysisID = Mongoose.Types.ObjectId.createFromHexString(ctx.params.id);
-
 	const annotation = await model.Annotation.create({
 		type: 'manual',
 		bands: ctx.request.body,
 	});
 
-	await model.Analysis.findByIdAndUpdate(analysisID, {
+	await model.Analysis.findOneAndUpdate({id: ctx.params.id.split('x')[1]}, {
 		$push: {
 			annotations: annotation._id
 		}
@@ -255,8 +253,7 @@ datasetRouter.post('/:id/annotate', KoaBodyParser(), async (ctx) => {
 
 // get annotation
 datasetRouter.get('/:id/result', async (ctx) => {
-	const analysisID = Mongoose.Types.ObjectId.createFromHexString(ctx.params.id);
-	const analysis = await model.Analysis.findById(analysisID).populate('annotations').populate('dataset');
+	const analysis = await model.Analysis.findOne({id: ctx.params.id.split('x')[1]}).populate('annotations').populate('dataset');
 
 	if(analysis.annotations.length === 0){
 		ctx.status = 202;
