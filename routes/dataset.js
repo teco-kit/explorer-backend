@@ -126,7 +126,7 @@ datasetRouter.post('/:id', multer.fields([
 		sensorData: [],
 	};
 
-	const samplesSet = [{}];
+	const samplesSet = [];
 
 	for(const sample of samples){
 		samplesSet.push({
@@ -137,6 +137,8 @@ datasetRouter.post('/:id', multer.fields([
 			delta: interval,
 		});
 	}
+
+	console.log(samplesSet[0], samplesSet[1], samplesSet[2]);
 
 	newDataset.sensorData.push({
 		sensorType: 'VOC',
@@ -176,14 +178,12 @@ datasetRouter.use(async (ctx, next) => {
 
 // get dataset
 datasetRouter.get('/:id', async (ctx) => {
-	const datasetID = Mongoose.Types.ObjectId.createFromHexString(ctx.params.id);
-
-	const { dataset } = await model.Analysis.findById(datasetID).populate('dataset');
+	const [{dataset}] = await model.Analysis.find({ id: ctx.params.id.split('x')[1]}).populate('dataset');
 
 	ctx.set('Content-Type', 'application/x-protobuf');
 
 	ctx.body = proto.DatasetGetResponse.encode({
-		id: datasetID.toHexString(),
+		id: ctx.params.id,
 		startTime: dataset.startTime.getTime(),
 		numSamples: dataset.sensorData[0].numSamples,
 		data: dataset.sensorData[0].data,
@@ -192,9 +192,7 @@ datasetRouter.get('/:id', async (ctx) => {
 
 // delete dataset
 datasetRouter.delete('/:id', async (ctx) => {
-	const analysisID = Mongoose.Types.ObjectId.createFromHexString(ctx.params.id);
-
-	const analysis = await model.Analysis.findById(analysisID);
+	const [analysis] = await model.Analysis.find({id: ctx.params.id.split('x')[1]});
 	await model.Dataset.findById(analysis.dataset).remove();
 	await analysis.remove();
 
@@ -208,7 +206,7 @@ datasetRouter.get('/', async (ctx) => {
 	const output = [];
 	analyses.forEach((analysis) => {
 		output.push({
-			id: analysis._id,
+			id: `0x${analysis.id}`,
 			user: analysis.user.nickname,
 			numSamples: analysis.dataset.sensorData[0].numSamples,
 			startTime: analysis.dataset.startTime,
