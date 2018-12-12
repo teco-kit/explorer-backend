@@ -281,6 +281,9 @@ datasetRouter.get('/:id/result', async (ctx) => {
 			apnea: Array(bands.length),
 			hypopnea: Array(bands.length),
 			noise: Array(bands.length),
+			sleepScore: 50, // TODO: implement
+			sleepTime: 1231342324, // TODO: implememnt as milliseconds
+			averageAHI: 20, // TODO: implement
 		}
 	};
 
