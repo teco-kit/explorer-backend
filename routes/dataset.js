@@ -166,6 +166,49 @@ datasetRouter.post('/:id', multer.fields([
 	};
 });
 
+// get annotation
+datasetRouter.get('/:id/result', async (ctx) => {
+	// TODO: user can only view their own results
+	const analysis = await model.Analysis.findOne({id: ctx.params.id.split('x')[1]}).populate('annotations').populate('dataset');
+
+	if(analysis.annotations.length === 0){
+		ctx.status = 202;
+		ctx.body = {success: false, message: 'no annotations found'};
+		return;
+	}
+
+	const annotation = analysis.annotations[analysis.annotations.length - 1];
+
+	const start = analysis.dataset.startTime;
+
+	const bands = [];
+
+	for(const band of annotation.bands) {
+		// calculate delta in hours
+		const delta = (band.from - start) / 3.6e6;
+		const bin = parseInt(delta, 10);
+		bands[bin] = bands[bin] || [];
+		bands[bin].push(band);
+	}
+
+	const res = {
+		startTime: analysis.dataset.startTime,
+		result: {
+			apnea: Array(bands.length),
+			hypopnea: Array(bands.length),
+			noise: Array(bands.length),
+		}
+	};
+
+	for(const [i, bin] of bands.entries()){
+		for(const type of Object.keys(res.result)){
+			res.result[type][i] = bin.filter(elem => elem.state === type).length;
+		}
+	}
+
+	ctx.body = res;
+});
+
 // assert admin
 datasetRouter.use(async (ctx, next) => {
 	if(ctx.state.user.doc.role !== 'admin'){
@@ -249,48 +292,6 @@ datasetRouter.post('/:id/annotate', KoaBodyParser(), async (ctx) => {
 	});
 
 	ctx.body = {success: true, message: 'annotation saved'};
-});
-
-// get annotation
-datasetRouter.get('/:id/result', async (ctx) => {
-	const analysis = await model.Analysis.findOne({id: ctx.params.id.split('x')[1]}).populate('annotations').populate('dataset');
-
-	if(analysis.annotations.length === 0){
-		ctx.status = 202;
-		ctx.body = {success: false, message: 'no annotations found'};
-		return;
-	}
-
-	const annotation = analysis.annotations[analysis.annotations.length - 1];
-
-	const start = analysis.dataset.startTime;
-
-	const bands = [];
-
-	for(const band of annotation.bands) {
-		// calculate delta in hours
-		const delta = (band.from - start) / 3.6e6;
-		const bin = parseInt(delta, 10);
-		bands[bin] = bands[bin] || [];
-		bands[bin].push(band);
-	}
-
-	const res = {
-		startTime: analysis.dataset.startTime,
-		result: {
-			apnea: Array(bands.length),
-			hypopnea: Array(bands.length),
-			noise: Array(bands.length),
-		}
-	};
-
-	for(const [i, bin] of bands.entries()){
-		for(const type of Object.keys(res.result)){
-			res.result[type][i] = bin.filter(elem => elem.state === type).length;
-		}
-	}
-
-	ctx.body = res;
 });
 
 module.exports = datasetRouter;
