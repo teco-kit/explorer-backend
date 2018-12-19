@@ -179,13 +179,14 @@ datasetRouter.get('/:id/result', async (ctx) => {
 
 	const annotation = analysis.annotations[analysis.annotations.length - 1];
 
-	const start = analysis.dataset.startTime;
+	// set starttime to closest smaller 10 minute interval
+	const start = analysis.dataset.startTime - (analysis.dataset.startTime % 6e5);
 
 	const bands = [];
 
 	for(const band of annotation.bands) {
 		// calculate delta in hours
-		const delta = (band.from - start) / 3.6e6;
+		const delta = (band.from - start) / (3.6e6 / 6); // bin size 10 minutes
 		const bin = parseInt(delta, 10);
 		bands[bin] = bands[bin] || [];
 		bands[bin].push(band);
