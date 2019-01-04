@@ -11,6 +11,7 @@ const subroutes = {
 	dataset: require('./dataset'),
 	firmware: require('./firmware'),
 	emulator: require('./emulator'),
+	analyses: require('./analyses'),
 };
 
 // firmware routes
@@ -26,6 +27,9 @@ router.protected.get('/authed', (ctx) => {
 		authed: true
 	};
 });
+
+// analyses routes
+router.protected.use('/analyses', subroutes.analyses.routes(), subroutes.analyses.allowedMethods());
 
 // dataset routes
 router.protected.use('/dataset', subroutes.dataset.routes(), subroutes.dataset.allowedMethods());
