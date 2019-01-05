@@ -9,6 +9,7 @@ const router = {
 // subroutes to be mounted
 const subroutes = {
 	dataset: require('./dataset'),
+	datasets: require('./datasets'),
 	firmware: require('./firmware'),
 	emulator: require('./emulator'),
 	analyses: require('./analyses'),
@@ -33,5 +34,8 @@ router.protected.use('/analyses', subroutes.analyses.routes(), subroutes.analyse
 
 // dataset routes
 router.protected.use('/dataset', subroutes.dataset.routes(), subroutes.dataset.allowedMethods());
+
+// datasets routes
+router.protected.use('/datasets', subroutes.datasets.routes(), subroutes.datasets.allowedMethods());
 
 module.exports = router;
