@@ -166,7 +166,7 @@ datasetRouter.post('/:id', multer.fields([
 	};
 });
 
-// get annotation
+// get result
 datasetRouter.get('/:id/result', async (ctx) => {
 	const analysis = await model.Analysis.findOne({
 		id: ctx.params.id.split('x')[1],
@@ -215,6 +215,17 @@ datasetRouter.get('/:id/result', async (ctx) => {
 	ctx.body = res;
 });
 
+// assert admin
+datasetRouter.use(async (ctx, next) => {
+	if(ctx.state.user.doc.role !== 'admin'){
+		console.log(`User ${ctx.state.user.nickname} is not an Admin!`);
+		ctx.status = 401;
+	}else{
+		await next();
+	}
+});
+
+// get annotations
 datasetRouter.get('/:id/annotations', async (ctx) => {
 	const analysis = await model.Analysis.findOne({
 		id: ctx.params.id.split('x')[1],
@@ -240,14 +251,37 @@ datasetRouter.get('/:id/annotations', async (ctx) => {
 	ctx.body = analysis.annotations;
 });
 
-// assert admin
-datasetRouter.use(async (ctx, next) => {
-	if(ctx.state.user.doc.role !== 'admin'){
-		console.log(`User ${ctx.state.user.nickname} is not an Admin!`);
-		ctx.status = 401;
-	}else{
-		await next();
+// replace annotation
+datasetRouter.put('/:id/annotation/:annotation_id', KoaBodyParser(), async (ctx) => {
+	const res = JsonValidate(ctx.request.body, {
+		type: 'array',
+		items: {
+			type: 'object',
+			properties: {
+				from: {type: 'date-time'},
+				to: {type: 'date-time'},
+				state: {
+					type: 'string',
+					enum: ['apnea', 'hypopnea', 'noise'],
+				}
+			}
+		},
+	});
+
+	if(!res.valid){
+		ctx.status = 415;
+		ctx.body = {success: false, message: 'Invalid Schema'};
 	}
+
+	await model.Annotation.findOneAndUpdate({
+		id: ctx.params.id.split('x')[1],
+	}, {
+		$set: {
+			bands: ctx.request.body,
+		}
+	});
+
+	ctx.body = {success: true, message: 'annotation saved'};
 });
 
 // get dataset
