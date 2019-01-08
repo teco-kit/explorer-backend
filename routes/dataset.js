@@ -168,8 +168,10 @@ datasetRouter.post('/:id', multer.fields([
 
 // get annotation
 datasetRouter.get('/:id/result', async (ctx) => {
-	// TODO: user can only view their own results
-	const analysis = await model.Analysis.findOne({id: ctx.params.id.split('x')[1]}).populate('annotations').populate('dataset');
+	const analysis = await model.Analysis.findOne({
+		id: ctx.params.id.split('x')[1],
+		user: ctx.state.user.doc._id,
+	}).populate('annotations').populate('dataset');
 
 	if(analysis.annotations.length === 0){
 		ctx.status = 202;
@@ -211,6 +213,31 @@ datasetRouter.get('/:id/result', async (ctx) => {
 	}
 
 	ctx.body = res;
+});
+
+datasetRouter.get('/:id/annotations', async (ctx) => {
+	const analysis = await model.Analysis.findOne({
+		id: ctx.params.id.split('x')[1],
+		user: ctx.state.user.doc._id,
+	}).populate({
+		path: 'annotations',
+		select: '-__v -bands._id -_id',
+	});
+
+	for(const [index1, annotation] of analysis.annotations.entries()){
+		for(const [index2, band] of annotation.bands.entries()){
+			analysis.annotations[index1].bands[index2].from = (new Date(band.from)).getTime();
+			analysis.annotations[index1].bands[index2].to = (new Date(band.to)).getTime();
+		}
+	}
+
+	if(analysis.annotations.length === 0){
+		ctx.status = 202;
+		ctx.body = {success: false, message: 'no annotations found'};
+		return;
+	}
+
+	ctx.body = analysis.annotations;
 });
 
 // assert admin
