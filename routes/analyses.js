@@ -59,12 +59,8 @@ analysesRouter.get('/:id', async (ctx) => {
 	}, {
 		id: 1,
 		meta: 1,
-		annotations: 1,
 		state: 1,
 		_id: 0,
-	}).populate({
-		path: 'annotations',
-		select: '-bands._id -_id',
 	});
 
 	ctx.body = analysesFound;
