@@ -166,6 +166,55 @@ datasetRouter.post('/:id', multer.fields([
 	};
 });
 
+// get result
+datasetRouter.get('/:id/result', async (ctx) => {
+	const analysis = await model.Analysis.findOne({
+		id: ctx.params.id.split('x')[1],
+		user: ctx.state.user.doc._id,
+	}).populate('annotations').populate('dataset');
+
+	if(analysis.annotations.length === 0){
+		ctx.status = 202;
+		ctx.body = {success: false, message: 'no annotations found'};
+		return;
+	}
+
+	const annotation = analysis.annotations[analysis.annotations.length - 1];
+
+	// set starttime to closest smaller 10 minute interval
+	const start = analysis.dataset.startTime - (analysis.dataset.startTime % 6e5);
+
+	const bands = [];
+
+	for(const band of annotation.bands) {
+		// calculate delta in hours
+		const delta = (band.from - start) / (3.6e6 / 6); // bin size 10 minutes
+		const bin = parseInt(delta, 10);
+		bands[bin] = bands[bin] || [];
+		bands[bin].push(band);
+	}
+
+	const res = {
+		startTime: analysis.dataset.startTime,
+		result: {
+			apnea: Array(bands.length),
+			hypopnea: Array(bands.length),
+			noise: Array(bands.length),
+			sleepScore: 50, // TODO: implement
+			sleepTime: 1231342324, // TODO: implememnt as milliseconds
+			averageAHI: 20, // TODO: implement
+		}
+	};
+
+	for(const [i, bin] of bands.entries()){
+		for(const type of Object.keys(res.result)){
+			res.result[type][i] = bin.filter(elem => elem.state === type).length;
+		}
+	}
+
+	ctx.body = res;
+});
+
 // assert admin
 datasetRouter.use(async (ctx, next) => {
 	if(ctx.state.user.doc.role !== 'admin'){
@@ -174,6 +223,65 @@ datasetRouter.use(async (ctx, next) => {
 	}else{
 		await next();
 	}
+});
+
+// get annotations
+datasetRouter.get('/:id/annotations', async (ctx) => {
+	const analysis = await model.Analysis.findOne({
+		id: ctx.params.id.split('x')[1],
+		user: ctx.state.user.doc._id,
+	}).populate({
+		path: 'annotations',
+		select: '-__v -bands._id -_id',
+	});
+
+	for(const [index1, annotation] of analysis.annotations.entries()){
+		for(const [index2, band] of annotation.bands.entries()){
+			analysis.annotations[index1].bands[index2].from = (new Date(band.from)).getTime();
+			analysis.annotations[index1].bands[index2].to = (new Date(band.to)).getTime();
+		}
+	}
+
+	if(analysis.annotations.length === 0){
+		ctx.status = 202;
+		ctx.body = {success: false, message: 'no annotations found'};
+		return;
+	}
+
+	ctx.body = analysis.annotations;
+});
+
+// replace annotation
+datasetRouter.put('/:id/annotation/:annotation_id', KoaBodyParser(), async (ctx) => {
+	const res = JsonValidate(ctx.request.body, {
+		type: 'array',
+		items: {
+			type: 'object',
+			properties: {
+				from: {type: 'date-time'},
+				to: {type: 'date-time'},
+				state: {
+					type: 'string',
+					enum: ['apnea', 'hypopnea', 'noise'],
+				}
+			}
+		},
+	});
+
+	if(!res.valid){
+		ctx.status = 415;
+		ctx.body = {success: false, message: 'Invalid Schema'};
+	}
+
+	await model.Annotation.findOneAndUpdate({
+		id: ctx.params.id.split('x')[1],
+	}, {
+		$set: {
+			bands: ctx.request.body,
+		}
+	});
+
+	ctx.body = {success: true, message: 'annotation saved'};
 });
 
 // get dataset
@@ -249,51 +357,6 @@ datasetRouter.post('/:id/annotate', KoaBodyParser(), async (ctx) => {
 	});
 
 	ctx.body = {success: true, message: 'annotation saved'};
-});
-
-// get annotation
-datasetRouter.get('/:id/result', async (ctx) => {
-	const analysis = await model.Analysis.findOne({id: ctx.params.id.split('x')[1]}).populate('annotations').populate('dataset');
-
-	if(analysis.annotations.length === 0){
-		ctx.status = 202;
-		ctx.body = {success: false, message: 'no annotations found'};
-		return;
-	}
-
-	const annotation = analysis.annotations[analysis.annotations.length - 1];
-
-	const start = analysis.dataset.startTime;
-
-	const bands = [];
-
-	for(const band of annotation.bands) {
-		// calculate delta in hours
-		const delta = (band.from - start) / 3.6e6;
-		const bin = parseInt(delta, 10);
-		bands[bin] = bands[bin] || [];
-		bands[bin].push(band);
-	}
-
-	const res = {
-		startTime: analysis.dataset.startTime,
-		result: {
-			apnea: Array(bands.length),
-			hypopnea: Array(bands.length),
-			noise: Array(bands.length),
-			sleepScore: 50, // TODO: implement
-			sleepTime: 1231342324, // TODO: implememnt as milliseconds
-			averageAHI: 20, // TODO: implement
-		}
-	};
-
-	for(const [i, bin] of bands.entries()){
-		for(const type of Object.keys(res.result)){
-			res.result[type][i] = bin.filter(elem => elem.state === type).length;
-		}
-	}
-
-	ctx.body = res;
 });
 
 module.exports = datasetRouter;
