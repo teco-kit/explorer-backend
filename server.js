@@ -1,7 +1,6 @@
 const Koa          = require('koa');
 const Logger       = require('koa-logger');
 const KoaJWT       = require('koa-jwt');
-const KoaProtoBuf  = require('koa-protobuf');
 const KoaCors      = require('@koa/cors');
 const KoaStatic    = require('koa-static');
 const JwksRsa      = require('jwks-rsa');
@@ -9,36 +8,47 @@ const Config       = require('config');
 const Mongoose     = require('mongoose');
 
 // parse config
-const config       = Config.get('server');
+const config = Config.get('server');
 
 // import routes
-const router       = require('./routes/router.js');
-
-// import protocol
-const proto = require('./protocol');
+const router = require('./routes/router.js');
 
 // connect to Mongo
-Mongoose.connect(config.mongo.url, {useNewUrlParser: true});
+Mongoose.connect(config.mongo.url, {useNewUrlParser: true})
+	.then(
+		() => { console.log('MongoDB connected!'); },
+		(e) => { console.error(e, 'MongoDB connection error:'); }
+	);
 
 // models
 const model = {
-	User: require('./models/user').model,
+	user: require('./models/user').model,
 };
 
 // instantiate koa
-const koa          = new Koa();
+const server = new Koa();
 
 // setup koa middlewares
-koa.use(Logger());
-koa.use(KoaProtoBuf.protobufSender());
-koa.use(KoaCors());
-koa.use(KoaStatic('./public', {maxage: 1}));
+server.use(Logger());
+server.use(KoaCors());
+server.use(KoaStatic('./public', {maxage: 1}));
+
+// catch errors
+server.use(async (ctx, next) => {
+	try {
+		await next();
+	} catch(err) {
+		console.log(err.status);
+		ctx.status = err.status || 500;
+		ctx.body = err.message;
+	}
+});
 
 // unprotected routes
-koa.use(router.unprotected.routes());
+server.use(router.unprotected.routes());
 
 // handle koa-jwt errors
-koa.use((ctx, next) => next().catch(err => new Promise((resolve, reject) => {
+server.use((ctx, next) => next().catch(err => new Promise((resolve, reject) => {
 	// discard post data
 	ctx.req.on('data', () => {
 		// discard data
@@ -46,12 +56,12 @@ koa.use((ctx, next) => next().catch(err => new Promise((resolve, reject) => {
 	ctx.req.on('end', () => {
 		if(err.status === 401){
 			ctx.status = 401;
-			ctx.body = proto.DatasetResponse.encode({
+			ctx.body = {
 				success: false,
 				id: 'authentification failed',
-			}).finish();
+			};
 			resolve();
-		}else{
+		} else {
 			reject();
 			throw err;
 		}
@@ -59,7 +69,7 @@ koa.use((ctx, next) => next().catch(err => new Promise((resolve, reject) => {
 })));
 
 // protected routes
-koa.use(KoaJWT({
+server.use(KoaJWT({
 	secret: JwksRsa.koaJwtSecret({
 		cache: true,
 		rateLimit: true,
@@ -72,21 +82,22 @@ koa.use(KoaJWT({
 }));
 
 // link mongoose document
-koa.use(async (ctx, next) => {
-	[ctx.state.user.doc] = await model.User.find({
+server.use(async (ctx, next) => {
+	/* [ctx.state.user.doc] = await model.User.find({
 		sub: ctx.state.user.sub,
-	});
+	}); */
 
 	if(!ctx.state.user.doc){
 		console.log(`welcome: ${ctx.state.user.nickname}!`);
-		ctx.state.user.doc = await model.User.create({
+		/* ctx.state.user.doc = await model.User.create({
 			sub: ctx.state.user.sub,
 			nickname: ctx.state.user.nickname,
 			role: 'user',
-		});
+		}); */
 	}
 	await next();
 });
 
-koa.use(router.protected.routes());
-koa.listen(3000);
+server.use(router.protected.routes());
+
+module.exports = server.listen(3000);

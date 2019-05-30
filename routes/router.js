@@ -1,4 +1,4 @@
-const Router    = require('koa-router');
+const Router = require('koa-router');
 
 // authentication
 const router = {
@@ -8,34 +8,29 @@ const router = {
 
 // subroutes to be mounted
 const subroutes = {
-	dataset: require('./dataset'),
 	datasets: require('./datasets'),
+	users: require('./users'),
 	firmware: require('./firmware'),
-	emulator: require('./emulator'),
-	analyses: require('./analyses'),
+	events: require('./eventTypes'),
+	label: require('./labels'),
+	labeling: require('./labelings')
 };
 
-// firmware routes
-router.unprotected.use('/firmware', subroutes.firmware.routes(), subroutes.firmware.allowedMethods());
-
-// emulator routes for testing
-router.unprotected.use('/emulator', subroutes.emulator.routes(), subroutes.emulator.allowedMethods());
-
-// authed route for explorer
-router.protected.get('/authed', (ctx) => {
+// authenticated route for explorer
+router.protected.get('/auth', (ctx) => {
 	ctx.status = 200;
 	ctx.body = {
 		authed: true
 	};
 });
 
-// analyses routes
-router.protected.use('/analyses', subroutes.analyses.routes(), subroutes.analyses.allowedMethods());
-
 // dataset routes
-router.protected.use('/dataset', subroutes.dataset.routes(), subroutes.dataset.allowedMethods());
-
-// datasets routes
-router.protected.use('/datasets', subroutes.datasets.routes(), subroutes.datasets.allowedMethods());
+// TODO: change again to protected
+router.unprotected.use('/datasets', subroutes.datasets.routes(), subroutes.datasets.allowedMethods());
+router.unprotected.use('/users', subroutes.users.routes(), subroutes.users.allowedMethods());
+router.unprotected.use('/firmware', subroutes.firmware.routes(), subroutes.firmware.allowedMethods());
+router.unprotected.use('/events/types', subroutes.events.routes(), subroutes.events.allowedMethods());
+router.unprotected.use('/labels', subroutes.label.routes(), subroutes.label.allowedMethods());
+router.unprotected.use('/labelings', subroutes.labeling.routes(), subroutes.labeling.allowedMethods());
 
 module.exports = router;

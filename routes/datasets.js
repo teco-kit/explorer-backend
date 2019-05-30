@@ -1,31 +1,86 @@
-const Router        = require('koa-router');
-const Config        = require('config');
+const Router      = require('koa-router');
+const KoaBody      = require('koa-body');
 
-const model = {
-	Dataset: require('../models/dataset').model,
-	Analysis: require('../models/analysis').model,
-	Annotation: require('../models/annotation').model,
-};
-
-const proto = require('../protocol');
+// import controller
+const datasetController = require('../controller/datasetController');
 
 // mounted at /datasets
-const datasetsRouter = new Router();
+const datasetRouter = new Router();
 
-// assert admin
-datasetsRouter.use(async (ctx, next) => {
-	if(ctx.state.user.doc.role !== 'admin'){
-		console.log(`User ${ctx.state.user.nickname} is not an Admin!`);
-		ctx.status = 401;
-	}else{
-		await next();
-	}
+/**
+ * get all datasets for current user
+ * route:					/datasets
+ * method type: 	GET
+ */
+datasetRouter.get('/', async (ctx) => {
+	await datasetController.getDatasets(ctx);
 });
 
-datasetsRouter.get('/', async (ctx) => {
-	const analyses = await model.Analysis.find({}).populate('dataset').populate('user').populate('annotation');
-
-	ctx.body = analyses;
+/**
+ * get dataset by id for current user
+ * route:					/datasets/:id
+ * method type: 	GET
+ */
+datasetRouter.get('/:id', async (ctx) => {
+	console.log(ctx.params.id);
+	await datasetController.getDatasetById(ctx);
 });
 
-module.exports = datasetsRouter;
+/**
+ * create a new dataset
+ * route:					/datasets
+ * method type: 	POST
+ */
+datasetRouter.post('/', KoaBody(), async (ctx) => {
+	await datasetController.createDataset(ctx);
+});
+
+/**
+ * for handling requests that try to POST a new dataset
+ * with id -> Method not allowed (405)
+ * route:					/datasets/:id
+ * method type: 	POST
+ */
+datasetRouter.post('/:id', async (ctx) => {
+	ctx.status = 500;
+	ctx.body = {error: 'Method Not Allowed'};
+});
+
+/**
+ *  update a bulk of datasets
+ * route:					/datasets
+ * method type: 	PUT
+ */
+datasetRouter.put('/', KoaBody(), async (ctx) => {
+	await datasetController.updateDatasets(ctx);
+});
+
+/**
+ * update a specific datasets
+ * route:					/datasets/:id
+ * method type: 	PUT
+ */
+datasetRouter.put('/:id', KoaBody(), async (ctx) => {
+	await datasetController.updateDatasetById(ctx);
+});
+
+/**
+ * delete all datasets
+ * route:					/datasets
+ * method type: 	DELETE
+ */
+datasetRouter.del('/', async (ctx) => {
+	await datasetController.deleteDatasets(ctx);
+});
+
+/**
+ * delete a specific dataset
+ * route:					/datasets/:id
+ * method type: 	DELETE
+ */
+datasetRouter.del('/:id', async (ctx) => {
+	await datasetController.deleteDatasetById(ctx);
+});
+
+
+module.exports = datasetRouter;
