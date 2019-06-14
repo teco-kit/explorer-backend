@@ -2,7 +2,7 @@ const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
 // import controller
-const eventTypeController = require('../controller/eventTypeController');
+const eventTypeController = require('../../controller/eventType');
 
 // mounted at /users
 const eventTypeRouter = new Router();

@@ -2,7 +2,7 @@ const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
 // import controller
-const userController = require('../controller/userController');
+const userController = require('../../controller/user');
 
 // mounted at /users
 const userRouter = new Router();

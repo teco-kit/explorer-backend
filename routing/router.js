@@ -8,12 +8,15 @@ const router = {
 
 // subroutes to be mounted
 const subroutes = {
-	datasets: require('./datasets'),
-	users: require('./users'),
-	firmware: require('./firmware'),
-	events: require('./eventTypes'),
-	label: require('./labels'),
-	labeling: require('./labelings')
+	datasets: require('./routes/dataset'),
+	users: require('./routes/user'),
+	firmware: require('./routes/firmware'),
+	events: require('./routes/eventType'),
+	label: require('./routes/label'),
+	labeling: require('./routes/labeling'),
+	device: require('./routes/device'),
+	service: require('./routes/service'),
+	sensor: require('./routes/sensor')
 };
 
 // authenticated route for explorer
@@ -24,13 +27,16 @@ router.protected.get('/auth', (ctx) => {
 	};
 });
 
-// dataset routes
+// dataset routing
 // TODO: change again to protected
 router.unprotected.use('/datasets', subroutes.datasets.routes(), subroutes.datasets.allowedMethods());
 router.unprotected.use('/users', subroutes.users.routes(), subroutes.users.allowedMethods());
 router.unprotected.use('/firmware', subroutes.firmware.routes(), subroutes.firmware.allowedMethods());
-router.unprotected.use('/events/types', subroutes.events.routes(), subroutes.events.allowedMethods());
+router.unprotected.use('/events', subroutes.events.routes(), subroutes.events.allowedMethods());
 router.unprotected.use('/labels', subroutes.label.routes(), subroutes.label.allowedMethods());
 router.unprotected.use('/labelings', subroutes.labeling.routes(), subroutes.labeling.allowedMethods());
+router.unprotected.use('/devices', subroutes.device.routes(), subroutes.device.allowedMethods());
+router.unprotected.use('/services', subroutes.service.routes(), subroutes.service.allowedMethods());
+router.unprotected.use('/sensors', subroutes.sensor.routes(), subroutes.sensor.allowedMethods());
 
 module.exports = router;

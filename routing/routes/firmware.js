@@ -2,7 +2,7 @@ const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
 // import controller
-const firmwareController = require('../controller/firmwareController');
+const firmwareController = require('../../controller/firmware');
 
 // mounted at /firmware
 const firmwareRouter = new Router();

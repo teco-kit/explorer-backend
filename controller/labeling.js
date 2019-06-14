@@ -1,10 +1,11 @@
 // get model
-const Model = require('../models/labelType').model;
+const Model = require('../models/labelingCategory').model;
+
 
 /**
- * get all labels
+ * get all labelings
  */
-async function getLabels(ctx) {
+async function getLabelings(ctx) {
 	try {
 		const result = await Model.find({});
 		ctx.body = {data: result};
@@ -18,9 +19,9 @@ async function getLabels(ctx) {
 }
 
 /**
- * get label by id
+ * get labeling by id
  */
-async function getLabelById(ctx) {
+async function getLabelingById(ctx) {
 	try {
 		const result = await Model.findById(ctx.params.id);
 		ctx.body = {data: result};
@@ -30,12 +31,13 @@ async function getLabelById(ctx) {
 		ctx.body = {error: error.message};
 		ctx.status = 500;
 		return ctx;
-	}}
+	}
+}
 
 /**
- * create a new label
+ * create a new labeling
  */
-async function createLabel(ctx) {
+async function createLabeling(ctx) {
 	try {
 		const document = new Model(ctx.request.body);
 		const result = await document.save();
@@ -50,21 +52,22 @@ async function createLabel(ctx) {
 }
 
 /**
- * update a bulk of labels
+ * update a bulk of labelings
  */
-async function updateLabels(ctx) {
+async function updateLabelings(ctx) {
 	// TODO: wie spezifizieren?
 	ctx.body = {error: 'Not Implemented'};
 	ctx.status = 501;
-	return ctx;}
+	return ctx;
+}
 
 /**
- * update a specific label
+ * update a labeling specified by id
  */
-async function updateLabelById(ctx) {
+async function updateLabelingById(ctx) {
 	try {
 		await Model.findByIdAndUpdate(ctx.params.id, {$set: ctx.request.body});
-		ctx.body = {message: `updated label type with id: ${ctx.params.id}`};
+		ctx.body = {message: `updated labeling with id: ${ctx.params.id}`};
 		ctx.status = 201;
 		return ctx;
 	} catch (error) {
@@ -75,41 +78,43 @@ async function updateLabelById(ctx) {
 }
 
 /**
- * delete all labels
+ * delete all labelings
  */
-async function deleteLabels(ctx) {
+async function deleteLabelings(ctx) {
 	try {
 		await Model.deleteMany({});
-		ctx.body = {message: 'deleted all label types'};
-		ctx.status = 201;
+		ctx.body = {message: 'deleted all labelings'};
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
 		ctx.status = 500;
 		return ctx;
-	}}
+	}
+}
 
 /**
- * delete a specific label
+ * delete a labeling specified by id
  */
-async function deleteLabelById(ctx) {
+async function deleteLabelingById(ctx) {
 	try {
 		await Model.findByIdAndDelete(ctx.params.id);
-		ctx.body = {message: `deleted label type with id: ${ctx.params.id}`};
-		ctx.status = 201;
+		ctx.body = {message: `deleted labeling with id: ${ctx.params.id}`};
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
 		ctx.status = 500;
 		return ctx;
-	}}
+	}
+}
 
 module.exports = {
-	getLabels,
-	getLabelById,
-	createLabel,
-	updateLabels,
-	updateLabelById,
-	deleteLabels,
-	deleteLabelById
+	getLabelings,
+	getLabelingById,
+	createLabeling,
+	updateLabelings,
+	updateLabelingById,
+	deleteLabelings,
+	deleteLabelingById
 };

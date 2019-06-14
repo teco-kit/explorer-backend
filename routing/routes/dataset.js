@@ -2,10 +2,51 @@ const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
 // import controller
-const datasetController = require('../controller/datasetController');
+const datasetController = require('../../controller/dataset');
 
 // mounted at /datasets
 const datasetRouter = new Router();
+
+/*
+* SUBROUTES
+* */
+
+// subroutes to be mounted
+const subroutes = {
+	result: require('./subroutes/result'),
+	event: require('./subroutes/event'),
+	labeling: require('./subroutes/labeling'),
+	label: require('./subroutes/label'),
+	video: require('./subroutes/video'),
+	timeseries: require('./subroutes/timeseries'),
+	fusedseries: require('./subroutes/fusedseries')
+};
+
+// routes for /datasets/{id}/results
+datasetRouter.use('/:datasetId/results', subroutes.result.routes(), subroutes.result.allowedMethods());
+
+// routes for /datasets/{id}/events
+datasetRouter.use('/:datasetId/events', subroutes.event.routes(), subroutes.event.allowedMethods());
+
+// routes for /datasets/{id}/labelings
+datasetRouter.use('/:datasetId/labelings', subroutes.labeling.routes(), subroutes.labeling.allowedMethods());
+
+// routes for /datasets/{id}/labelings/{id}/labels
+datasetRouter.use('/:datasetId/labelings/:labelingId/labels', subroutes.label.routes(), subroutes.label.allowedMethods());
+
+// routes for /datasets/{id}/video
+datasetRouter.use('/:datasetId/video', subroutes.video.routes(), subroutes.video.allowedMethods());
+
+// routes for /datasets/{id}/timeseries
+datasetRouter.use('/:datasetId/timeseries', subroutes.timeseries.routes(), subroutes.timeseries.allowedMethods());
+
+// routes for /datasets/{id}/fusedseries
+datasetRouter.use('/:datasetId/fusedseries', subroutes.fusedseries.routes(), subroutes.fusedseries.allowedMethods());
+
+
+/*
+* MAIN ROUTES
+* */
 
 /**
  * get all datasets for current user

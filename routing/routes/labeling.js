@@ -2,7 +2,7 @@ const Router       = require('koa-router');
 const KoaBody      = require('koa-body');
 
 // import controller
-const labelingController = require('../controller/labelingController');
+const labelingController = require('../../controller/labeling');
 
 // mounted at /labelings
 const labelingRouter = new Router();

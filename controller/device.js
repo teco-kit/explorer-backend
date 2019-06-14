@@ -1,28 +1,12 @@
 // get model
-const Model = require('../models/labelingCategory').model;
-
+const Model = require('../models/device').model;
 
 /**
- * get all labelings
+ * get all devices
  */
-async function getLabelings(ctx) {
+async function getDevices(ctx) {
 	try {
 		const result = await Model.find({});
-		ctx.body = {data: result};
-		ctx.status = 201;
-		return ctx;
-	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
-		return ctx;
-	}}
-
-/**
- * get labeling by id
- */
-async function getLabelingById(ctx) {
-	try {
-		const result = await Model.findById(ctx.params.id);
 		ctx.body = {data: result};
 		ctx.status = 201;
 		return ctx;
@@ -34,9 +18,24 @@ async function getLabelingById(ctx) {
 }
 
 /**
- * create a new labeling
+ * get device by id
  */
-async function createLabeling(ctx) {
+async function getDeviceById(ctx) {
+	try {
+		const result = await Model.findById(ctx.params.id);
+		ctx.body = {data: result};
+		ctx.status = 201;
+		return ctx;
+	} catch (error) {
+		ctx.body = {error: error.message};
+		ctx.status = 500;
+		return ctx;
+	}}
+
+/**
+ * create a new device
+ */
+async function createDevice(ctx) {
 	try {
 		const document = new Model(ctx.request.body);
 		const result = await document.save();
@@ -51,22 +50,21 @@ async function createLabeling(ctx) {
 }
 
 /**
- * update a bulk of labelings
+ * update a bulk of devices
  */
-async function updateLabelings(ctx) {
+async function updateDevices(ctx) {
 	// TODO: wie spezifizieren?
 	ctx.body = {error: 'Not Implemented'};
 	ctx.status = 501;
-	return ctx;
-}
+	return ctx;}
 
 /**
- * update a labeling specified by id
+ * update a specific device
  */
-async function updateLabelingById(ctx) {
+async function updateDeviceById(ctx) {
 	try {
 		await Model.findByIdAndUpdate(ctx.params.id, {$set: ctx.request.body});
-		ctx.body = {message: `updated labeling with id: ${ctx.params.id}`};
+		ctx.body = {message: `updated device type with id: ${ctx.params.id}`};
 		ctx.status = 201;
 		return ctx;
 	} catch (error) {
@@ -77,13 +75,13 @@ async function updateLabelingById(ctx) {
 }
 
 /**
- * delete all labelings
+ * delete all devices
  */
-async function deleteLabelings(ctx) {
+async function deleteDevices(ctx) {
 	try {
 		await Model.deleteMany({});
-		ctx.body = {message: 'deleted all labelings'};
-		ctx.status = 200;
+		ctx.body = {message: 'deleted all device types'};
+		ctx.status = 201;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -93,13 +91,13 @@ async function deleteLabelings(ctx) {
 }
 
 /**
- * delete a labeling specified by id
+ * delete a specific device
  */
-async function deleteLabelingById(ctx) {
+async function deleteDeviceById(ctx) {
 	try {
 		await Model.findByIdAndDelete(ctx.params.id);
-		ctx.body = {message: `deleted labeling with id: ${ctx.params.id}`};
-		ctx.status = 200;
+		ctx.body = {message: `deleted device type with id: ${ctx.params.id}`};
+		ctx.status = 201;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -109,11 +107,11 @@ async function deleteLabelingById(ctx) {
 }
 
 module.exports = {
-	getLabelings,
-	getLabelingById,
-	createLabeling,
-	updateLabelings,
-	updateLabelingById,
-	deleteLabelings,
-	deleteLabelingById
+	getDevices,
+	getDeviceById,
+	createDevice,
+	updateDevices,
+	updateDeviceById,
+	deleteDevices,
+	deleteDeviceById
 };

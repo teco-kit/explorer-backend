@@ -4,8 +4,8 @@
   "description": "Backend for aura (vocnea)",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "start:dev": "$(npm bin)/nodemon server.js --ignore tools --ignore build --ignore analysis",
+    "start": "node $NODE_DEBUG_OPTION server.js",
+    "start:dev": "$(npm bin)/nodemon $NODE_DEBUG_OPTION server.js --ignore tools --ignore build --ignore analysis",
     "lint": "$(npm bin)/eslint .",
     "test": "jest --watchAll",
     "docker:build": "docker build . -t registry.aura.rest/edge",
@@ -48,7 +48,7 @@
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-node": "^7.0.1",
     "jest": "^24.8.0",
-    "nodemon": "^1.18.3",
+    "nodemon": "^1.19.1",
     "request-promise-native": "^1.0.5",
     "supertest": "^4.0.2"
   }
