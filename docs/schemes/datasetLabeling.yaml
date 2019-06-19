@@ -1,0 +1,23 @@
+definitions:
+# Schema for DatasetLabeling
+  DatasetLabeling:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      labelingId:
+        type: "integer"
+        format: "int64"
+      labels:
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
+        description: "Primary key of associated labels"
+      creator:
+        type: "integer"
+        format: "int64"
+        description: "Primary key of service that created labeling"
+    xml:
+      name: "DatasetLabeling"

@@ -1,0 +1,178 @@
+/firmware:
+  get:
+    tags:
+    - "firmware"
+    summary: "Returns all firmware"
+    description: "Returns a list of all available firmware"
+    operationId: "getFirmware"
+    produces:
+    - "application/json"
+    parameters: []
+    responses:
+      200:
+        description: "successful operation"
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/Firmware"
+    security:
+    - api_key: []
+  post:
+    tags:
+    - "firmware"
+    summary: "Add a new firmware"
+    description: "Creates a new firmware"
+    operationId: "createFirmware"
+    consumes:
+    - "application/json"
+    produces:
+    - "application/json"
+    parameters:
+    - in: "body"
+      name: "body"
+      description: "Firmware object that needs to be created"
+      required: true
+      schema:
+        $ref: "#/definitions/Firmware"
+    responses:
+      201:
+        description: "Created"
+      405:
+        description: "Invalid input"
+    security:
+    - api_key: []
+  put:
+    tags:
+    - "firmware"
+    summary: "Update existing firmware"
+    description: "Updates a bulk of firmware"
+    operationId: "updateFirmware"
+    consumes:
+    - "application/json"
+    produces:
+    - "application/json"
+    parameters:
+    - in: "body"
+      name: "body"
+      description: "Firmware that need to be updated"
+      required: true
+      schema:
+        type: "array"
+        items:
+          $ref: "#/definitions/Firmware"
+    responses:
+      501:
+        description: "Not Implemented"
+    security:
+    - api_key: []
+  delete:
+    tags:
+    - "firmware"
+    summary: "Deletes all firmware"
+    description: "Deletes all firmware"
+    operationId: "deleteFirmware"
+    produces:
+    - "application/json"
+    parameters: []
+    responses:
+      200:
+        description: "deleted all firmware"
+    security:
+    - api_key: []
+
+/firmware/{id}:
+  get:
+    tags:
+    - "firmware"
+    summary: "Get a firmware by id"
+    description: "Returns a single firmware"
+    operationId: "getFirmwareById"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "id"
+      in: "path"
+      description: "ID of firmware to return"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      200:
+        description: "successful operation"
+        schema:
+          $ref: "#/definitions/Firmware"
+      400:
+        description: "Invalid ID supplied"
+      404:
+        description: "Firmware not found"
+    security:
+    - api_key: []
+  post:
+    tags:
+    - "firmware"
+    summary: "Create a firmware by id"
+    description: "Create a single firmware by id"
+    operationId: "createFirmwareById"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "id"
+      in: "path"
+      description: "ID of firmware to create"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      500:
+        description: "Method not allowed"
+    security:
+    - api_key: []
+    deprecated: true
+  put:
+    tags:
+    - "firmware"
+    summary: "Update a firmware by id"
+    description: "Update a single firmware by id"
+    operationId: "updateFirmwareById"
+    consumes:
+    - "application/json"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "id"
+      in: "path"
+      description: "ID of firmware to update"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      200:
+        description: "successful operation"
+        schema:
+          $ref: "#/definitions/Firmware"
+      400:
+        description: "Invalid ID supplied"
+      404:
+        description: "Firmware not found"
+    security:
+    - api_key: []
+  delete:
+    tags:
+    - "firmware"
+    summary: "Deletes a firmware by id"
+    description: "Deletes a specific firmware by id"
+    operationId: "deleteFirmwareById"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "id"
+      in: "path"
+      description: "ID of firmware to delete"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      200:
+        description: "successful operation"
+    security:
+    - api_key: []

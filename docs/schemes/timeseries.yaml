@@ -1,0 +1,21 @@
+definitions:
+# Schema for Timeseries
+  Timeseries:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      unit:
+        type: "string"
+      data:
+        type: "array"
+        items:
+          type: "object"
+          $ref: "#/definitions/TimeseriesData"
+      offset:
+        type: "number"
+    xml:
+      name: "Timeseries"

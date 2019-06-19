@@ -1,0 +1,23 @@
+definitions:
+# Schema for Firmware
+  Firmware:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      version:
+        type: "string"
+      binary:
+        type: "string"
+      hash:
+        type: "string"
+      supportedDevices:
+        type: "array"
+        items:
+          type: "integer"
+        description: "Generation numbers of device generations supported by firmware"
+      uploadedAt:
+        type: "string"
+    xml:
+      name: "Firmware"

@@ -1,0 +1,15 @@
+definitions:
+# Schema for Fusedseries
+  Fusedseries:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      timeSeries:
+        type: "array"
+        items:
+          type: "integer"
+        description: "Primary key of associated Timeseries"
+    xml:
+      name: "Fusedseries"

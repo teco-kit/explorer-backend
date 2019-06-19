@@ -1,0 +1,15 @@
+definitions:
+# Schema for Video
+  Video:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      url:
+        type: "string"
+      offset:
+        type: "number"
+    xml:
+      name: "Video"
+

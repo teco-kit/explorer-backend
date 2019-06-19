@@ -1,0 +1,12 @@
+definitions:
+# Schema for Label
+  Label:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Label"

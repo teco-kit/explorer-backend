@@ -1,0 +1,15 @@
+definitions:
+# Schema for Labeling
+  Labeling:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      labels:
+        type: "array"
+        items:
+          type: "integer"
+        description: "Primary Keys Labels that can be associated with labeling"
+    xml:
+      name: "Labeling"

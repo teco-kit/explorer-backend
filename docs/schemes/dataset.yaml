@@ -1,0 +1,52 @@
+definitions:
+# Schema for Dataset
+  Dataset:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      userId:
+        type: "integer"
+        format: "int64"
+        description: "Primary key of user owning the dataset"
+      start:
+        type: "integer"
+        format: "int64"
+      end:
+        type: "integer"
+        format: "int64"
+      events:
+        type: "array"
+        items:
+          $ref: "#/definitions/DatasetEvent"
+        description: "Events associated with dataset"
+      isPublished:
+        type: "boolean"
+        default: false
+      timeSeries:
+        type: "array"
+        items:
+          $ref: "#/definitions/Timeseries"
+        description: "TimeSeries associated with dataset"
+      fusedSeries:
+        type: "array"
+        items:
+          $ref: "#/definitions/Fusedseries"
+        description: "FusedSeries associated with dataset"
+      labelings:
+        type: "array"
+        items:
+          $ref: "#/definitions/DatasetLabeling"
+        description: "Labelings associated with dataset"
+      video:
+        type: "object"
+        $ref: "#/definitions/Video"
+        description: "Video associated with dataset"
+      results:
+        type: "array"
+        items:
+          $ref: "#/definitions/Result"
+        description: "Results associated with dataset"
+    xml:
+      name: "Dataset"

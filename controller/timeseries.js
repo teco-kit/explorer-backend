@@ -9,7 +9,7 @@ async function getTimeseries(ctx) {
 	try {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
 		ctx.body = {data: dataset.timeSeries};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -26,7 +26,7 @@ async function getTimeserieById(ctx) {
 		const {timeSeries} = await DatasetModel.findById(ctx.params.datasetId);
 		const timeserie = await timeSeries.id(ctx.params.id);
 		ctx.body = {data: timeserie};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -74,7 +74,7 @@ async function updateTimeserieById(ctx) {
 		await updateTS.set(ctx.request.body);
 		await dataset.save();
 		ctx.body = {message: `updated timeseries with id: ${ctx.params.id}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -92,7 +92,7 @@ async function deleteTimeseries(ctx) {
 		await dataset.set({timeSeries: []});
 		await dataset.save();
 		ctx.body = {message: 'deleted all timeseries'};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -110,7 +110,7 @@ async function deleteTimeserieById(ctx) {
 		await dataset.timeSeries.id(ctx.params.id).remove();
 		await dataset.save();
 		ctx.body = {message: `deleted timeSeries with id: ${ctx.params.id}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};

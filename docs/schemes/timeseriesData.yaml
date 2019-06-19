@@ -1,0 +1,15 @@
+definitions:
+# Schema for TimeseriesData
+  TimeseriesData:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      timestamp:
+        type: "integer"
+        format: "int64"
+      value:
+        type: "number"
+    xml:
+      name: "TimeseriesData"

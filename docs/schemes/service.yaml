@@ -1,0 +1,16 @@
+definitions:
+# Schema for Service
+  Service:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      version:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "Service"
+

@@ -8,7 +8,7 @@ async function getUsers(ctx) {
 	try {
 		const result = await Model.find({});
 		ctx.body = {data: result};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -24,7 +24,7 @@ async function getUserById(ctx) {
 	try {
 		const result = await Model.findById(ctx.params.id);
 		ctx.body = {data: result};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -41,7 +41,7 @@ async function createUser(ctx) {
 		const document = new Model(ctx.request.body);
 		const result = await document.save();
 		ctx.body = {data: result};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -67,7 +67,7 @@ async function updateUserById(ctx) {
 	try {
 		await Model.findByIdAndUpdate(ctx.params.id, {$set: ctx.request.body});
 		ctx.body = {message: `updated user with id: ${ctx.params.id}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};

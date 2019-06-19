@@ -9,7 +9,7 @@ async function getVideoById(ctx) {
 	try {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
 		ctx.body = {data: dataset.video};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -50,7 +50,7 @@ async function updateVideo(ctx) {
 			data: dataset.video,
 			message: `updated video for dataset with id: ${ctx.params.datasetId}`
 		};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -67,7 +67,7 @@ async function deleteVideo(ctx) {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
 		dataset.video.remove().save();
 		ctx.body = {message: `deleted video type with id: ${ctx.params.datasetId}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};

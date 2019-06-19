@@ -1,0 +1,226 @@
+/datasets/{datasetId}/timeseries:
+  get:
+    tags:
+    - "datasets"
+    summary: "Returns all timeseries for a given dataset"
+    description: "Returns a list of all available timeseries for a given dataset"
+    operationId: "getTimeseriess"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      200:
+        description: "successful operation"
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/Timeseries"
+    security:
+    - api_key: []
+  post:
+    tags:
+    - "datasets"
+    summary: "Add a new timeseries"
+    description: "Creates a new timeseries for a given dataset"
+    operationId: "createTimeseries"
+    consumes:
+    - "application/json"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    - in: "body"
+      name: "body"
+      description: "Timeseries object that needs to be created"
+      required: true
+      schema:
+        $ref: "#/definitions/Timeseries"
+    responses:
+      201:
+        description: "Created"
+      405:
+        description: "Invalid input"
+    security:
+    - api_key: []
+  put:
+    tags:
+    - "datasets"
+    summary: "Update existing timeseries for a given dataset"
+    description: "Updates a bulk of timeseries for a given dataset"
+    operationId: "updateTimeseriess"
+    consumes:
+    - "application/json"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    - in: "body"
+      name: "body"
+      description: "Timeseriess that need to be updated"
+      required: true
+      schema:
+        type: "array"
+        items:
+          $ref: "#/definitions/Timeseries"
+    responses:
+      501:
+        description: "Not Implemented"
+    security:
+    - api_key: []
+  delete:
+    tags:
+    - "datasets"
+    summary: "Deletes all timeseries for a given dataset"
+    description: "Deletes all timeseries for a given dataset"
+    operationId: "deleteTimeseriess"
+    produces:
+    - "application/json"
+    parameters:
+      - name: "datasetId"
+        in: "path"
+        description: "ID of associated dataset"
+        required: true
+        type: "integer"
+        format: "int64"
+    responses:
+      200:
+        description: "deleted all timeseries for given dataset"
+    security:
+    - api_key: []
+
+/datasets/{datasetId}/timeseries/{id}:
+  get:
+    tags:
+    - "datasets"
+    summary: "Get a timeseries by id for a given dataset"
+    description: "Returns a single timeseries for a given dataset"
+    operationId: "getTimeseriesById"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "id"
+      in: "path"
+      description: "ID of timeseries to return"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      200:
+        description: "successful operation"
+        schema:
+          $ref: "#/definitions/Timeseries"
+      400:
+        description: "Invalid ID supplied"
+      404:
+        description: "Dataset or Timeseries not found"
+    security:
+    - api_key: []
+  post:
+    tags:
+    - "datasets"
+    summary: "Create a timeseries by id for a given dataset"
+    description: "Create a single timeseries by id for a given dataset"
+    operationId: "createTimeseriesById"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "id"
+      in: "path"
+      description: "ID of timeseries to return"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      500:
+        description: "Method not allowed"
+    security:
+    - api_key: []
+    deprecated: true
+  put:
+    tags:
+    - "datasets"
+    summary: "Update a timeseries by id for a given dataset"
+    description: "Update a single timeseries by id for a given dataset"
+    operationId: "updateTimeseriesById"
+    consumes:
+    - "application/json"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "id"
+      in: "path"
+      description: "ID of timeseries to return"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      200:
+        description: "successful operation"
+        schema:
+          $ref: "#/definitions/Timeseries"
+      400:
+        description: "Invalid ID supplied"
+      404:
+        description: "Dataset or Timeseries not found"
+    security:
+    - api_key: []
+  delete:
+    tags:
+    - "datasets"
+    summary: "Deletes a timeseries by id for a given dataset"
+    description: "Deletes a specific evebt by id for a given dataset"
+    operationId: "deleteTimeseriesById"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "id"
+      in: "path"
+      description: "ID of timeseries to return"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      200:
+        description: "successful operation"
+    security:
+    - api_key: []

@@ -1,0 +1,25 @@
+definitions:
+# Schema for DatasetEvent
+  DatasetEvent:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      type:
+        type: "integer"
+        format: "int64"
+        description: "Primary key of associated event"
+      value:
+        type: "number"
+      time:
+        type: "integer"
+        format: "int64"
+      unit:
+        type: "string"
+      icon:
+        type: "string"
+    xml:
+      name: "DatasetEvent"

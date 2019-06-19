@@ -8,7 +8,7 @@ async function getLabelings(ctx) {
 	try {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
 		ctx.body = {data: dataset.labelings};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -25,7 +25,7 @@ async function getLabelingById(ctx) {
 		const {labelings} = await DatasetModel.findById(ctx.params.datasetId);
 		const labeling = await labelings.id(ctx.params.id);
 		ctx.body = {data: labeling};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -73,7 +73,7 @@ async function updateLabelingById(ctx) {
 		await updateLabeling.set(ctx.request.body);
 		await dataset.save();
 		ctx.body = {message: `updated labeling with id: ${ctx.params.id}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -91,7 +91,7 @@ async function deleteLabelings(ctx) {
 		await dataset.set({labelings: []});
 		await dataset.save();
 		ctx.body = {message: 'deleted all labelings'};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -109,7 +109,7 @@ async function deleteLabelingById(ctx) {
 		await dataset.labelings.id(ctx.params.id).remove();
 		await dataset.save();
 		ctx.body = {message: `deleted labeling with id: ${ctx.params.id}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};

@@ -1,9 +1,12 @@
 const Koa          = require('koa');
 const Logger       = require('koa-logger');
-const KoaCors      = require('@koa/cors');
-const KoaStatic    = require('koa-static');
 const Config       = require('config');
 const Mongoose     = require('mongoose');
+const swaggerUi    = require('swagger-ui-koa');
+const swaggerJSDoc = require('swagger-jsdoc');
+const convert 		 = require('koa-convert');
+const mount 			 = require('koa-mount');
+const options 		 = require('./docs/config');
 
 // parse config
 const config = Config.get('server');
@@ -21,10 +24,13 @@ Mongoose.connect(config.mongo.url, {useNewUrlParser: true})
 // instantiate koa
 const server = new Koa();
 
+// load swagger options
+const swaggerSpec = swaggerJSDoc(options);
+
 // setup koa middlewares
 server.use(Logger());
-server.use(KoaCors());
-server.use(KoaStatic('./public', {maxage: 1}));
+server.use(swaggerUi.serve);
+server.use(convert(mount('/docs', swaggerUi.setup(swaggerSpec, false, {docExpansion: 'none'}, '#header { display: none }')))); // mount endpoint for access
 
 // catch errors
 server.use(async (ctx, next) => {

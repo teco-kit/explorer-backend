@@ -8,7 +8,7 @@ async function getDevices(ctx) {
 	try {
 		const result = await Model.find({});
 		ctx.body = {data: result};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -24,13 +24,14 @@ async function getDeviceById(ctx) {
 	try {
 		const result = await Model.findById(ctx.params.id);
 		ctx.body = {data: result};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
 		ctx.status = 500;
 		return ctx;
-	}}
+	}
+}
 
 /**
  * create a new device
@@ -65,7 +66,7 @@ async function updateDeviceById(ctx) {
 	try {
 		await Model.findByIdAndUpdate(ctx.params.id, {$set: ctx.request.body});
 		ctx.body = {message: `updated device type with id: ${ctx.params.id}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -80,8 +81,8 @@ async function updateDeviceById(ctx) {
 async function deleteDevices(ctx) {
 	try {
 		await Model.deleteMany({});
-		ctx.body = {message: 'deleted all device types'};
-		ctx.status = 201;
+		ctx.body = {message: 'deleted all devices'};
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -97,7 +98,7 @@ async function deleteDeviceById(ctx) {
 	try {
 		await Model.findByIdAndDelete(ctx.params.id);
 		ctx.body = {message: `deleted device type with id: ${ctx.params.id}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};

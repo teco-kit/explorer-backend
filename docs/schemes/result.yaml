@@ -1,0 +1,17 @@
+definitions:
+# Schema for Result
+  Result:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      value:
+        type: "integer"
+        format: "int64"
+      text:
+        type: "string"
+    xml:
+      name: "Result"

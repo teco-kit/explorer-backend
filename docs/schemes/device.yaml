@@ -1,0 +1,29 @@
+definitions:
+# Schema for Device
+  Device:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      deviceId:
+        type: "integer"
+        format: "int64"
+      firmware:
+        type: "object"
+        items:
+          type: "integer"
+        description: "Primary keys of Firmware associated with device"
+      sensors:
+        type: "array"
+        items:
+          type: "integer"
+        description: "Primary keys of Sensors associated with device"
+      generation:
+        type: "integer"
+        format: "int64"
+      user:
+        type: "integer"
+        description: "Primary key of user owning device"
+    xml:
+      name: "Dataset"

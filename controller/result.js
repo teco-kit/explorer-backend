@@ -9,7 +9,7 @@ async function getResults(ctx) {
 	try {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
 		ctx.body = {data: dataset.results};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -26,7 +26,7 @@ async function getResultById(ctx) {
 		const {results} = await DatasetModel.findById(ctx.params.datasetId);
 		const result = await results.id(ctx.params.id);
 		ctx.body = {data: result};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -75,7 +75,7 @@ async function updateResultById(ctx) {
 		await updateResult.set(ctx.request.body);
 		await dataset.save();
 		ctx.body = {message: `updated result with id: ${ctx.params.datasetId}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -93,7 +93,7 @@ async function deleteResults(ctx) {
 		await dataset.set({results: []});
 		await dataset.save();
 		ctx.body = {message: 'deleted all results'};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -111,7 +111,7 @@ async function deleteResultById(ctx) {
 		await dataset.results.id(ctx.params.id).remove();
 		await dataset.save();
 		ctx.body = {message: `deleted event type with id: ${ctx.params.datasetId}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};

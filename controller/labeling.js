@@ -9,7 +9,7 @@ async function getLabelings(ctx) {
 	try {
 		const result = await Model.find({});
 		ctx.body = {data: result};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -25,7 +25,7 @@ async function getLabelingById(ctx) {
 	try {
 		const result = await Model.findById(ctx.params.id);
 		ctx.body = {data: result};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -68,7 +68,7 @@ async function updateLabelingById(ctx) {
 	try {
 		await Model.findByIdAndUpdate(ctx.params.id, {$set: ctx.request.body});
 		ctx.body = {message: `updated labeling with id: ${ctx.params.id}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};

@@ -1,0 +1,28 @@
+definitions:
+# Schema for User
+  User:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      sex:
+        type: "string"
+      birthday:
+        type: "string"
+      weight:
+        type: "number"
+      clientVersion:
+        type: "integer"
+        format: "int64"
+      platform:
+        type: "string"
+    xml:
+      name: "User"
+

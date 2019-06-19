@@ -1,0 +1,25 @@
+definitions:
+# Schema for DatasetLabel
+  DatasetLabel:
+    type: "object"
+    properties:
+      _id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "String"
+      type:
+        type: "integer"
+        format: "int64"
+        description: "Primary key of associated labels"
+      value:
+        type: "number"
+      time:
+        type: "integer"
+        format: "int64"
+      unit:
+        type: "string"
+      icon:
+        type: "string"
+    xml:
+      name: "DatasetLabel"

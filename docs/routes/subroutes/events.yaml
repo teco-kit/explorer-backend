@@ -1,0 +1,226 @@
+/datasets/{datasetId}/events:
+  get:
+    tags:
+    - "datasets"
+    summary: "Returns all events for a given dataset"
+    description: "Returns a list of all available events for a given dataset"
+    operationId: "getDatasetEvents"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      200:
+        description: "successful operation"
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/DatasetEvent"
+    security:
+    - api_key: []
+  post:
+    tags:
+    - "datasets"
+    summary: "Add a new event"
+    description: "Creates a new event for a given dataset"
+    operationId: "createDatasetEvent"
+    consumes:
+    - "application/json"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    - in: "body"
+      name: "body"
+      description: "DatasetEvent object that needs to be created"
+      required: true
+      schema:
+        $ref: "#/definitions/DatasetEvent"
+    responses:
+      201:
+        description: "Created"
+      405:
+        description: "Invalid input"
+    security:
+    - api_key: []
+  put:
+    tags:
+    - "datasets"
+    summary: "Update existing events for a given dataset"
+    description: "Updates a bulk of events for a given dataset"
+    operationId: "updateDatasetEvents"
+    consumes:
+    - "application/json"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    - in: "body"
+      name: "body"
+      description: "DatasetEvents that need to be updated"
+      required: true
+      schema:
+        type: "array"
+        items:
+          $ref: "#/definitions/DatasetEvent"
+    responses:
+      501:
+        description: "Not Implemented"
+    security:
+    - api_key: []
+  delete:
+    tags:
+    - "datasets"
+    summary: "Deletes all events for a given dataset"
+    description: "Deletes all events for a given dataset"
+    operationId: "deleteDatasetEvents"
+    produces:
+    - "application/json"
+    parameters:
+      - name: "datasetId"
+        in: "path"
+        description: "ID of associated dataset"
+        required: true
+        type: "integer"
+        format: "int64"
+    responses:
+      200:
+        description: "deleted all event for given dataset"
+    security:
+    - api_key: []
+
+/datasets/{datasetId}/events/{id}:
+  get:
+    tags:
+    - "datasets"
+    summary: "Get an event by id for a given dataset"
+    description: "Returns a single event for a given dataset"
+    operationId: "getDatasetEventById"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "id"
+      in: "path"
+      description: "ID of event to return"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      200:
+        description: "successful operation"
+        schema:
+          $ref: "#/definitions/DatasetEvent"
+      400:
+        description: "Invalid ID supplied"
+      404:
+        description: "Dataset or Event not found"
+    security:
+    - api_key: []
+  post:
+    tags:
+    - "datasets"
+    summary: "Create an event by id for a given dataset"
+    description: "Create a single event by id for a given dataset"
+    operationId: "createDatasetEventById"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "id"
+      in: "path"
+      description: "ID of event to return"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      500:
+        description: "Method not allowed"
+    security:
+    - api_key: []
+    deprecated: true
+  put:
+    tags:
+    - "datasets"
+    summary: "Update an event by id for a given dataset"
+    description: "Update a single event by id for a given dataset"
+    operationId: "updateDatasetEventById"
+    consumes:
+    - "application/json"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "id"
+      in: "path"
+      description: "ID of event to return"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      200:
+        description: "successful operation"
+        schema:
+          $ref: "#/definitions/DatasetEvent"
+      400:
+        description: "Invalid ID supplied"
+      404:
+        description: "Dataset or Event not found"
+    security:
+    - api_key: []
+  delete:
+    tags:
+    - "datasets"
+    summary: "Deletes an event by id for a given dataset"
+    description: "Deletes a specific evebt by id for a given dataset"
+    operationId: "deleteDatasetEventById"
+    produces:
+    - "application/json"
+    parameters:
+    - name: "datasetId"
+      in: "path"
+      description: "ID of associated dataset"
+      required: true
+      type: "integer"
+      format: "int64"
+    - name: "id"
+      in: "path"
+      description: "ID of event to return"
+      required: true
+      type: "integer"
+      format: "int64"
+    responses:
+      200:
+        description: "successful operation"
+    security:
+    - api_key: []

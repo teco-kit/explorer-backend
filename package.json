@@ -4,8 +4,9 @@
   "description": "Backend for aura (vocnea)",
   "main": "server.js",
   "scripts": {
-    "start": "node $NODE_DEBUG_OPTION server.js",
-    "start:dev": "$(npm bin)/nodemon $NODE_DEBUG_OPTION server.js --ignore tools --ignore build --ignore analysis",
+    "start": "NODE_ENV=development node $NODE_DEBUG_OPTION server.js",
+    "start:prod": "NODE_ENV=production node server.js",
+    "start:dev": "$(npm bin)/nodemon server.js --ignore tools --ignore build --ignore analysis",
     "lint": "$(npm bin)/eslint .",
     "test": "jest --watchAll",
     "docker:build": "docker build . -t registry.aura.rest/edge",
@@ -30,8 +31,11 @@
     "koa": "^2.5.2",
     "koa-body": "^4.1.0",
     "koa-bodyparser": "^4.2.1",
+    "koa-convert": "^1.2.0",
+    "koa-docs": "^2.1.0",
     "koa-jwt": "^3.3.2",
     "koa-logger": "^3.2.0",
+    "koa-mount": "^4.0.0",
     "koa-multer": "^1.0.2",
     "koa-protobuf": "^0.1.0",
     "koa-router": "^7.4.0",
@@ -40,7 +44,9 @@
     "mongoose": "^5.2.4",
     "pretty-bytes": "^5.1.0",
     "protobufjs": "^6.8.8",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "swagger-jsdoc": "^3.2.9",
+    "swagger-ui-koa": "0.0.1"
   },
   "devDependencies": {
     "eslint": "^5.16.0",

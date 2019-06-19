@@ -9,7 +9,7 @@ async function getFusedseries(ctx) {
 	try {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
 		ctx.body = {data: dataset.fusedSeries};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -26,7 +26,7 @@ async function getFusedserieById(ctx) {
 		const {fusedSeries} = await DatasetModel.findById(ctx.params.datasetId);
 		const fs = await fusedSeries.id(ctx.params.id);
 		ctx.body = {data: fs};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -74,7 +74,7 @@ async function updateFusedserieById(ctx) {
 		await updateFS.set(ctx.request.body);
 		await dataset.save();
 		ctx.body = {message: `updated fusedSeries with id: ${ctx.params.id}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -92,7 +92,7 @@ async function deleteFusedseries(ctx) {
 		await dataset.set({fusedSeries: []});
 		await dataset.save();
 		ctx.body = {message: 'deleted all fusedSeries'};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -110,7 +110,7 @@ async function deleteFusedserieById(ctx) {
 		await dataset.fusedSeries.id(ctx.params.id).remove();
 		await dataset.save();
 		ctx.body = {message: `deleted fusedSeries with id: ${ctx.params.id}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};

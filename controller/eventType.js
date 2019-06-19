@@ -8,7 +8,7 @@ async function getEventTypes(ctx) {
 	try {
 		const result = await Model.find({});
 		ctx.body = {data: result};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -24,7 +24,7 @@ async function getEventTypeById(ctx) {
 	try {
 		const result = await Model.findById(ctx.params.id);
 		ctx.body = {data: result};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -67,7 +67,7 @@ async function updateEventTypeById(ctx) {
 	try {
 		await Model.findByIdAndUpdate(ctx.params.id, {$set: ctx.request.body});
 		ctx.body = {message: `updated event type with id: ${ctx.params.id}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -83,7 +83,7 @@ async function deleteEventTypes(ctx) {
 	try {
 		await Model.deleteMany({});
 		ctx.body = {message: 'deleted all event types'};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
@@ -99,7 +99,7 @@ async function deleteEventTypeById(ctx) {
 	try {
 		await Model.findByIdAndDelete(ctx.params.id);
 		ctx.body = {message: `deleted event type with id: ${ctx.params.id}`};
-		ctx.status = 201;
+		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
