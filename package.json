@@ -4,8 +4,7 @@
   "description": "Backend for aura (vocnea)",
   "main": "server.js",
   "scripts": {
-    "start": "NODE_ENV=development node $NODE_DEBUG_OPTION server.js",
-    "start:prod": "NODE_ENV=production node server.js",
+    "start": "node $NODE_DEBUG_OPTION server.js",
     "start:dev": "$(npm bin)/nodemon server.js --ignore tools --ignore build --ignore analysis",
     "lint": "$(npm bin)/eslint .",
     "test": "jest --watchAll",
