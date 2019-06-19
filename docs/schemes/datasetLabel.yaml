@@ -3,20 +3,20 @@ definitions:
   DatasetLabel:
     type: "object"
     properties:
-      _id:
-        type: "integer"
-        format: "int64"
       name:
         type: "String"
+        example: "TestDatasetLabel"
       type:
         type: "integer"
         format: "int64"
         description: "Primary key of associated labels"
       value:
         type: "number"
+        example: 2
       time:
         type: "integer"
         format: "int64"
+        example: 1560945900
       unit:
         type: "string"
       icon:

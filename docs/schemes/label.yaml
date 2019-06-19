@@ -3,10 +3,8 @@ definitions:
   Label:
     type: "object"
     properties:
-      _id:
-        type: "integer"
-        format: "int64"
       name:
         type: "string"
+        example: "TestLabel"
     xml:
       name: "Label"

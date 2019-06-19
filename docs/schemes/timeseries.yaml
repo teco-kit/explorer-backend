@@ -3,13 +3,12 @@ definitions:
   Timeseries:
     type: "object"
     properties:
-      _id:
-        type: "integer"
-        format: "int64"
       name:
         type: "string"
+        example: 'VOC'
       unit:
         type: "string"
+        example: 'kOhm'
       data:
         type: "array"
         items:
@@ -17,5 +16,6 @@ definitions:
           $ref: "#/definitions/TimeseriesData"
       offset:
         type: "number"
+        example: 0.0
     xml:
       name: "Timeseries"

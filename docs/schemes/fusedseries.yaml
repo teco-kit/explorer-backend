@@ -3,9 +3,6 @@ definitions:
   Fusedseries:
     type: "object"
     properties:
-      _id:
-        type: "integer"
-        format: "int64"
       timeSeries:
         type: "array"
         items:

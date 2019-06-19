@@ -3,12 +3,10 @@ definitions:
   Device:
     type: "object"
     properties:
-      _id:
-        type: "integer"
-        format: "int64"
       deviceId:
         type: "integer"
         format: "int64"
+        example: 1234
       firmware:
         type: "object"
         items:
@@ -22,6 +20,7 @@ definitions:
       generation:
         type: "integer"
         format: "int64"
+        example: 1
       user:
         type: "integer"
         description: "Primary key of user owning device"

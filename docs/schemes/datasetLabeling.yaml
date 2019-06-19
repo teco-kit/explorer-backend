@@ -3,9 +3,6 @@ definitions:
   DatasetLabeling:
     type: "object"
     properties:
-      _id:
-        type: "integer"
-        format: "int64"
       labelingId:
         type: "integer"
         format: "int64"

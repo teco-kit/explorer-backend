@@ -41,7 +41,7 @@ async function createUser(ctx) {
 		const document = new Model(ctx.request.body);
 		const result = await document.save();
 		ctx.body = {data: result};
-		ctx.status = 200;
+		ctx.status = 201;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};

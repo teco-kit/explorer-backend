@@ -3,14 +3,13 @@ definitions:
   Service:
     type: "object"
     properties:
-      _id:
-        type: "integer"
-        format: "int64"
       name:
         type: "string"
+        example: 'ServiceTestName'
       version:
         type: "integer"
         format: "int64"
+        example: 1
     xml:
       name: "Service"
 

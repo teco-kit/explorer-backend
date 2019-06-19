@@ -12,8 +12,7 @@
       in: "path"
       description: "ID of asociated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       200:
         description: "succesful operation"
@@ -38,8 +37,7 @@
       in: "path"
       description: "ID of asociated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - in: "body"
       name: "body"
       description: "Fusedseries object that needs to be created"
@@ -68,8 +66,7 @@
       in: "path"
       description: "ID of asociated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - in: "body"
       name: "body"
       description: "Fusedseries that need to be updated"
@@ -96,8 +93,7 @@
         in: "path"
         description: "ID of asociated dataset"
         required: true
-        type: "integer"
-        format: "int64"
+        type: "string"
     responses:
       200:
         description: "deleted all fusedseries for given dataset"
@@ -118,8 +114,7 @@
       in: "path"
       description: "ID of asociated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "id"
       in: "path"
       description: "ID of fusedseries to return"
@@ -150,14 +145,12 @@
       in: "path"
       description: "ID of asociated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "id"
       in: "path"
       description: "ID of fusedseries to return"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       500:
         description: "Method not allowed"
@@ -179,14 +172,12 @@
       in: "path"
       description: "ID of asociated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "id"
       in: "path"
       description: "ID of fusedseries to return"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       200:
         description: "succesful operation"
@@ -211,14 +202,12 @@
       in: "path"
       description: "ID of asociated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "id"
       in: "path"
       description: "ID of fusedseries to return"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       200:
         description: "succesful operation"

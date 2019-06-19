@@ -3,13 +3,12 @@ definitions:
   TimeseriesData:
     type: "object"
     properties:
-      _id:
-        type: "integer"
-        format: "int64"
       timestamp:
         type: "integer"
         format: "int64"
+        example: 1560945620
       value:
         type: "number"
+        example: 3.12
     xml:
       name: "TimeseriesData"

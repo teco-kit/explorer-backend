@@ -3,11 +3,9 @@ definitions:
   Sensor:
     type: "object"
     properties:
-      _id:
-        type: "integer"
-        format: "int64"
       name:
         type: "string"
+        example: "SensorTestName"
     xml:
       name: "Sensor"
 

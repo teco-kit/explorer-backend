@@ -12,14 +12,12 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "labelingId"
       in: "path"
       description: "ID of associated labeling"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       200:
         description: "successful operation"
@@ -44,14 +42,12 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "labelingId"
       in: "path"
       description: "ID of associated labeling"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - in: "body"
       name: "body"
       description: "DatasetLabel object that needs to be created"
@@ -80,14 +76,12 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "labelingId"
       in: "path"
       description: "ID of associated labeling"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - in: "body"
       name: "body"
       description: "DatasetLabels that need to be updated"
@@ -114,14 +108,12 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "labelingId"
       in: "path"
       description: "ID of associated labeling"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       200:
         description: "deleted all labels for a given labeling within a dataset"
@@ -142,20 +134,17 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "labelingId"
       in: "path"
       description: "ID of associated labeling"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "id"
       in: "path"
       description: "ID of label to return"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       200:
         description: "successful operation"
@@ -180,20 +169,17 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "labelingId"
       in: "path"
       description: "ID of associated labeling"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "id"
       in: "path"
       description: "ID of label to return"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       500:
         description: "Method not allowed"
@@ -215,20 +201,17 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "labelingId"
       in: "path"
       description: "ID of associated labeling"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "id"
       in: "path"
       description: "ID of label to return"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       200:
         description: "successful operation"
@@ -253,20 +236,17 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "labelingId"
       in: "path"
       description: "ID of associated labeling"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "id"
       in: "path"
       description: "ID of label to return"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       200:
         description: "successful operation"

@@ -3,26 +3,33 @@ definitions:
   User:
     type: "object"
     properties:
-      _id:
-        type: "integer"
-        format: "int64"
       name:
         type: "string"
+        example: "ExampleUsername"
       email:
         type: "string"
+        example: "example@test.com"
       password:
         type: "string"
+        example: "supersecurepasswordexample"
       sex:
         type: "string"
+        enum: ["m", "f"]
+        example: "f"
       birthday:
         type: "string"
+        example: "1990-01-01"
       weight:
         type: "number"
+        example: 60
       clientVersion:
         type: "integer"
         format: "int64"
+        example: 1
       platform:
         type: "string"
+        enum: ["ios", "android", "windows"]
+        example: "android"
     xml:
       name: "User"
 

@@ -12,8 +12,7 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       200:
         description: "successful operation"
@@ -38,8 +37,7 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - in: "body"
       name: "body"
       description: "DatasetEvent object that needs to be created"
@@ -68,8 +66,7 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - in: "body"
       name: "body"
       description: "DatasetEvents that need to be updated"
@@ -96,8 +93,7 @@
         in: "path"
         description: "ID of associated dataset"
         required: true
-        type: "integer"
-        format: "int64"
+        type: "string"
     responses:
       200:
         description: "deleted all event for given dataset"
@@ -118,14 +114,12 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "id"
       in: "path"
       description: "ID of event to return"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       200:
         description: "successful operation"
@@ -150,14 +144,12 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "id"
       in: "path"
       description: "ID of event to return"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       500:
         description: "Method not allowed"
@@ -179,14 +171,12 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "id"
       in: "path"
       description: "ID of event to return"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       200:
         description: "successful operation"
@@ -211,14 +201,12 @@
       in: "path"
       description: "ID of associated dataset"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     - name: "id"
       in: "path"
       description: "ID of event to return"
       required: true
-      type: "integer"
-      format: "int64"
+      type: "string"
     responses:
       200:
         description: "successful operation"

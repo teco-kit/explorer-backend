@@ -3,10 +3,8 @@ definitions:
   Event:
     type: "object"
     properties:
-      _id:
-        type: "integer"
-        format: "int64"
       name:
         type: "string"
+        example: "TestEvent"
     xml:
       name: "Event"

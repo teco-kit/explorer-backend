@@ -3,11 +3,9 @@ definitions:
   Firmware:
     type: "object"
     properties:
-      _id:
-        type: "integer"
-        format: "int64"
       version:
         type: "string"
+        example: "1.0"
       binary:
         type: "string"
       hash:

@@ -3,9 +3,6 @@ definitions:
   Dataset:
     type: "object"
     properties:
-      _id:
-        type: "integer"
-        format: "int64"
       userId:
         type: "integer"
         format: "int64"
@@ -13,9 +10,11 @@ definitions:
       start:
         type: "integer"
         format: "int64"
+        example: 1560945600
       end:
         type: "integer"
         format: "int64"
+        example: 1561032000
       events:
         type: "array"
         items:
