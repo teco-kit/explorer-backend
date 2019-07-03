@@ -1,6 +1,7 @@
 const Koa          = require('koa');
 const Logger       = require('koa-logger');
 const Config       = require('config');
+const cors				 = require('koa-cors');
 const Mongoose     = require('mongoose');
 const swaggerUi    = require('swagger-ui-koa');
 const swaggerJSDoc = require('swagger-jsdoc');
@@ -28,6 +29,7 @@ const server = new Koa();
 const swaggerSpec = swaggerJSDoc(options);
 
 // setup koa middlewares
+server.use(cors());
 server.use(Logger());
 server.use(swaggerUi.serve);
 server.use(convert(mount('/docs', swaggerUi.setup(swaggerSpec, false, {docExpansion: 'none'}, '#header { display: none }')))); // mount endpoint for access
