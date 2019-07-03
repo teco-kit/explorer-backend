@@ -7,7 +7,7 @@
     "start": "node $NODE_DEBUG_OPTION server.js",
     "start:dev": "$(npm bin)/nodemon server.js --ignore tools --ignore build --ignore analysis",
     "lint": "$(npm bin)/eslint .",
-    "test": "jest --watchAll",
+    "test": "NODE_ENV=testing nyc mocha --exit",
     "docker:build": "docker build . -t registry.aura.rest/edge",
     "docker:push": "docker push registry.aura.rest/edge",
     "docker:deploy": "docker build . -t registry.aura.rest/edge && docker push registry.aura.rest/edge"
@@ -31,6 +31,7 @@
     "koa-body": "^4.1.0",
     "koa-bodyparser": "^4.2.1",
     "koa-convert": "^1.2.0",
+    "koa-cors": "0.0.16",
     "koa-docs": "^2.1.0",
     "koa-jwt": "^3.3.2",
     "koa-logger": "^3.2.0",
@@ -48,13 +49,17 @@
     "swagger-ui-koa": "0.0.1"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-node": "^7.0.1",
     "jest": "^24.8.0",
+    "mocha": "^6.1.4",
     "nodemon": "^1.19.1",
+    "nyc": "^14.1.1",
     "request-promise-native": "^1.0.5",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "uuid": "^3.3.2"
   }
 }
