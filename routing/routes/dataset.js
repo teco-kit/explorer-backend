@@ -63,7 +63,6 @@ datasetRouter.get('/', async (ctx) => {
  * method type: 	GET
  */
 datasetRouter.get('/:id', async (ctx) => {
-	console.log(ctx.params.id);
 	await datasetController.getDatasetById(ctx);
 });
 

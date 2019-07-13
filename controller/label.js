@@ -7,12 +7,16 @@ const Model = require('../models/labelType').model;
 async function getLabels(ctx) {
 	try {
 		const result = await Model.find({});
-		ctx.body = {data: result};
-		ctx.status = 200;
+		if(!result.length) {
+			throw new Error();
+		} else {
+			ctx.body = {data: result};
+			ctx.status = 200;
+		}
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `no labels found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -23,12 +27,16 @@ async function getLabels(ctx) {
 async function getLabelById(ctx) {
 	try {
 		const result = await Model.findById(ctx.params.id);
-		ctx.body = {data: result};
-		ctx.status = 200;
-		return ctx;
+		if(!result) {
+			throw new Error();
+		} else {
+			ctx.body = {data: result};
+			ctx.status = 200;
+			return ctx.body;
+		}
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `label with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -57,20 +65,21 @@ async function updateLabels(ctx) {
 	// TODO: wie spezifizieren?
 	ctx.body = {error: 'Not Implemented'};
 	ctx.status = 501;
-	return ctx;}
+	return ctx;
+}
 
 /**
- * update a specific label
+ * update a label specified by id
  */
 async function updateLabelById(ctx) {
 	try {
 		await Model.findByIdAndUpdate(ctx.params.id, {$set: ctx.request.body});
-		ctx.body = {message: `updated label type with id: ${ctx.params.id}`};
+		ctx.body = {message: `updated label with id: ${ctx.params.id}`};
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `label with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -81,29 +90,31 @@ async function updateLabelById(ctx) {
 async function deleteLabels(ctx) {
 	try {
 		await Model.deleteMany({});
-		ctx.body = {message: 'deleted all label types'};
+		ctx.body = {message: 'deleted all labels'};
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
 		ctx.status = 500;
 		return ctx;
-	}}
+	}
+}
 
 /**
- * delete a specific label
+ * delete a label specified by id
  */
 async function deleteLabelById(ctx) {
 	try {
 		await Model.findByIdAndDelete(ctx.params.id);
-		ctx.body = {message: `deleted label type with id: ${ctx.params.id}`};
+		ctx.body = {message: `deleted label with id: ${ctx.params.id}`};
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `label with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
-	}}
+	}
+}
 
 module.exports = {
 	getLabels,

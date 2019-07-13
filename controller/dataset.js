@@ -2,33 +2,41 @@
 const Model = require('../models/dataset').model;
 
 /**
- * get all datasets for current user
+ * get all datasets
  */
 async function getDatasets(ctx) {
 	try {
 		const result = await Model.find({});
-		ctx.body = {data: result};
-		ctx.status = 200;
+		if(!result.length) {
+			throw new Error();
+		} else {
+			ctx.body = {data: result};
+			ctx.status = 200;
+		}
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `no datasets found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
 
 /**
- * get dataset by id for current user
+ * get dataset by id
  */
 async function getDatasetById(ctx) {
 	try {
 		const result = await Model.findById(ctx.params.id);
-		ctx.body = {data: result};
-		ctx.status = 200;
-		return ctx;
+		if(!result) {
+			throw new Error();
+		} else {
+			ctx.body = {data: result};
+			ctx.status = 200;
+			return ctx.body;
+		}
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `dataset with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -61,7 +69,7 @@ async function updateDatasets(ctx) {
 }
 
 /**
- * update a specific dataset
+ * update a dataset specified by id
  */
 async function updateDatasetById(ctx) {
 	try {
@@ -70,8 +78,8 @@ async function updateDatasetById(ctx) {
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `dataset with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -93,7 +101,7 @@ async function deleteDatasets(ctx) {
 }
 
 /**
- * delete a specific dataset
+ * delete a dataset specified by id
  */
 async function deleteDatasetById(ctx) {
 	try {
@@ -102,8 +110,8 @@ async function deleteDatasetById(ctx) {
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `dataset with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }

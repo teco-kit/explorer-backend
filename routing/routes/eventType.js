@@ -8,36 +8,36 @@ const eventTypeController = require('../../controller/eventType');
 const eventTypeRouter = new Router();
 
 /**
- * get all eventTypes
- * route:					/events/types
+ * get all event
+ * route:					/events/
  * method type: 	GET
  */
 eventTypeRouter.get('/', async (ctx) => {
-	await eventTypeController.getEventTypes(ctx);
+	await eventTypeController.getEvents(ctx);
 });
 
 /**
  * get eventType by Id
- * route:					/events/types/:id
+ * route:					/events//:id
  * method type: 	GET
  */
 eventTypeRouter.get('/:id', async (ctx) => {
-	await eventTypeController.getEventTypeById(ctx);
+	await eventTypeController.getEventById(ctx);
 });
 
 /**
  * create a new eventType
- * route:					/events/types
+ * route:					/events/
  * method type: 	POST
  */
 eventTypeRouter.post('/', KoaBody(), async (ctx) => {
-	await eventTypeController.createEventType(ctx);
+	await eventTypeController.createEvent(ctx);
 });
 
 /** run
  * for handling requests that try to POST a new event type
  * with id -> Method not allowed (405)
- * route:					/events/types/:id
+ * route:					/events//:id
  * method type: 	POST
  */
 eventTypeRouter.post('/:id', async (ctx) => {
@@ -46,31 +46,30 @@ eventTypeRouter.post('/:id', async (ctx) => {
 });
 
 /**
- * update a bulk of event types
- * route:					/events/types/
+ * update a bulk of event
+ * route:					/events//
  * method type: 	PUT
  */
 eventTypeRouter.put('/', KoaBody(), async (ctx) => {
-	await eventTypeController.updateEventTypes(ctx);
+	await eventTypeController.updateEvents(ctx);
 });
 
 /**
  * update a event type specified by id
- * route:					/events/types/:id
+ * route:					/events//:id
  * method type: 	PUT
  */
 eventTypeRouter.put('/:id', KoaBody(), async (ctx) => {
-	ctx = await eventTypeController.updateEventTypeById(ctx);
-	console.log(ctx);
+	await eventTypeController.updateEventById(ctx);
 });
 
 /**
- * delete all event types
- * route:					/events/types/
+ * delete all event
+ * route:					/events//
  * method type: 	DELETE
  */
 eventTypeRouter.del('/', async (ctx) => {
-	await eventTypeController.deleteEventTypes(ctx);
+	await eventTypeController.deleteEvents(ctx);
 });
 
 /**
@@ -79,7 +78,7 @@ eventTypeRouter.del('/', async (ctx) => {
  * method type: 	DELETE
  */
 eventTypeRouter.del('/:id', async (ctx) => {
-	await eventTypeController.deleteEventTypeById(ctx);
+	await eventTypeController.deleteEventById(ctx);
 });
 
 

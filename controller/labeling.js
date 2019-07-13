@@ -1,6 +1,5 @@
 // get model
-const Model = require('../models/labelingCategory').model;
-
+const Model = require('../models/labeling').model;
 
 /**
  * get all labelings
@@ -8,12 +7,16 @@ const Model = require('../models/labelingCategory').model;
 async function getLabelings(ctx) {
 	try {
 		const result = await Model.find({});
-		ctx.body = {data: result};
-		ctx.status = 200;
+		if(!result.length) {
+			throw new Error();
+		} else {
+			ctx.body = {data: result};
+			ctx.status = 200;
+		}
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `no labelings found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -24,12 +27,16 @@ async function getLabelings(ctx) {
 async function getLabelingById(ctx) {
 	try {
 		const result = await Model.findById(ctx.params.id);
-		ctx.body = {data: result};
-		ctx.status = 200;
-		return ctx;
+		if(!result) {
+			throw new Error();
+		} else {
+			ctx.body = {data: result};
+			ctx.status = 200;
+			return ctx.body;
+		}
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `labeling with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -71,8 +78,8 @@ async function updateLabelingById(ctx) {
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `labeling with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -103,8 +110,8 @@ async function deleteLabelingById(ctx) {
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `labeling with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
