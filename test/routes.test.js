@@ -13,6 +13,7 @@ const labelTest = require('./routes/labels.routes.test');
 const labelingTest = require('./routes/labelings.routes.test');
 const deviceTest = require('./routes/devices.routes.test');
 const datasetTest = require('./routes/datasets.routes.test');
+const videoTest = require('./routes/subroutes/video.routes.test');
 
 describe('Testing API Routes', () => {
 	before('check connection', (done) => {
@@ -31,6 +32,7 @@ describe('Testing API Routes', () => {
 	describe('labeling routes', labelingTest.bind(this));
 	describe('devices routes', deviceTest.bind(this));
 	describe('datasets routes', datasetTest.bind(this));
+	describe('video routes', videoTest.bind(this));
 });
 
 module.exports = mongoose;

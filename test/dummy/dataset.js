@@ -285,10 +285,7 @@ const dummy = {
 		timeSeries: [],
 		fusedSeries: [],
 		labelings: [],
-		video: {
-			url: 'www.aura.de/video2',
-			offset: 1,
-		},
+		video: {},
 		device: '',
 		results: []
 	},

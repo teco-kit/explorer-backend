@@ -8,12 +8,21 @@ const VideoModel = require('../models/video').model;
 async function getVideoById(ctx) {
 	try {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
-		ctx.body = {data: dataset.video};
-		ctx.status = 200;
-		return ctx;
+		if(!dataset) {
+			throw new Error();
+		} else {
+			if(!dataset.video) {
+				ctx.body = {error: `no video found`};
+				ctx.status = 404;
+				return ctx;
+			}
+			ctx.body = {data: dataset.video};
+			ctx.status = 200;
+			return ctx;
+		}
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `no dataset found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -41,20 +50,22 @@ async function createVideo(ctx) {
  */
 async function updateVideo(ctx) {
 	try {
-		const dataset = await DatasetModel.findByIdAndUpdate(
-			ctx.params.datasetId,
-			{$set: {video: ctx.request.body}},
-			{new: true}
-		);
-		ctx.body = {
-			data: dataset.video,
-			message: `updated video for dataset with id: ${ctx.params.datasetId}`
-		};
-		ctx.status = 200;
-		return ctx;
+		const dataset = await DatasetModel.findById(ctx.params.datasetId);
+		if(!dataset) {
+			throw new Error();
+		} else {
+			await DatasetModel.findByIdAndUpdate(
+				ctx.params.datasetId,
+				{$set: {video: ctx.request.body}},
+				{new: true}
+			);
+			ctx.body = {message: `updated video for dataset with id: ${ctx.params.datasetId}`};
+			ctx.status = 200;
+			return ctx;
+		}
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `dataset with id '${ctx.params.datasetId}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -65,13 +76,14 @@ async function updateVideo(ctx) {
 async function deleteVideo(ctx) {
 	try {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
-		dataset.video.remove().save();
-		ctx.body = {message: `deleted video type with id: ${ctx.params.datasetId}`};
+		await dataset.video.remove();
+		await dataset.save();
+		ctx.body = {message: `deleted video for dataset with id: ${ctx.params.datasetId}`};
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `dataset with id '${ctx.params.datasetId}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
