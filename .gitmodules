@@ -2,7 +2,3 @@
 	path = models
 	url = https://aura-development.visualstudio.com/Aura/Team/_git/models
 	master = master
-[submodule "protocol"]
-	path = protocol
-	url = https://aura-development.visualstudio.com/Aura/Team/_git/protocol
-	master = master

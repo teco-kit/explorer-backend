@@ -7,12 +7,16 @@ const Model = require('../models/firmware').model;
 async function getFirmware(ctx) {
 	try {
 		const result = await Model.find({});
-		ctx.body = {data: result};
-		ctx.status = 200;
+		if(!result.length) {
+			throw new Error();
+		} else {
+			ctx.body = {data: result};
+			ctx.status = 200;
+		}
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `no firmware found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -23,12 +27,16 @@ async function getFirmware(ctx) {
 async function getFirmwareById(ctx) {
 	try {
 		const result = await Model.findById(ctx.params.id);
-		ctx.body = {data: result};
-		ctx.status = 200;
-		return ctx;
+		if(!result) {
+			throw new Error();
+		} else {
+			ctx.body = {data: result};
+			ctx.status = 200;
+			return ctx.body;
+		}
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `firmware with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -70,8 +78,8 @@ async function updateFirmwareById(ctx) {
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `firmware with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -102,8 +110,8 @@ async function deleteFirmwareById(ctx) {
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `firmware with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }

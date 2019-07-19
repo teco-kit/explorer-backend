@@ -2,41 +2,49 @@
 const Model = require('../models/eventType').model;
 
 /**
- * get all eventTypes
+ * get all events
  */
-async function getEventTypes(ctx) {
+async function getEvents(ctx) {
 	try {
 		const result = await Model.find({});
-		ctx.body = {data: result};
-		ctx.status = 200;
+		if(!result.length) {
+			throw new Error();
+		} else {
+			ctx.body = {data: result};
+			ctx.status = 200;
+		}
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `no events found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
 
 /**
- * get eventTypes by id
+ * get event by id
  */
-async function getEventTypeById(ctx) {
+async function getEventById(ctx) {
 	try {
 		const result = await Model.findById(ctx.params.id);
-		ctx.body = {data: result};
-		ctx.status = 200;
-		return ctx;
+		if(!result) {
+			throw new Error();
+		} else {
+			ctx.body = {data: result};
+			ctx.status = 200;
+			return ctx.body;
+		}
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `event with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
 
 /**
- * create a new eventType
+ * create a new event
  */
-async function createEventType(ctx) {
+async function createEvent(ctx) {
 	try {
 		const document = new Model(ctx.request.body);
 		const result = await document.save();
@@ -51,9 +59,9 @@ async function createEventType(ctx) {
 }
 
 /**
- * update a bulk of eventType
+ * update a bulk of events
  */
-async function updateEventTypes(ctx) {
+async function updateEvents(ctx) {
 	// TODO: wie spezifizieren?
 	ctx.body = {error: 'Not Implemented'};
 	ctx.status = 501;
@@ -61,28 +69,28 @@ async function updateEventTypes(ctx) {
 }
 
 /**
- * update a specific eventType
+ * update a event specified by id
  */
-async function updateEventTypeById(ctx) {
+async function updateEventById(ctx) {
 	try {
 		await Model.findByIdAndUpdate(ctx.params.id, {$set: ctx.request.body});
-		ctx.body = {message: `updated event type with id: ${ctx.params.id}`};
+		ctx.body = {message: `updated event with id: ${ctx.params.id}`};
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `event with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
 
 /**
- * delete all eventTypes
+ * delete all events
  */
-async function deleteEventTypes(ctx) {
+async function deleteEvents(ctx) {
 	try {
 		await Model.deleteMany({});
-		ctx.body = {message: 'deleted all event types'};
+		ctx.body = {message: 'deleted all events'};
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
@@ -93,27 +101,27 @@ async function deleteEventTypes(ctx) {
 }
 
 /**
- * delete a specific eventType
+ * delete a event specified by id
  */
-async function deleteEventTypeById(ctx) {
+async function deleteEventById(ctx) {
 	try {
 		await Model.findByIdAndDelete(ctx.params.id);
-		ctx.body = {message: `deleted event type with id: ${ctx.params.id}`};
+		ctx.body = {message: `deleted event with id: ${ctx.params.id}`};
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `event with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
 
 module.exports = {
-	getEventTypes,
-	getEventTypeById,
-	createEventType,
-	updateEventTypes,
-	updateEventTypeById,
-	deleteEventTypes,
-	deleteEventTypeById
+	getEvents,
+	getEventById,
+	createEvent,
+	updateEvents,
+	updateEventById,
+	deleteEvents,
+	deleteEventById
 };

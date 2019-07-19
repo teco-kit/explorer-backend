@@ -7,12 +7,16 @@ const Model = require('../models/device').model;
 async function getDevices(ctx) {
 	try {
 		const result = await Model.find({});
-		ctx.body = {data: result};
-		ctx.status = 200;
+		if(!result.length) {
+			throw new Error();
+		} else {
+			ctx.body = {data: result};
+			ctx.status = 200;
+		}
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `no devices found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -23,12 +27,16 @@ async function getDevices(ctx) {
 async function getDeviceById(ctx) {
 	try {
 		const result = await Model.findById(ctx.params.id);
-		ctx.body = {data: result};
-		ctx.status = 200;
-		return ctx;
+		if(!result) {
+			throw new Error();
+		} else {
+			ctx.body = {data: result};
+			ctx.status = 200;
+			return ctx.body;
+		}
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `device with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -57,20 +65,21 @@ async function updateDevices(ctx) {
 	// TODO: wie spezifizieren?
 	ctx.body = {error: 'Not Implemented'};
 	ctx.status = 501;
-	return ctx;}
+	return ctx;
+}
 
 /**
- * update a specific device
+ * update a device specified by id
  */
 async function updateDeviceById(ctx) {
 	try {
 		await Model.findByIdAndUpdate(ctx.params.id, {$set: ctx.request.body});
-		ctx.body = {message: `updated device type with id: ${ctx.params.id}`};
+		ctx.body = {message: `updated device with id: ${ctx.params.id}`};
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `device with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
@@ -92,17 +101,17 @@ async function deleteDevices(ctx) {
 }
 
 /**
- * delete a specific device
+ * delete a device specified by id
  */
 async function deleteDeviceById(ctx) {
 	try {
 		await Model.findByIdAndDelete(ctx.params.id);
-		ctx.body = {message: `deleted device type with id: ${ctx.params.id}`};
+		ctx.body = {message: `deleted device with id: ${ctx.params.id}`};
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
-		ctx.body = {error: error.message};
-		ctx.status = 500;
+		ctx.body = {error: `device with id '${ctx.params.id}' not found`};
+		ctx.status = 404;
 		return ctx;
 	}
 }
