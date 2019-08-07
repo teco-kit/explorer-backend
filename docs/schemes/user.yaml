@@ -3,18 +3,9 @@ definitions:
   User:
     type: "object"
     properties:
-      name:
-        type: "string"
-        example: "ExampleUsername"
-      email:
-        type: "string"
-        example: "example@test.com"
-      password:
-        type: "string"
-        example: "supersecurepasswordexample"
       sex:
         type: "string"
-        enum: ["m", "f"]
+        enum: ["m", "f", "d"]
         example: "f"
       birthday:
         type: "string"
