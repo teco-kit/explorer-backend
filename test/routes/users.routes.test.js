@@ -52,14 +52,15 @@ function testUser() {
 
 	// test route create user by id
 	describe('POST /users/:id', () => {
-		// it is not allowed to create a user for a given id
-		it('creating a user with id is not allowed', (done) => {
+		// creates user with given id
+		it('creates a new user with the given id', (done) => {
 			request.post('/users/5d1241f1adc318414d007d73')
 				.send(require('./../dummy/user').dummy1)
-				.expect(500)
+				.expect(201)
 				.end((err, res) => {
-					expect(res.body.error)
-						.to.be.equal('Method Not Allowed');
+					expect(res.body.data)
+						.to.have.all.keys('_id',
+							'sex', 'birthday', 'weight', 'platform', 'clientVersion', '__v');
 					done(err);
 				});
 		});
@@ -91,7 +92,7 @@ function testUser() {
 						.expect(200)
 						.end((err, res) => {
 							expect(res.body.data)
-								.to.have.all.keys('_id', 'name', 'email', 'password',
+								.to.have.all.keys('_id',
 									'sex', 'birthday', 'weight', 'platform', 'clientVersion', '__v');
 							done(err);
 						});
