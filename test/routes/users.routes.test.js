@@ -58,7 +58,7 @@ function testUser() {
 				.send(require('./../dummy/user').dummy1)
 				.expect(201)
 				.end((err, res) => {
-					expect(res.body.data)
+					expect(res.body)
 						.to.have.all.keys('_id',
 							'sex', 'birthday', 'weight', 'platform', 'clientVersion', '__v');
 					done(err);
@@ -73,7 +73,7 @@ function testUser() {
 			request.get('/users')
 				.expect(200)
 				.end((err, res) => {
-					expect(res.body.data)
+					expect(res.body)
 						.to.be.an('array');
 					done(err);
 				});
@@ -91,7 +91,7 @@ function testUser() {
 					request.get(`/users/${docs._id}`)
 						.expect(200)
 						.end((err, res) => {
-							expect(res.body.data)
+							expect(res.body)
 								.to.have.all.keys('_id',
 									'sex', 'birthday', 'weight', 'platform', 'clientVersion', '__v');
 							done(err);

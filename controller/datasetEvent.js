@@ -8,7 +8,7 @@ const EventModel = require('../models/event').model;
 async function getEvents(ctx) {
 	try {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
-		ctx.body = {data: dataset.events};
+		ctx.body = dataset.events;
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
@@ -25,7 +25,7 @@ async function getEventById(ctx) {
 	try {
 		const {events} = await DatasetModel.findById(ctx.params.datasetId);
 		const event = await events.id(ctx.params.id);
-		ctx.body = {data: event};
+		ctx.body = event;
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
@@ -46,7 +46,7 @@ async function createEvent(ctx) {
 		// -> cannot access parent here since no parent defined yet
 		await dataset.events.push(event);
 		await dataset.save();
-		ctx.body = {data: event};
+		ctx.body = event;
 		ctx.status = 201;
 		return ctx;
 	} catch (error) {

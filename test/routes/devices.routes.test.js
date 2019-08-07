@@ -53,11 +53,11 @@ function testDevice() {
 				.expect(200)
 				.end((err, res) => {
 					const dummy = require('./../dummy/device').dummy1;
-					dummy.firmware = res.body.data[0]._id;
+					dummy.firmware = res.body[0]._id;
 					request.get('/users')
 						.expect(200)
 						.end((err2, res2) => {
-							dummy.user = res.body.data[0]._id;
+							dummy.user = res.body[0]._id;
 							request.post('/devices')
 								.send(dummy)
 								.expect(201)
@@ -101,7 +101,7 @@ function testDevice() {
 			request.get('/devices')
 				.expect(200)
 				.end((err, res) => {
-					expect(res.body.data)
+					expect(res.body)
 						.to.be.an('array');
 					done(err);
 				});
@@ -119,7 +119,7 @@ function testDevice() {
 					request.get(`/devices/${docs._id}`)
 						.expect(200)
 						.end((err, res) => {
-							expect(res.body.data)
+							expect(res.body)
 								.to.have.all.keys('_id', 'sensors', 'deviceId',
 									'firmware', 'generation', 'user', '__v');
 							done(err);
@@ -166,11 +166,11 @@ function testDevice() {
 						.expect(200)
 						.end((err, res) => {
 							const dummy = require('./../dummy/device').dummy2;
-							dummy.firmware = res.body.data[0]._id;
+							dummy.firmware = res.body[0]._id;
 							request.get('/users')
 								.expect(200)
 								.end((err2, res2) => {
-									dummy.user = res.body.data[0]._id;
+									dummy.user = res.body[0]._id;
 									request.put(`/devices/${docs._id}`)
 										.send(dummy)
 										.expect(200)

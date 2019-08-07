@@ -72,7 +72,7 @@ function testEvent() {
 			request.get('/events')
 				.expect(200)
 				.end((err, res) => {
-					expect(res.body.data)
+					expect(res.body)
 						.to.be.an('array');
 					done(err);
 				});
@@ -90,7 +90,7 @@ function testEvent() {
 					request.get(`/events/${docs._id}`)
 						.expect(200)
 						.end((err, res) => {
-							expect(res.body.data)
+							expect(res.body)
 								.to.have.all.keys('_id', 'name', '__v');
 							done(err);
 						});

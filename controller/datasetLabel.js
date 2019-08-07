@@ -9,7 +9,7 @@ async function getLabels(ctx) {
 	try {
 		const {labelings} = await DatasetModel.findById(ctx.params.datasetId);
 		const {labels} = await labelings.id(ctx.params.labelingId);
-		ctx.body = {data: labels};
+		ctx.body = labels;
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
@@ -26,7 +26,7 @@ async function getLabelById(ctx) {
 	try {
 		const {labelings} = await DatasetModel.findById(ctx.params.datasetId);
 		const label = await labelings.id(ctx.params.labelingId).id(ctx.params.id);
-		ctx.body = {data: label};
+		ctx.body = label;
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
@@ -48,7 +48,7 @@ async function createLabel(ctx) {
 		const label = new LabelModel(ctx.request.body);
 		await labeling.labels.push(label);
 		await dataset.save();
-		ctx.body = {data: label};
+		ctx.body = label;
 		ctx.status = 201;
 		return ctx;
 	} catch (error) {
@@ -65,7 +65,8 @@ async function updateLabels(ctx) {
 	// TODO: wie spezifizieren?
 	ctx.body = {error: 'Not Implemented'};
 	ctx.status = 501;
-	return ctx;}
+	return ctx;
+}
 
 /**
  * update a specific label

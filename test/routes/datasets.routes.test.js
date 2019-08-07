@@ -38,7 +38,7 @@ function testDataset() {
 				.send(require('./../dummy/user').dummy1)
 				.expect(201)
 				.end((err, res) => {
-					dataset.userId = res.body.data._id;
+					dataset.userId = res.body._id;
 					done(err);
 				});
 		});
@@ -51,7 +51,7 @@ function testDataset() {
 				.expect(201)
 				.end((err, res) => {
 					for(let i = 0; i < dataset.events.length; i++) {
-						dataset.events[i].type = res.body.data._id;
+						dataset.events[i].type = res.body._id;
 					}
 					done(err);
 				});
@@ -64,7 +64,7 @@ function testDataset() {
 				.expect(201)
 				.end((err, res) => {
 					for(let i = 0; i < dataset.labelings[0].labels.length; i++) {
-						dataset.labelings[0].labels[i].type = res.body.data._id;
+						dataset.labelings[0].labels[i].type = res.body._id;
 					}
 					done(err);
 				});
@@ -75,7 +75,7 @@ function testDataset() {
 				.expect(201)
 				.end((err, res) => {
 					for(let i = 0; i < dataset.labelings[1].labels.length; i++) {
-						dataset.labelings[1].labels[i].type = res.body.data._id;
+						dataset.labelings[1].labels[i].type = res.body._id;
 					}
 					done(err);
 				});
@@ -86,13 +86,13 @@ function testDataset() {
 				.expect(200)
 				.end((err, res) => {
 					const dummy = require('./../dummy/labeling').dummy1;
-					dummy.labels = res.data;
+					dummy.labels = res.body;
 					request.post('/labelings')
 						.send(dummy)
 						.expect(201)
 						.end((err2, res2) => {
 							for(let i = 0; i < dataset.labelings.length; i++) {
-								dataset.labelings[i].labelingId = res2.body.data._id;
+								dataset.labelings[i].labelingId = res2.body._id;
 							}
 							done(err2);
 						});
@@ -105,7 +105,7 @@ function testDataset() {
 				.expect(201)
 				.end((err, res) => {
 					for(let i = 0; i < dataset.labelings.length; i++) {
-						dataset.labelings[i].creator = res.body.data._id;
+						dataset.labelings[i].creator = res.body._id;
 					}
 					done(err);
 				});
@@ -126,16 +126,16 @@ function testDataset() {
 				.expect(200)
 				.end((err, res) => {
 					const dummy = require('./../dummy/device').dummy1;
-					dummy.firmware = res.body.data[0]._id;
+					dummy.firmware = res.body[0]._id;
 					request.get('/users')
 						.expect(200)
 						.end((err2, res2) => {
-							dummy.user = res2.body.data[0]._id;
+							dummy.user = res2.body[0]._id;
 							request.post('/devices')
 								.send(dummy)
 								.expect(201)
 								.end((err3, res3) => {
-									dataset.device = res3.body.data._id;
+									dataset.device = res3.body._id;
 									done(err3);
 								});
 						});
@@ -184,7 +184,7 @@ function testDataset() {
 			request.get('/datasets')
 				.expect(200)
 				.end((err, res) => {
-					expect(res.body.data)
+					expect(res.body)
 						.to.be.an('array');
 					done(err);
 				});
@@ -202,7 +202,7 @@ function testDataset() {
 					request.get(`/datasets/${docs._id}`)
 						.expect(200)
 						.end((err, res) => {
-							expect(res.body.data)
+							expect(res.body)
 								.to.have.all.keys('_id', 'device', 'end', 'events', 'fusedSeries',
 									'isPublished', 'labelings', 'results', 'start', 'timeSeries', 'userId', 'video', '__v');
 							done(err);

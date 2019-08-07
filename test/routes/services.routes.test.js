@@ -72,7 +72,7 @@ function testService() {
 			request.get('/services')
 				.expect(200)
 				.end((err, res) => {
-					expect(res.body.data)
+					expect(res.body)
 						.to.be.an('array');
 					done(err);
 				});
@@ -90,7 +90,7 @@ function testService() {
 					request.get(`/services/${docs._id}`)
 						.expect(200)
 						.end((err, res) => {
-							expect(res.body.data)
+							expect(res.body)
 								.to.have.all.keys('_id', 'name', 'version', '__v');
 							done(err);
 						});

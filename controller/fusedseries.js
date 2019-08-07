@@ -8,7 +8,7 @@ const FSModel = require('../models/fusedSeries').model;
 async function getFusedseries(ctx) {
 	try {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
-		ctx.body = {data: dataset.fusedSeries};
+		ctx.body = dataset.fusedSeries;
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
@@ -25,7 +25,7 @@ async function getFusedserieById(ctx) {
 	try {
 		const {fusedSeries} = await DatasetModel.findById(ctx.params.datasetId);
 		const fs = await fusedSeries.id(ctx.params.id);
-		ctx.body = {data: fs};
+		ctx.body = fs;
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
@@ -44,7 +44,7 @@ async function createFusedserie(ctx) {
 		const fs = new FSModel(ctx.request.body);
 		await dataset.fusedSeries.push(fs);
 		await dataset.save();
-		ctx.body = {data: fs};
+		ctx.body = fs;
 		ctx.status = 201;
 		return ctx;
 	} catch (error) {
@@ -61,7 +61,8 @@ async function updateFusedseries(ctx) {
 	// TODO: wie spezifizieren?
 	ctx.body = {error: 'Not Implemented'};
 	ctx.status = 501;
-	return ctx;}
+	return ctx;
+}
 
 /**
  * update a specific fusedserie

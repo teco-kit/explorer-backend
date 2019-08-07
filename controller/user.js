@@ -10,7 +10,7 @@ async function getUsers(ctx) {
 		if(!result.length) {
 			throw new Error();
 		} else {
-			ctx.body = {data: result};
+			ctx.body = result;
 			ctx.status = 200;
 		}
 		return ctx;
@@ -30,7 +30,7 @@ async function getUserById(ctx) {
 		if(!result) {
 			throw new Error();
 		} else {
-			ctx.body = {data: result};
+			ctx.body = result;
 			ctx.status = 200;
 			return ctx.body;
 		}
@@ -48,7 +48,7 @@ async function createUser(ctx) {
 	try {
 		const document = new Model(ctx.request.body);
 		const result = await document.save();
-		ctx.body = {data: result};
+		ctx.body = result;
 		ctx.status = 201;
 		return ctx;
 	} catch (error) {
@@ -63,12 +63,10 @@ async function createUser(ctx) {
  */
 async function createUserByID(ctx) {
 	try {
-		console.log(ctx.request.body);
 		ctx.request.body._id = ctx.params.id;
-		console.log(ctx.request.body);
 		const document = new Model(ctx.request.body);
 		const result = await document.save();
-		ctx.body = {data: result};
+		ctx.body = result;
 		ctx.status = 201;
 		return ctx;
 	} catch (error) {

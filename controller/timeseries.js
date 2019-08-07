@@ -8,7 +8,7 @@ const TimeseriesModel = require('../models/timeSeries').model;
 async function getTimeseries(ctx) {
 	try {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
-		ctx.body = {data: dataset.timeSeries};
+		ctx.body = dataset.timeSeries;
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
@@ -25,7 +25,7 @@ async function getTimeserieById(ctx) {
 	try {
 		const {timeSeries} = await DatasetModel.findById(ctx.params.datasetId);
 		const timeserie = await timeSeries.id(ctx.params.id);
-		ctx.body = {data: timeserie};
+		ctx.body = timeserie;
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
@@ -44,7 +44,7 @@ async function createTimeserie(ctx) {
 		const timeserie = new TimeseriesModel(ctx.request.body);
 		await dataset.timeSeries.push(timeserie);
 		await dataset.save();
-		ctx.body = {data: timeserie};
+		ctx.body = timeserie;
 		ctx.status = 201;
 		return ctx;
 	} catch (error) {

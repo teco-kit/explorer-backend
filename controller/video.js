@@ -16,7 +16,7 @@ async function getVideoById(ctx) {
 				ctx.status = 404;
 				return ctx;
 			}
-			ctx.body = {data: dataset.video};
+			ctx.body = dataset.video;
 			ctx.status = 200;
 			return ctx;
 		}
@@ -35,7 +35,7 @@ async function createVideo(ctx) {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
 		dataset.video = new VideoModel(ctx.request.body);
 		dataset.save();
-		ctx.body = {data: dataset.video};
+		ctx.body = dataset.video;
 		ctx.status = 201;
 		return ctx;
 	} catch (error) {

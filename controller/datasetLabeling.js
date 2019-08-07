@@ -7,7 +7,7 @@ const LabelingModel = require('../models/labelingObject').model;
 async function getLabelings(ctx) {
 	try {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
-		ctx.body = {data: dataset.labelings};
+		ctx.body = dataset.labelings;
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
@@ -24,7 +24,7 @@ async function getLabelingById(ctx) {
 	try {
 		const {labelings} = await DatasetModel.findById(ctx.params.datasetId);
 		const labeling = await labelings.id(ctx.params.id);
-		ctx.body = {data: labeling};
+		ctx.body = labeling;
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
@@ -43,7 +43,7 @@ async function createLabeling(ctx) {
 		const labeling = new LabelingModel(ctx.request.body);
 		await dataset.labelings.push(labeling);
 		await dataset.save();
-		ctx.body = {data: labeling};
+		ctx.body = labeling;
 		ctx.status = 201;
 		return ctx;
 	} catch (error) {

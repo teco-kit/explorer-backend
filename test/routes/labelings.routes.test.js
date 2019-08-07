@@ -97,7 +97,7 @@ function testLabeling() {
 			request.get('/labelings')
 				.expect(200)
 				.end((err, res) => {
-					expect(res.body.data)
+					expect(res.body)
 						.to.be.an('array');
 					done(err);
 				});
@@ -115,7 +115,7 @@ function testLabeling() {
 					request.get(`/labelings/${docs._id}`)
 						.expect(200)
 						.end((err, res) => {
-							expect(res.body.data)
+							expect(res.body)
 								.to.have.all.keys('_id', 'labels', '__v');
 							done(err);
 						});

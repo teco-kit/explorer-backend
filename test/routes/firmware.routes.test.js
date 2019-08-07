@@ -71,7 +71,7 @@ function testUser() {
 			request.get('/firmware')
 				.expect(200)
 				.end((err, res) => {
-					expect(res.body.data)
+					expect(res.body)
 						.to.be.an('array');
 					done(err);
 				});
@@ -89,7 +89,7 @@ function testUser() {
 					request.get(`/firmware/${docs._id}`)
 						.expect(200)
 						.end((err, res) => {
-							expect(res.body.data)
+							expect(res.body)
 								.to.have.all.keys('_id', 'version', 'binary', 'hash',
 									'supportedDevices', 'uploadedAt', '__v');
 							done(err);

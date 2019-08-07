@@ -8,7 +8,7 @@ const ResultModel = require('../models/result').model;
 async function getResults(ctx) {
 	try {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
-		ctx.body = {data: dataset.results};
+		ctx.body = dataset.results;
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
@@ -25,7 +25,7 @@ async function getResultById(ctx) {
 	try {
 		const {results} = await DatasetModel.findById(ctx.params.datasetId);
 		const result = await results.id(ctx.params.id);
-		ctx.body = {data: result};
+		ctx.body = result;
 		ctx.status = 200;
 		return ctx;
 	} catch (error) {
@@ -44,7 +44,7 @@ async function createResult(ctx) {
 		const result = new ResultModel(ctx.request.body);
 		await dataset.results.push(result);
 		await dataset.save();
-		ctx.body = {data: result};
+		ctx.body = result;
 		ctx.status = 201;
 		return ctx;
 	} catch (error) {
