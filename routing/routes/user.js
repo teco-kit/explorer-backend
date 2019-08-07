@@ -40,9 +40,8 @@ userRouter.post('/', KoaBody(), async (ctx) => {
  * route:					/users/:id
  * method type: 	POST
  */
-userRouter.post('/:id', async (ctx) => {
-	ctx.status = 500;
-	ctx.body = {error: 'Method Not Allowed'};
+userRouter.post('/:id', KoaBody(), async (ctx) => {
+	await userController.createUserByID(ctx);
 });
 
 /**

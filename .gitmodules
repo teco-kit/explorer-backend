@@ -1,4 +1,4 @@
 [submodule "models"]
 	path = models
-	url = https://aura-development.visualstudio.com/Aura/Team/_git/obsolete.models
+	url = aura-development@vs-ssh.visualstudio.com:v3/aura-development/Aura/obsolete.models
 	master = master

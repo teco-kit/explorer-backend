@@ -59,6 +59,26 @@ async function createUser(ctx) {
 }
 
 /**
+ * create a new user and specify the id
+ */
+async function createUserByID(ctx) {
+	try {
+		console.log(ctx.request.body);
+		ctx.request.body._id = ctx.params.id;
+		console.log(ctx.request.body);
+		const document = new Model(ctx.request.body);
+		const result = await document.save();
+		ctx.body = {data: result};
+		ctx.status = 201;
+		return ctx;
+	} catch (error) {
+		ctx.body = {error: error.message};
+		ctx.status = 500;
+		return ctx;
+	}
+}
+
+/**
  * update a bulk of users
  */
 async function updateUsers(ctx) {
@@ -120,6 +140,7 @@ module.exports = {
 	getUsers,
 	getUserById,
 	createUser,
+	createUserByID,
 	updateUsers,
 	updateUserById,
 	deleteUsers,
