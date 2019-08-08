@@ -1,4 +1,5 @@
 const Router = require('koa-router');
+const KoaSend = require('koa-send');
 
 // authentication
 const router = {
@@ -16,7 +17,8 @@ const subroutes = {
 	labeling: require('./routes/labeling'),
 	device: require('./routes/device'),
 	service: require('./routes/service'),
-	sensor: require('./routes/sensor')
+	sensor: require('./routes/sensor'),
+	serviceInfo: require('./routes/serviceInfo'),
 };
 
 // authenticated route for explorer
@@ -38,5 +40,17 @@ router.unprotected.use('/labelings', subroutes.labeling.routes(), subroutes.labe
 router.unprotected.use('/devices', subroutes.device.routes(), subroutes.device.allowedMethods());
 router.unprotected.use('/services', subroutes.service.routes(), subroutes.service.allowedMethods());
 router.unprotected.use('/sensors', subroutes.sensor.routes(), subroutes.sensor.allowedMethods());
+
+// public routes for service info
+// serve badge
+router.unprotected.get('/badge.svg', async (ctx) => {
+	await KoaSend(ctx, './public/badge.svg');
+});
+
+// health check
+router.unprotected.get('/healthcheck', async (ctx) => {
+	ctx.status = 200;
+	ctx.body = {message: 'nice proprietary software!'};
+});
 
 module.exports = router;
