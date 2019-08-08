@@ -18,7 +18,6 @@ const subroutes = {
 	device: require('./routes/device'),
 	service: require('./routes/service'),
 	sensor: require('./routes/sensor'),
-	serviceInfo: require('./routes/serviceInfo'),
 };
 
 // authenticated route for explorer
