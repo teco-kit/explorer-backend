@@ -6,7 +6,6 @@ const TimeSeries = require('./timeSeries').schema;
 const FusedSeries = require('./fusedSeries').schema;
 const LabelingObject = require('./datasetLabeling').schema;
 const Video = require('./video').schema;
-const Device = require('./device').schema;
 const Result = require('./result').schema;
 
 const Dataset = new mongoose.Schema({
@@ -53,7 +52,7 @@ const Dataset = new mongoose.Schema({
 	device: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Device',
-		required: [true, 'device needs to be defined']
+		default: null
 	},
 	results: {
 		type: [Result],

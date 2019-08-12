@@ -68,10 +68,9 @@ async function updateLabelings(ctx) {
  */
 async function updateLabelingById(ctx) {
 	try {
-		console.log('update creator');
-		const updated = await DatasetModel.findByIdAndUpdate(
-			{_id: ctx.params.datasetId, 'labelings._id': ctx.params.id},
-			ctx.request.body,
+		await DatasetModel.updateOne(
+			{ _id: ctx.params.datasetId, 'labelings._id': ctx.params.id },
+			{'labelings.$': ctx.request.body},
 			{new: true},
 			(error) => {
 				if(error) {
@@ -81,7 +80,6 @@ async function updateLabelingById(ctx) {
 				}
 			}
 		);
-		console.log(updated);
 		ctx.body = {message: `updated labeling with id: ${ctx.params.id}`};
 		ctx.status = 200;
 		return ctx;

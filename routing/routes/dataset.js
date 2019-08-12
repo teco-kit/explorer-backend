@@ -16,7 +16,6 @@ const subroutes = {
 	result: require('./subroutes/result'),
 	event: require('./subroutes/event'),
 	labeling: require('./subroutes/labeling'),
-	label: require('./subroutes/label'),
 	video: require('./subroutes/video'),
 	timeseries: require('./subroutes/timeseries'),
 	fusedseries: require('./subroutes/fusedseries')
@@ -30,9 +29,6 @@ datasetRouter.use('/:datasetId/events', subroutes.event.routes(), subroutes.even
 
 // routes for /datasets/{id}/labelings
 datasetRouter.use('/:datasetId/labelings', subroutes.labeling.routes(), subroutes.labeling.allowedMethods());
-
-// routes for /datasets/{id}/labelings/{id}/labels
-datasetRouter.use('/:datasetId/labelings/:labelingId/labels', subroutes.label.routes(), subroutes.label.allowedMethods());
 
 // routes for /datasets/{id}/video
 datasetRouter.use('/:datasetId/video', subroutes.video.routes(), subroutes.video.allowedMethods());
