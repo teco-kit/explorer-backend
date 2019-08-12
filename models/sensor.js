@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const SensorType = new mongoose.Schema({
+const Sensor = new mongoose.Schema({
 	name: {
 		type: String,
 		required: [true, 'sensorType name cannot be empty']
@@ -8,6 +8,6 @@ const SensorType = new mongoose.Schema({
 });
 
 module.exports = {
-	model: mongoose.model('SensorType', SensorType),
-	schema: SensorType
+	model: mongoose.model('Sensor', Sensor),
+	schema: Sensor
 };

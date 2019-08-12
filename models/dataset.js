@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 // import subdocumets
-const Event = require('./event').schema;
+const Event = require('./datasetEvent').schema;
 const TimeSeries = require('./timeSeries').schema;
 const FusedSeries = require('./fusedSeries').schema;
-const LabelingObject = require('./labelingObject').schema;
+const LabelingObject = require('./datasetLabeling').schema;
 const Video = require('./video').schema;
 const Device = require('./device').schema;
 const Result = require('./result').schema;

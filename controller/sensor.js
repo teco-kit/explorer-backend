@@ -1,5 +1,5 @@
 // get model
-const Model = require('../models/sensorType').model;
+const Model = require('../models/sensor').model;
 
 /**
  * get all sensors

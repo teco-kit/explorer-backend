@@ -1,5 +1,5 @@
 // get model
-const Model = require('../models/eventType').model;
+const Model = require('../models/event').model;
 
 /**
  * get all events

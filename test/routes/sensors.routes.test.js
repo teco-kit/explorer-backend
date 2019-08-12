@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const chai = require('chai');
 
 const server = require('../../server.js');
-const Sensor = require('./../../models/sensorType').model;
+const Sensor = require('../../models/sensor').model;
 
 const {expect} = chai;
 const request = supertest(server);

@@ -1,6 +1,6 @@
 // get model
 const DatasetModel = require('../models/dataset').model;
-const EventModel = require('../models/event').model;
+const EventModel = require('../models/datasetEvent').model;
 
 /**
  * get all events

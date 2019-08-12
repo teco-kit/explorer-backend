@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const chai = require('chai');
 
 const server = require('../../server.js');
-const Event = require('./../../models/eventType').model;
+const Event = require('../../models/event').model;
 
 const {expect} = chai;
 const request = supertest(server);

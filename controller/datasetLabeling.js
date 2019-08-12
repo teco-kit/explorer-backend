@@ -1,6 +1,6 @@
 // get model
 const DatasetModel = require('../models/dataset').model;
-const LabelingModel = require('../models/labelingObject').model;
+const LabelingModel = require('../models/datasetLabeling').model;
 /**
  * get all labelings
  */
