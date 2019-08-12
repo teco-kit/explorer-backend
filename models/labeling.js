@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
-const labelType = require('./labelType').schema;
-
 const Labeling = new mongoose.Schema({
-	labels: [labelType]
+	labels: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'LabelType'
+	}]
 });
 
 module.exports = {

@@ -60,18 +60,28 @@ async function updateLabelings(ctx) {
 	// TODO: wie spezifizieren?
 	ctx.body = {error: 'Not Implemented'};
 	ctx.status = 501;
-	return ctx;}
+	return ctx;
+}
 
 /**
  * update a specific labeling
  */
 async function updateLabelingById(ctx) {
 	try {
-		const dataset = await DatasetModel.findById(ctx.params.datasetId);
-		const {labelings} = dataset;
-		const updateLabeling = await labelings.id(ctx.params.id);
-		await updateLabeling.set(ctx.request.body);
-		await dataset.save();
+		console.log('update creator');
+		const updated = await DatasetModel.findByIdAndUpdate(
+			{_id: ctx.params.datasetId, 'labelings._id': ctx.params.id},
+			ctx.request.body,
+			{new: true},
+			(error) => {
+				if(error) {
+					ctx.body = {error: error.message};
+					ctx.status = 500;
+					return ctx;
+				}
+			}
+		);
+		console.log(updated);
 		ctx.body = {message: `updated labeling with id: ${ctx.params.id}`};
 		ctx.status = 200;
 		return ctx;
