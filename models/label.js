@@ -4,6 +4,9 @@ const Label = new mongoose.Schema({
 	name: {
 		type: String,
 		required: [true, 'please enter a label name']
+	},
+	color: {
+		type: String
 	}
 });
 
