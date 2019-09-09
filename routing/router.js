@@ -1,11 +1,6 @@
 const Router = require('koa-router');
-const KoaSend = require('koa-send');
 
-// authentication
-const router = {
-	unprotected: new Router(),
-	protected: new Router(),
-};
+const router =  new Router();
 
 // subroutes to be mounted
 const subroutes = {
@@ -20,36 +15,15 @@ const subroutes = {
 	sensor: require('./routes/sensor'),
 };
 
-// authenticated route for explorer
-router.protected.get('/auth', (ctx) => {
-	ctx.status = 200;
-	ctx.body = {
-		authed: true
-	};
-});
-
 // dataset routing
-// TODO: change again to protected
-router.unprotected.use('/datasets', subroutes.datasets.routes(), subroutes.datasets.allowedMethods());
-router.unprotected.use('/users', subroutes.users.routes(), subroutes.users.allowedMethods());
-router.unprotected.use('/firmware', subroutes.firmware.routes(), subroutes.firmware.allowedMethods());
-router.unprotected.use('/events', subroutes.events.routes(), subroutes.events.allowedMethods());
-router.unprotected.use('/labels', subroutes.label.routes(), subroutes.label.allowedMethods());
-router.unprotected.use('/labelings', subroutes.labeling.routes(), subroutes.labeling.allowedMethods());
-router.unprotected.use('/devices', subroutes.device.routes(), subroutes.device.allowedMethods());
-router.unprotected.use('/services', subroutes.service.routes(), subroutes.service.allowedMethods());
-router.unprotected.use('/sensors', subroutes.sensor.routes(), subroutes.sensor.allowedMethods());
-
-// public routes for service info
-// serve badge
-router.unprotected.get('/badge.svg', async (ctx) => {
-	await KoaSend(ctx, './public/badge.svg');
-});
-
-// health check
-router.unprotected.get('/healthcheck', async (ctx) => {
-	ctx.status = 200;
-	ctx.body = {message: 'nice proprietary software!'};
-});
+router.use('/datasets', subroutes.datasets.routes(), subroutes.datasets.allowedMethods());
+router.use('/users', subroutes.users.routes(), subroutes.users.allowedMethods());
+router.use('/firmware', subroutes.firmware.routes(), subroutes.firmware.allowedMethods());
+router.use('/events', subroutes.events.routes(), subroutes.events.allowedMethods());
+router.use('/labels', subroutes.label.routes(), subroutes.label.allowedMethods());
+router.use('/labelings', subroutes.labeling.routes(), subroutes.labeling.allowedMethods());
+router.use('/devices', subroutes.device.routes(), subroutes.device.allowedMethods());
+router.use('/services', subroutes.service.routes(), subroutes.service.allowedMethods());
+router.use('/sensors', subroutes.sensor.routes(), subroutes.sensor.allowedMethods());
 
 module.exports = router;

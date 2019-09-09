@@ -1,6 +1,6 @@
 const Koa          = require('koa');
 const Logger       = require('koa-logger');
-const Config       = require('config');
+const config       = require('config');
 const mongoose     = require('mongoose');
 const cors				 = require('koa-cors');
 const swaggerUi    = require('swagger-ui-koa');
@@ -9,17 +9,14 @@ const convert 		 = require('koa-convert');
 const mount 			 = require('koa-mount');
 const options 		 = require('./docs/config');
 
-// parse config
-const config = Config.get('server');
-
-// import routing
 const router = require('./routing/router.js');
+const authenticate = require('./authentication/authenticate');
 
-// instantiate koa
+// create server
 const server = new Koa();
 
 // connect to Mongo
-mongoose.connect(config.mongo.url, {useNewUrlParser: true})
+mongoose.connect(config.db, {useNewUrlParser: true})
 	.then(
 		() => { },
 		(e) => {
@@ -45,6 +42,9 @@ if(config.logger) {
 server.use(swaggerUi.serve);
 server.use(convert(mount('/docs', swaggerUi.setup(swaggerSpec, false, {docExpansion: 'none'}, '#header { display: none }')))); // mount endpoint for access
 
+// check authentication
+server.use(authenticate);
+
 // catch errors
 server.use(async (ctx, next) => {
 	try {
@@ -56,8 +56,8 @@ server.use(async (ctx, next) => {
 	}
 });
 
-// unprotected routing
-server.use(router.unprotected.routes());
+// routing
+server.use(router.routes());
 
 // catch all middleware, only land here
 // if no other routing rules match

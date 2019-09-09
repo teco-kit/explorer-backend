@@ -1,24 +1,5 @@
 {
-	"server":{
-		"auth":{
-			"jwksUri": "https://aura-sleep-analysis.eu.auth0.com/.well-known/jwks.json",
-			"jwksReqPerMin": 10,
-			"issuer": "https://aura-sleep-analysis.eu.auth0.com/",
-			"audience": "4uE1DwK5BtnyInN14LO0Lb42NXtr5MHC"
-		},
-		"mongo":{
-			"url": "mongodb://localhost:27017/aura_dev"
-		},
-		"ampq":{
-			"url": "amqp://localhost"
-		},
-		"firmware": {
-			"authKey": "1337"
-		},
-		"emulator": {
-			"authKey": "1337",
-			"deviceid": "0xC0FFEE0000000000"
-		},
-		"logger": true
-	}
+	"db": "mongodb://localhost:27017/aura_dev",
+	"auth": "http://localhost:3002/authenticate",
+	"logger": true
 }
