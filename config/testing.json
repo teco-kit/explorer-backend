@@ -1,5 +1,5 @@
 {
-	"db": "mongodb://mongo:27017/test",
+	"db": "mongodb://localhost:27017/test",
 	"auth": "localhost:3002/authenticate",
 	"logger": false
 }

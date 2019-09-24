@@ -26,55 +26,19 @@ const dummy = {
 			{
 				name: 'VOC',
 				unit: 'kOhm',
-				data: [
-					{
-						timestamp: 1561118400,
-						value: 10
-					},
-					{
-						timestamp: 1561128400,
-						value: 11
-					},
-					{
-						timestamp: 1561138400,
-						value: 12
-					},
-					{
-						timestamp: 1561148400,
-						value: 13
-					},
-					{
-						timestamp: 1561158400,
-						value: 14
-					}
-				],
+				start: '1561118400',
+				end: '1561158800',
+				samplingRate: '1',
+				data: [10, 11, 12, 13, 14, 15, 16],
 				offset: 0
 			},
 			{
 				name: 'SPO2',
 				unit: '%',
-				data: [
-					{
-						timestamp: 1561118400,
-						value: 10
-					},
-					{
-						timestamp: 1561118500,
-						value: 20
-					},
-					{
-						timestamp: 1561118600,
-						value: 30
-					},
-					{
-						timestamp: 1561118700,
-						value: 40
-					},
-					{
-						timestamp: 1561118800,
-						value: 50
-					}
-				],
+				start: '1561118400',
+				end: '1561158800',
+				samplingRate: '1',
+				data: [10, 20, 30, 40, 50, 60, 70],
 				offset: 10
 			}
 		],
@@ -161,58 +125,21 @@ const dummy = {
 		],
 		timeSeries: [
 			{
-				offset: 0,
-				data: [
-					{
-						timestamp: 1561766400,
-						value: 161
-					},
-					{
-						timestamp: 1561766500,
-						value: 202
-					},
-					{
-						timestamp: 1561766600,
-						value: 171
-					},
-					{
-						timestamp: 1561766700,
-						value: 196
-					},
-					{
-						timestamp: 1561766800,
-						value: 214
-					}
-				],
 				name: 'VOC',
-				unit: 'kOhm'
-			},
-			{
-				offset: 10,
-				data: [
-					{
-						timestamp: 1561766400,
-						value: 40
-					},
-					{
-						timestamp: 1561776400,
-						value: 45
-					},
-					{
-						timestamp: 1561786400,
-						value: 49
-					},
-					{
-						timestamp: 1561796400,
-						value: 43
-					},
-					{
-						timestamp: 1561806400,
-						value: 41
-					}
-				],
+				unit: 'kOhm',
+				start: '1561118400',
+				end: '1561766400',
+				samplingRate: '1',
+				data: [161, 202, 171, 196, 214, 234, 224],
+				offset: 10
+			}, {
 				name: 'SPO2',
-				unit: '%'
+				unit: '%',
+				start: '1561766400',
+				end: '1561806400',
+				samplingRate: '1',
+				data: [41, 42, 43, 44, 45, 46, 47],
+				offset: 10
 			}
 		],
 		fusedSeries: [

@@ -1,7 +1,4 @@
 const mongoose = require('mongoose');
-const Config       = require('config');
-
-const config = Config.get('server');
 
 // get tests for routes
 const userTest = require('./routes/users.routes.test');

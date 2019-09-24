@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-const TimeSeriesData = require('./timeSeriesData').schema;
-
 const TimeSeries = new mongoose.Schema({
 	name: {
 		type: String,
@@ -12,13 +10,15 @@ const TimeSeries = new mongoose.Schema({
 		required: [true, 'timeSeries unit cannot be empty']
 	},
 	data: {
-		type: [TimeSeriesData],
-		default: []
+		type: [Number]
 	},
 	offset: {
 		type: Number,
 		default: 0
-	}
+	},
+	start: Number,
+	end: Number,
+	samplingRate: Number
 });
 
 module.exports = {

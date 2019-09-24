@@ -42,9 +42,13 @@ async function createTimeserie(ctx) {
 	try {
 		const dataset = await DatasetModel.findById(ctx.params.datasetId);
 		const timeserie = new TimeseriesModel(ctx.request.body);
+		console.log(dataset);
+		console.log(timeserie);
 		await dataset.timeSeries.push(timeserie);
-		await dataset.save();
-		ctx.body = timeserie;
+		console.log("ok");
+		//await dataset.save();
+    console.log(dataset);
+    ctx.body = timeserie;
 		ctx.status = 201;
 		return ctx;
 	} catch (error) {

@@ -48,11 +48,14 @@ async function createDataset(ctx) {
 	try {
 		const document = new Model(ctx.request.body);
 		const result = await document.save();
-		ctx.body = result;
+		console.log(document);
+		console.log(result);
+		ctx.body = document;
 		ctx.status = 201;
 		return ctx;
 	} catch (error) {
 		ctx.body = {error: error.message};
+    console.log(error);
 		ctx.status = 500;
 		return ctx;
 	}
