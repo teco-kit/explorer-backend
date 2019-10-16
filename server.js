@@ -43,7 +43,9 @@ server.use(swaggerUi.serve);
 server.use(convert(mount('/docs', swaggerUi.setup(swaggerSpec, false, {docExpansion: 'none'}, '#header { display: none }')))); // mount endpoint for access
 
 // check authentication
-server.use(authenticate);
+server.use(async (ctx, next) => {
+	await authenticate(ctx, next);
+});
 
 // catch errors
 server.use(async (ctx, next) => {
@@ -52,7 +54,6 @@ server.use(async (ctx, next) => {
 	} catch (error) {
 		ctx.body = {error: error.message};
 		ctx.status = error.status || 500;
-		return ctx;
 	}
 });
 
@@ -62,10 +63,9 @@ server.use(router.routes());
 // catch all middleware, only land here
 // if no other routing rules match
 // make sure it is added after everything else
-server.use(async (ctx) => {
+server.use((ctx) => {
 	ctx.body = {error: 'Not Found'};
 	ctx.status = 404;
-	return ctx;
 });
 
 module.exports = server.listen(3000);

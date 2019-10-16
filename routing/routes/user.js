@@ -12,54 +12,17 @@ const userRouter = new Router();
  * route:					/users
  * method type: 	GET
  */
-userRouter.get('/', async (ctx) => {
-	await userController.getUsers(ctx);
+userRouter.get('/', KoaBody(), async (ctx, next) => {
+	await userController.getUsers(ctx, next);
 });
 
 /**
- * get user by id
- * route:					/users/:id
- * method type: 	GET
- */
-userRouter.get('/:id', async (ctx) => {
-	await userController.getUserById(ctx);
-});
-
-/**
- * create a new user
- * route:					/users
- * method type: 	POST
- */
-userRouter.post('/', KoaBody(), async (ctx) => {
-	await userController.createUser(ctx);
-});
-
-/**
- * for handling requests that try to POST a new user
- * with id -> Method not allowed (405)
- * route:					/users/:id
- * method type: 	POST
- */
-userRouter.post('/:id', KoaBody(), async (ctx) => {
-	await userController.createUserByID(ctx);
-});
-
-/**
- * update a bulk of users
+ * update user
  * route:					/users
  * method type: 	PUT
  */
 userRouter.put('/', KoaBody(), async (ctx) => {
-	await userController.updateUsers(ctx);
-});
-
-/**
- * update a user specified by id
- * route:					/users/:id
- * method type: 	PUT
- */
-userRouter.put('/:id', KoaBody(), async (ctx) => {
-	await userController.updateUserById(ctx);
+	await userController.updateUser(ctx);
 });
 
 /**

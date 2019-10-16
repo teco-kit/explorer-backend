@@ -1,5 +1,7 @@
 {
 	"db": "mongodb://localhost:27017/aura_dev",
 	"auth": "http://localhost:3002/authenticate",
+	"register": "http://localhost:3002/register",
+	"login": "http://localhost:3002/login",
 	"logger": true
 }

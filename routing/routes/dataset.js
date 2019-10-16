@@ -49,8 +49,8 @@ datasetRouter.use('/:datasetId/fusedseries', subroutes.fusedseries.routes(), sub
  * route:					/datasets
  * method type: 	GET
  */
-datasetRouter.get('/', async (ctx) => {
-	await datasetController.getDatasets(ctx);
+datasetRouter.get('/', async (ctx, next) => {
+	await datasetController.getDatasets(ctx, next);
 });
 
 /**
