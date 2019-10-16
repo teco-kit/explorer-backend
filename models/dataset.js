@@ -57,6 +57,11 @@ const Dataset = new mongoose.Schema({
 	results: {
 		type: [Result],
 		default: []
+	},
+	instructions: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Instruction',
+			default: null
 	}
 });
 
