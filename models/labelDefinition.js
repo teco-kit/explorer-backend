@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Labeling = new mongoose.Schema({
+const LabelDefinition = new mongoose.Schema({
 	labels: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'LabelType'
@@ -11,6 +11,6 @@ const Labeling = new mongoose.Schema({
 });
 
 module.exports = {
-	model: mongoose.model('Labeling', Labeling),
-	schema: Labeling
+	model: mongoose.model('LabelDefinition', LabelDefinition),
+	schema: LabelDefinition
 };

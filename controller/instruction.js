@@ -6,6 +6,7 @@ const Model = require('../models/instruction').model;
 async function getInstructions(ctx) {
 	ctx.body = await Model.find({});
 	ctx.status = 200;
+	return ctx;
 }
 
 /**
@@ -14,7 +15,7 @@ async function getInstructions(ctx) {
 async function getInstructionById(ctx) {
 	ctx.body = await Model.findById(ctx.params.id);
 	ctx.status = 200;
-	return ctx.body;
+	return ctx;
 }
 
 /**

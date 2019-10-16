@@ -1,4 +1,3 @@
-// get model
 const Model = require('../models/user').model;
 
 /**

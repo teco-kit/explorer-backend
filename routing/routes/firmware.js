@@ -1,19 +1,17 @@
 const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
-// import controller
-const firmwareController = require('../../controller/firmware');
+const controller = require('../../controller/firmware');
 
-// mounted at /firmware
-const firmwareRouter = new Router();
+const router = new Router();
 
 /**
  * get all firmware
  * route:					/firmware
  * method type: 	GET
  */
-firmwareRouter.get('/', async (ctx) => {
-	await firmwareController.getFirmware(ctx);
+router.get('/', async (ctx) => {
+	await controller.getFirmware(ctx);
 });
 
 /**
@@ -21,8 +19,8 @@ firmwareRouter.get('/', async (ctx) => {
  * route:					/firmware/:id
  * method type: 	GET
  */
-firmwareRouter.get('/:id', async (ctx) => {
-	await firmwareController.getFirmwareById(ctx);
+router.get('/:id', async (ctx) => {
+	await controller.getFirmwareById(ctx);
 });
 
 /**
@@ -30,8 +28,8 @@ firmwareRouter.get('/:id', async (ctx) => {
  * route:					/firmware
  * method type: 	POST
  */
-firmwareRouter.post('/', KoaBody(), async (ctx) => {
-	await firmwareController.createFirmware(ctx);
+router.post('/', KoaBody(), async (ctx) => {
+	await controller.createFirmware(ctx);
 });
 
 /**
@@ -40,7 +38,7 @@ firmwareRouter.post('/', KoaBody(), async (ctx) => {
  * route:					/firmware/:id
  * method type: 	POST
  */
-firmwareRouter.post('/:id', async (ctx) => {
+router.post('/:id', async (ctx) => {
 	ctx.status = 500;
 	ctx.body = {error: 'Method Not Allowed'};
 });
@@ -50,8 +48,8 @@ firmwareRouter.post('/:id', async (ctx) => {
  * route:					/firmware
  * method type: 	PUT
  */
-firmwareRouter.put('/', KoaBody(), async (ctx) => {
-	await firmwareController.updateFirmware(ctx);
+router.put('/', KoaBody(), async (ctx) => {
+	await controller.updateFirmware(ctx);
 });
 
 /**
@@ -59,8 +57,8 @@ firmwareRouter.put('/', KoaBody(), async (ctx) => {
  * route:					/firmware/:id
  * method type: 	PUT
  */
-firmwareRouter.put('/:id', KoaBody(), async (ctx) => {
-	await firmwareController.updateFirmwareById(ctx);
+router.put('/:id', KoaBody(), async (ctx) => {
+	await controller.updateFirmwareById(ctx);
 });
 
 /**
@@ -68,8 +66,8 @@ firmwareRouter.put('/:id', KoaBody(), async (ctx) => {
  * route:					/firmware
  * method type: 	DELETE
  */
-firmwareRouter.del('/', async (ctx) => {
-	await firmwareController.deleteFirmware(ctx);
+router.del('/', async (ctx) => {
+	await controller.deleteFirmware(ctx);
 });
 
 /**
@@ -77,9 +75,9 @@ firmwareRouter.del('/', async (ctx) => {
  * route:					/firmware/:id
  * method type: 	DELETE
  */
-firmwareRouter.del('/:id', async (ctx) => {
-	await firmwareController.deleteFirmwareById(ctx);
+router.del('/:id', async (ctx) => {
+	await controller.deleteFirmwareById(ctx);
 });
 
 
-module.exports = firmwareRouter;
+module.exports = router;

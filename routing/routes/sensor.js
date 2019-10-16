@@ -1,19 +1,17 @@
 const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
-// import controller
-const sensorController = require('../../controller/sensor');
+const controller = require('../../controller/sensor');
 
-// mounted at /sensors
-const sensorRouter = new Router();
+const router = new Router();
 
 /**
  * get all sensors for current user
  * route:					/sensors
  * method type: 	GET
  */
-sensorRouter.get('/', async (ctx) => {
-	await sensorController.getSensors(ctx);
+router.get('/', async (ctx) => {
+	await controller.getSensors(ctx);
 });
 
 /**
@@ -21,8 +19,8 @@ sensorRouter.get('/', async (ctx) => {
  * route:					/sensors/:id
  * method type: 	GET
  */
-sensorRouter.get('/:id', async (ctx) => {
-	await sensorController.getSensorById(ctx);
+router.get('/:id', async (ctx) => {
+	await controller.getSensorById(ctx);
 });
 
 /**
@@ -30,28 +28,8 @@ sensorRouter.get('/:id', async (ctx) => {
  * route:					/sensors
  * method type: 	POST
  */
-sensorRouter.post('/', KoaBody(), async (ctx) => {
-	await sensorController.createSensor(ctx);
-});
-
-/**
- * for handling requests that try to POST a new sensor
- * with id -> Method not allowed (405)
- * route:					/sensors/:id
- * method type: 	POST
- */
-sensorRouter.post('/:id', async (ctx) => {
-	ctx.status = 500;
-	ctx.body = {error: 'Method Not Allowed'};
-});
-
-/**
- *  update a bulk of sensors
- * route:					/sensors
- * method type: 	PUT
- */
-sensorRouter.put('/', KoaBody(), async (ctx) => {
-	await sensorController.updateSensors(ctx);
+router.post('/', KoaBody(), async (ctx) => {
+	await controller.createSensor(ctx);
 });
 
 /**
@@ -59,8 +37,8 @@ sensorRouter.put('/', KoaBody(), async (ctx) => {
  * route:					/sensors/:id
  * method type: 	PUT
  */
-sensorRouter.put('/:id', KoaBody(), async (ctx) => {
-	await sensorController.updateSensorById(ctx);
+router.put('/:id', KoaBody(), async (ctx) => {
+	await controller.updateSensorById(ctx);
 });
 
 /**
@@ -68,8 +46,8 @@ sensorRouter.put('/:id', KoaBody(), async (ctx) => {
  * route:					/sensors
  * method type: 	DELETE
  */
-sensorRouter.del('/', async (ctx) => {
-	await sensorController.deleteSensors(ctx);
+router.del('/', async (ctx) => {
+	await controller.deleteSensors(ctx);
 });
 
 /**
@@ -77,9 +55,9 @@ sensorRouter.del('/', async (ctx) => {
  * route:					/Sensors/:id
  * method type: 	DELETE
  */
-sensorRouter.del('/:id', async (ctx) => {
-	await sensorController.deleteSensorById(ctx);
+router.del('/:id', async (ctx) => {
+	await controller.deleteSensorById(ctx);
 });
 
 
-module.exports = sensorRouter;
+module.exports = router;

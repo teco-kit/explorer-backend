@@ -1,19 +1,17 @@
 const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
-// import controller
-const userController = require('../../controller/user');
+const controller = require('../../controller/user');
 
-// mounted at /users
-const userRouter = new Router();
+const router = new Router();
 
 /**
  * get all users
  * route:					/users
  * method type: 	GET
  */
-userRouter.get('/', KoaBody(), async (ctx, next) => {
-	await userController.getUsers(ctx, next);
+router.get('/', KoaBody(), async (ctx, next) => {
+	await controller.getUsers(ctx, next);
 });
 
 /**
@@ -21,8 +19,8 @@ userRouter.get('/', KoaBody(), async (ctx, next) => {
  * route:					/users
  * method type: 	PUT
  */
-userRouter.put('/', KoaBody(), async (ctx) => {
-	await userController.updateUser(ctx);
+router.put('/', KoaBody(), async (ctx) => {
+	await controller.updateUser(ctx);
 });
 
 /**
@@ -30,8 +28,8 @@ userRouter.put('/', KoaBody(), async (ctx) => {
  * route:					/users
  * method type: 	DELETE
  */
-userRouter.del('/', async (ctx) => {
-	await userController.deleteUsers(ctx);
+router.del('/', async (ctx) => {
+	await controller.deleteUsers(ctx);
 });
 
 /**
@@ -39,9 +37,9 @@ userRouter.del('/', async (ctx) => {
  * route:					/users/:id
  * method type: 	DELETE
  */
-userRouter.del('/:id', async (ctx) => {
-	await userController.deleteUserById(ctx);
+router.del('/:id', async (ctx) => {
+	await controller.deleteUserById(ctx);
 });
 
 
-module.exports = userRouter;
+module.exports = router;

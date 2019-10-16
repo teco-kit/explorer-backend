@@ -1,19 +1,17 @@
 const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
-// import controller
-const labelController = require('../../controller/label');
+const controller = require('../../controller/label');
 
-// mounted at /labels
-const labelRouter = new Router();
+const router = new Router();
 
 /**
  * get all labels for current user
  * route:					/labels
  * method type: 	GET
  */
-labelRouter.get('/', async (ctx) => {
-	await labelController.getLabels(ctx);
+router.get('/', async (ctx) => {
+	await controller.getLabels(ctx);
 });
 
 /**
@@ -21,8 +19,8 @@ labelRouter.get('/', async (ctx) => {
  * route:					/labels/:id
  * method type: 	GET
  */
-labelRouter.get('/:id', async (ctx) => {
-	await labelController.getLabelById(ctx);
+router.get('/:id', async (ctx) => {
+	await controller.getLabelById(ctx);
 });
 
 /**
@@ -30,8 +28,8 @@ labelRouter.get('/:id', async (ctx) => {
  * route:					/labels
  * method type: 	POST
  */
-labelRouter.post('/', KoaBody(), async (ctx) => {
-	await labelController.createLabel(ctx);
+router.post('/', KoaBody(), async (ctx) => {
+	await controller.createLabel(ctx);
 });
 
 /**
@@ -40,7 +38,7 @@ labelRouter.post('/', KoaBody(), async (ctx) => {
  * route:					/labels/:id
  * method type: 	POST
  */
-labelRouter.post('/:id', async (ctx) => {
+router.post('/:id', async (ctx) => {
 	ctx.status = 500;
 	ctx.body = {error: 'Method Not Allowed'};
 });
@@ -50,8 +48,8 @@ labelRouter.post('/:id', async (ctx) => {
  * route:					/labels
  * method type: 	PUT
  */
-labelRouter.put('/', KoaBody(), async (ctx) => {
-	await labelController.updateLabels(ctx);
+router.put('/', KoaBody(), async (ctx) => {
+	await controller.updateLabels(ctx);
 });
 
 /**
@@ -59,8 +57,8 @@ labelRouter.put('/', KoaBody(), async (ctx) => {
  * route:					/labels/:id
  * method type: 	PUT
  */
-labelRouter.put('/:id', KoaBody(), async (ctx) => {
-	await labelController.updateLabelById(ctx);
+router.put('/:id', KoaBody(), async (ctx) => {
+	await controller.updateLabelById(ctx);
 });
 
 /**
@@ -68,8 +66,8 @@ labelRouter.put('/:id', KoaBody(), async (ctx) => {
  * route:					/labels
  * method type: 	DELETE
  */
-labelRouter.del('/', async (ctx) => {
-	await labelController.deleteLabels(ctx);
+router.del('/', async (ctx) => {
+	await controller.deleteLabels(ctx);
 });
 
 /**
@@ -77,9 +75,9 @@ labelRouter.del('/', async (ctx) => {
  * route:					/labels/:id
  * method type: 	DELETE
  */
-labelRouter.del('/:id', async (ctx) => {
-	await labelController.deleteLabelById(ctx);
+router.del('/:id', async (ctx) => {
+	await controller.deleteLabelById(ctx);
 });
 
 
-module.exports = labelRouter;
+module.exports = router;

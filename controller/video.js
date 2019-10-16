@@ -1,4 +1,3 @@
-// get model
 const DatasetModel = require('../models/dataset').model;
 const VideoModel = require('../models/video').model;
 

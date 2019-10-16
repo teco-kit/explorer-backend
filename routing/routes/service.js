@@ -1,19 +1,17 @@
 const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
-// import controller
-const serviceController = require('../../controller/service');
+const controller = require('../../controller/service');
 
-// mounted at /services
-const serviceRouter = new Router();
+const router = new Router();
 
 /**
  * get all services for current user
  * route:					/services
  * method type: 	GET
  */
-serviceRouter.get('/', async (ctx) => {
-	await serviceController.getServices(ctx);
+router.get('/', async (ctx) => {
+	await controller.getServices(ctx);
 });
 
 /**
@@ -21,8 +19,8 @@ serviceRouter.get('/', async (ctx) => {
  * route:					/services/:id
  * method type: 	GET
  */
-serviceRouter.get('/:id', async (ctx) => {
-	await serviceController.getServiceById(ctx);
+router.get('/:id', async (ctx) => {
+	await controller.getServiceById(ctx);
 });
 
 /**
@@ -30,8 +28,8 @@ serviceRouter.get('/:id', async (ctx) => {
  * route:					/services
  * method type: 	POST
  */
-serviceRouter.post('/', KoaBody(), async (ctx) => {
-	await serviceController.createService(ctx);
+router.post('/', KoaBody(), async (ctx) => {
+	await controller.createService(ctx);
 });
 
 /**
@@ -40,7 +38,7 @@ serviceRouter.post('/', KoaBody(), async (ctx) => {
  * route:					/services/:id
  * method type: 	POST
  */
-serviceRouter.post('/:id', async (ctx) => {
+router.post('/:id', async (ctx) => {
 	ctx.status = 500;
 	ctx.body = {error: 'Method Not Allowed'};
 });
@@ -50,8 +48,8 @@ serviceRouter.post('/:id', async (ctx) => {
  * route:					/services
  * method type: 	PUT
  */
-serviceRouter.put('/', KoaBody(), async (ctx) => {
-	await serviceController.updateServices(ctx);
+router.put('/', KoaBody(), async (ctx) => {
+	await controller.updateServices(ctx);
 });
 
 /**
@@ -59,8 +57,8 @@ serviceRouter.put('/', KoaBody(), async (ctx) => {
  * route:					/services/:id
  * method type: 	PUT
  */
-serviceRouter.put('/:id', KoaBody(), async (ctx) => {
-	await serviceController.updateServiceById(ctx);
+router.put('/:id', KoaBody(), async (ctx) => {
+	await controller.updateServiceById(ctx);
 });
 
 /**
@@ -68,8 +66,8 @@ serviceRouter.put('/:id', KoaBody(), async (ctx) => {
  * route:					/services
  * method type: 	DELETE
  */
-serviceRouter.del('/', async (ctx) => {
-	await serviceController.deleteServices(ctx);
+router.del('/', async (ctx) => {
+	await controller.deleteServices(ctx);
 });
 
 /**
@@ -77,9 +75,9 @@ serviceRouter.del('/', async (ctx) => {
  * route:					/services/:id
  * method type: 	DELETE
  */
-serviceRouter.del('/:id', async (ctx) => {
-	await serviceController.deleteServiceById(ctx);
+router.del('/:id', async (ctx) => {
+	await controller.deleteServiceById(ctx);
 });
 
 
-module.exports = serviceRouter;
+module.exports = router;

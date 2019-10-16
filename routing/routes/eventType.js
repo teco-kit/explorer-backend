@@ -1,19 +1,17 @@
 const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
-// import controller
-const eventTypeController = require('../../controller/eventType');
+const controller = require('../../controller/eventType');
 
-// mounted at /users
-const eventTypeRouter = new Router();
+const router = new Router();
 
 /**
  * get all event
  * route:					/events/
  * method type: 	GET
  */
-eventTypeRouter.get('/', async (ctx) => {
-	await eventTypeController.getEvents(ctx);
+router.get('/', async (ctx) => {
+	await controller.getEventTypes(ctx);
 });
 
 /**
@@ -21,8 +19,8 @@ eventTypeRouter.get('/', async (ctx) => {
  * route:					/events//:id
  * method type: 	GET
  */
-eventTypeRouter.get('/:id', async (ctx) => {
-	await eventTypeController.getEventById(ctx);
+router.get('/:id', async (ctx) => {
+	await controller.getEventTypeById(ctx);
 });
 
 /**
@@ -30,28 +28,8 @@ eventTypeRouter.get('/:id', async (ctx) => {
  * route:					/events/
  * method type: 	POST
  */
-eventTypeRouter.post('/', KoaBody(), async (ctx) => {
-	await eventTypeController.createEvent(ctx);
-});
-
-/** run
- * for handling requests that try to POST a new event type
- * with id -> Method not allowed (405)
- * route:					/events//:id
- * method type: 	POST
- */
-eventTypeRouter.post('/:id', async (ctx) => {
-	ctx.status = 500;
-	ctx.body = {error: 'Method Not Allowed'};
-});
-
-/**
- * update a bulk of event
- * route:					/events//
- * method type: 	PUT
- */
-eventTypeRouter.put('/', KoaBody(), async (ctx) => {
-	await eventTypeController.updateEvents(ctx);
+router.post('/', KoaBody(), async (ctx) => {
+	await controller.createEventType(ctx);
 });
 
 /**
@@ -59,8 +37,8 @@ eventTypeRouter.put('/', KoaBody(), async (ctx) => {
  * route:					/events//:id
  * method type: 	PUT
  */
-eventTypeRouter.put('/:id', KoaBody(), async (ctx) => {
-	await eventTypeController.updateEventById(ctx);
+router.put('/:id', KoaBody(), async (ctx) => {
+	await controller.updateEventTypeById(ctx);
 });
 
 /**
@@ -68,8 +46,8 @@ eventTypeRouter.put('/:id', KoaBody(), async (ctx) => {
  * route:					/events//
  * method type: 	DELETE
  */
-eventTypeRouter.del('/', async (ctx) => {
-	await eventTypeController.deleteEvents(ctx);
+router.del('/', async (ctx) => {
+	await controller.deleteEventTypes(ctx);
 });
 
 /**
@@ -77,9 +55,9 @@ eventTypeRouter.del('/', async (ctx) => {
  * route:					/users/:id
  * method type: 	DELETE
  */
-eventTypeRouter.del('/:id', async (ctx) => {
-	await eventTypeController.deleteEventById(ctx);
+router.del('/:id', async (ctx) => {
+	await controller.deleteEventTypeById(ctx);
 });
 
 
-module.exports = eventTypeRouter;
+module.exports = router;

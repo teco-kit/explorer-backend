@@ -1,17 +1,10 @@
 const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
-// import controller
-const datasetController = require('../../controller/dataset');
+const controller = require('../../router/dataset');
 
-// mounted at /datasets
-const datasetRouter = new Router();
+const router = new Router();
 
-/*
-* SUBROUTES
-* */
-
-// subroutes to be mounted
 const subroutes = {
 	result: require('./subroutes/result'),
 	event: require('./subroutes/event'),
@@ -21,36 +14,20 @@ const subroutes = {
 	fusedseries: require('./subroutes/fusedseries')
 };
 
-// routes for /datasets/{id}/results
-datasetRouter.use('/:datasetId/results', subroutes.result.routes(), subroutes.result.allowedMethods());
-
-// routes for /datasets/{id}/events
-datasetRouter.use('/:datasetId/events', subroutes.event.routes(), subroutes.event.allowedMethods());
-
-// routes for /datasets/{id}/labelings
-datasetRouter.use('/:datasetId/labelings', subroutes.labeling.routes(), subroutes.labeling.allowedMethods());
-
-// routes for /datasets/{id}/video
-datasetRouter.use('/:datasetId/video', subroutes.video.routes(), subroutes.video.allowedMethods());
-
-// routes for /datasets/{id}/timeseries
-datasetRouter.use('/:datasetId/timeseries', subroutes.timeseries.routes(), subroutes.timeseries.allowedMethods());
-
-// routes for /datasets/{id}/fusedseries
-datasetRouter.use('/:datasetId/fusedseries', subroutes.fusedseries.routes(), subroutes.fusedseries.allowedMethods());
-
-
-/*
-* MAIN ROUTES
-* */
+router.use('/:datasetId/results', subroutes.result.routes(), subroutes.result.allowedMethods());
+router.use('/:datasetId/events', subroutes.event.routes(), subroutes.event.allowedMethods());
+router.use('/:datasetId/labelings', subroutes.labeling.routes(), subroutes.labeling.allowedMethods());
+router.use('/:datasetId/video', subroutes.video.routes(), subroutes.video.allowedMethods());
+router.use('/:datasetId/timeseries', subroutes.timeseries.routes(), subroutes.timeseries.allowedMethods());
+router.use('/:datasetId/fusedseries', subroutes.fusedseries.routes(), subroutes.fusedseries.allowedMethods());
 
 /**
  * get all datasets for current user
  * route:					/datasets
  * method type: 	GET
  */
-datasetRouter.get('/', async (ctx, next) => {
-	await datasetController.getDatasets(ctx, next);
+router.get('/', async (ctx, next) => {
+	await controller.getDatasets(ctx, next);
 });
 
 /**
@@ -58,8 +35,8 @@ datasetRouter.get('/', async (ctx, next) => {
  * route:					/datasets/:id
  * method type: 	GET
  */
-datasetRouter.get('/:id', async (ctx) => {
-	await datasetController.getDatasetById(ctx);
+router.get('/:id', async (ctx) => {
+	await controller.getDatasetById(ctx);
 });
 
 /**
@@ -67,28 +44,8 @@ datasetRouter.get('/:id', async (ctx) => {
  * route:					/datasets
  * method type: 	POST
  */
-datasetRouter.post('/', KoaBody(), async (ctx) => {
-	await datasetController.createDataset(ctx);
-});
-
-/**
- * for handling requests that try to POST a new dataset
- * with id -> Method not allowed (405)
- * route:					/datasets/:id
- * method type: 	POST
- */
-datasetRouter.post('/:id', async (ctx) => {
-	ctx.status = 500;
-	ctx.body = {error: 'Method Not Allowed'};
-});
-
-/**
- *  update a bulk of datasets
- * route:					/datasets
- * method type: 	PUT
- */
-datasetRouter.put('/', KoaBody(), async (ctx) => {
-	await datasetController.updateDatasets(ctx);
+router.post('/', KoaBody(), async (ctx) => {
+	await controller.createDataset(ctx);
 });
 
 /**
@@ -96,8 +53,8 @@ datasetRouter.put('/', KoaBody(), async (ctx) => {
  * route:					/datasets/:id
  * method type: 	PUT
  */
-datasetRouter.put('/:id', KoaBody(), async (ctx) => {
-	await datasetController.updateDatasetById(ctx);
+router.put('/:id', KoaBody(), async (ctx) => {
+	await controller.updateDatasetById(ctx);
 });
 
 /**
@@ -105,8 +62,8 @@ datasetRouter.put('/:id', KoaBody(), async (ctx) => {
  * route:					/datasets
  * method type: 	DELETE
  */
-datasetRouter.del('/', async (ctx) => {
-	await datasetController.deleteDatasets(ctx);
+router.del('/', async (ctx) => {
+	await controller.deleteDatasets(ctx);
 });
 
 /**
@@ -114,9 +71,9 @@ datasetRouter.del('/', async (ctx) => {
  * route:					/datasets/:id
  * method type: 	DELETE
  */
-datasetRouter.del('/:id', async (ctx) => {
-	await datasetController.deleteDatasetById(ctx);
+router.del('/:id', async (ctx) => {
+	await controller.deleteDatasetById(ctx);
 });
 
 
-module.exports = datasetRouter;
+module.exports = router;

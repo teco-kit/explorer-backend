@@ -1,5 +1,5 @@
 // get model
-const Model = require('../models/label').model;
+const Model = require('../models/labelType').model;
 
 /**
  * get all labels

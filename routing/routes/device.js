@@ -1,19 +1,17 @@
 const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
-// import controller
-const deviceController = require('../../controller/device');
+const controller = require('../../controller/device');
 
-// mounted at /devices
-const deviceRouter = new Router();
+const router = new Router();
 
 /**
  * get all devices for current user
  * route:					/devices
  * method type: 	GET
  */
-deviceRouter.get('/', async (ctx) => {
-	await deviceController.getDevices(ctx);
+router.get('/', async (ctx) => {
+	await controller.getDevices(ctx);
 });
 
 /**
@@ -21,8 +19,8 @@ deviceRouter.get('/', async (ctx) => {
  * route:					/devices/:id
  * method type: 	GET
  */
-deviceRouter.get('/:id', async (ctx) => {
-	await deviceController.getDeviceById(ctx);
+router.get('/:id', async (ctx) => {
+	await controller.getDeviceById(ctx);
 });
 
 /**
@@ -30,28 +28,8 @@ deviceRouter.get('/:id', async (ctx) => {
  * route:					/devices
  * method type: 	POST
  */
-deviceRouter.post('/', KoaBody(), async (ctx) => {
-	await deviceController.createDevice(ctx);
-});
-
-/**
- * for handling requests that try to POST a new device
- * with id -> Method not allowed (405)
- * route:					/devices/:id
- * method type: 	POST
- */
-deviceRouter.post('/:id', async (ctx) => {
-	ctx.status = 500;
-	ctx.body = {error: 'Method Not Allowed'};
-});
-
-/**
- *  update a bulk of devices
- * route:					/devices
- * method type: 	PUT
- */
-deviceRouter.put('/', KoaBody(), async (ctx) => {
-	await deviceController.updateDevices(ctx);
+router.post('/', KoaBody(), async (ctx) => {
+	await controller.createDevice(ctx);
 });
 
 /**
@@ -59,8 +37,8 @@ deviceRouter.put('/', KoaBody(), async (ctx) => {
  * route:					/devices/:id
  * method type: 	PUT
  */
-deviceRouter.put('/:id', KoaBody(), async (ctx) => {
-	await deviceController.updateDeviceById(ctx);
+router.put('/:id', KoaBody(), async (ctx) => {
+	await controller.updateDeviceById(ctx);
 });
 
 /**
@@ -68,8 +46,8 @@ deviceRouter.put('/:id', KoaBody(), async (ctx) => {
  * route:					/devices
  * method type: 	DELETE
  */
-deviceRouter.del('/', async (ctx) => {
-	await deviceController.deleteDevices(ctx);
+router.del('/', async (ctx) => {
+	await controller.deleteDevices(ctx);
 });
 
 /**
@@ -77,9 +55,9 @@ deviceRouter.del('/', async (ctx) => {
  * route:					/devices/:id
  * method type: 	DELETE
  */
-deviceRouter.del('/:id', async (ctx) => {
-	await deviceController.deleteDeviceById(ctx);
+router.del('/:id', async (ctx) => {
+	await controller.deleteDeviceById(ctx);
 });
 
 
-module.exports = deviceRouter;
+module.exports = router;
