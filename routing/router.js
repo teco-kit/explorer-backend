@@ -8,7 +8,7 @@ const subroutes = {
 	users: require('./routes/user'),
 	firmware: require('./routes/firmware'),
 	eventTypes: require('./routes/eventType'),
-	label: require('./routes/label'),
+	label: require('./routes/labelType'),
 	labelDefinitions: require('./routes/labelDefinition'),
 	device: require('./routes/device'),
 	service: require('./routes/service'),

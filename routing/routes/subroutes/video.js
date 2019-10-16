@@ -1,19 +1,17 @@
 const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
-// import controller
-const videoController = require('../../../controller/video');
+const controller = require('../../../controller/video');
 
-// mounted at /videos
-const videoRouter = new Router();
+const router = new Router();
 
 /**
  * get video for dataset
  * route:					/datasets/{id}/video
  * method type: 	GET
  */
-videoRouter.get('/', async (ctx) => {
-	await videoController.getVideoById(ctx);
+router.get('/', async (ctx) => {
+	await controller.getVideoById(ctx);
 });
 
 /**
@@ -21,19 +19,8 @@ videoRouter.get('/', async (ctx) => {
  * route:					/datasets/{id}/video
  * method type: 	POST
  */
-videoRouter.post('/', KoaBody(), async (ctx) => {
-	await videoController.createVideo(ctx);
-});
-
-/**
- * for handling requests that try to POST a new video
- * with id -> Method not allowed (405)
- * route:					/datasets/{id}/video/:id
- * method type: 	POST
- */
-videoRouter.post('/:id', async (ctx) => {
-	ctx.status = 500;
-	ctx.body = {error: 'Method Not Allowed'};
+router.post('/', KoaBody(), async (ctx) => {
+	await controller.createVideo(ctx);
 });
 
 /**
@@ -41,8 +28,8 @@ videoRouter.post('/:id', async (ctx) => {
  * route:					/datasets/{id}/video
  * method type: 	PUT
  */
-videoRouter.put('/', KoaBody(), async (ctx) => {
-	await videoController.updateVideo(ctx);
+router.put('/', KoaBody(), async (ctx) => {
+	await controller.updateVideo(ctx);
 });
 
 /**
@@ -50,9 +37,9 @@ videoRouter.put('/', KoaBody(), async (ctx) => {
  * route:					/datasets/{id}/video
  * method type: 	DELETE
  */
-videoRouter.del('/', async (ctx) => {
-	await videoController.deleteVideo(ctx);
+router.del('/', async (ctx) => {
+	await controller.deleteVideo(ctx);
 });
 
 
-module.exports = videoRouter;
+module.exports = router;

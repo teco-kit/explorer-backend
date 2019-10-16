@@ -11,7 +11,7 @@ const router = new Router();
  * method type: 	GET
  */
 router.get('/', async (ctx) => {
-	await controller.getLabels(ctx);
+	await controller.getlabelTypes(ctx);
 });
 
 /**
@@ -20,7 +20,7 @@ router.get('/', async (ctx) => {
  * method type: 	GET
  */
 router.get('/:id', async (ctx) => {
-	await controller.getLabelById(ctx);
+	await controller.getLabelTypeById(ctx);
 });
 
 /**
@@ -29,27 +29,7 @@ router.get('/:id', async (ctx) => {
  * method type: 	POST
  */
 router.post('/', KoaBody(), async (ctx) => {
-	await controller.createLabel(ctx);
-});
-
-/**
- * for handling requests that try to POST a new label
- * with id -> Method not allowed (405)
- * route:					/labels/:id
- * method type: 	POST
- */
-router.post('/:id', async (ctx) => {
-	ctx.status = 500;
-	ctx.body = {error: 'Method Not Allowed'};
-});
-
-/**
- *  update a bulk of labels
- * route:					/labels
- * method type: 	PUT
- */
-router.put('/', KoaBody(), async (ctx) => {
-	await controller.updateLabels(ctx);
+	await controller.createLabelType(ctx);
 });
 
 /**
@@ -58,7 +38,7 @@ router.put('/', KoaBody(), async (ctx) => {
  * method type: 	PUT
  */
 router.put('/:id', KoaBody(), async (ctx) => {
-	await controller.updateLabelById(ctx);
+	await controller.updateLabelTypeById(ctx);
 });
 
 /**
@@ -67,7 +47,7 @@ router.put('/:id', KoaBody(), async (ctx) => {
  * method type: 	DELETE
  */
 router.del('/', async (ctx) => {
-	await controller.deleteLabels(ctx);
+	await controller.deletelabelTypes(ctx);
 });
 
 /**
@@ -76,7 +56,7 @@ router.del('/', async (ctx) => {
  * method type: 	DELETE
  */
 router.del('/:id', async (ctx) => {
-	await controller.deleteLabelById(ctx);
+	await controller.deleteLabelTypeById(ctx);
 });
 
 

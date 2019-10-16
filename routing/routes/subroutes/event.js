@@ -35,26 +35,6 @@ eventRouter.post('/', KoaBody(), async (ctx) => {
 });
 
 /**
- * for handling requests that try to POST a new event
- * with id -> Method not allowed (405)
- * route:					/datasets/{id}/events/:id
- * method type: 	POST
- */
-eventRouter.post('/:id', async (ctx) => {
-	ctx.status = 500;
-	ctx.body = {error: 'Method Not Allowed'};
-});
-
-/**
- *  update a bulk of events
- * route:					/datasets/{id}/events
- * method type: 	PUT
- */
-eventRouter.put('/', KoaBody(), async (ctx) => {
-	await eventController.updateEvents(ctx);
-});
-
-/**
  * update a specific events
  * route:					/datasets/{id}/events/:id
  * method type: 	PUT

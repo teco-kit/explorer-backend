@@ -1,7 +1,7 @@
 const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
-const controller = require('../../router/dataset');
+const controller = require('../../controller/dataset');
 
 const router = new Router();
 

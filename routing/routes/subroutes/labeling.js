@@ -1,19 +1,17 @@
 const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
-// import controller
-const labelingController = require('../../../controller/datasetLabeling');
+const controller = require('../../../controller/datasetLabelDefinition');
 
-// mounted at /labelings
-const labelingRouter = new Router();
+const router = new Router();
 
 /**
  * get all labelings for current user
  * route:					/datasets/{id}/labelings
  * method type: 	GET
  */
-labelingRouter.get('/', async (ctx) => {
-	await labelingController.getLabelings(ctx);
+router.get('/', async (ctx) => {
+	await controller.getLabelings(ctx);
 });
 
 /**
@@ -21,8 +19,8 @@ labelingRouter.get('/', async (ctx) => {
  * route:					/datasets/{id}/labelings/:id
  * method type: 	GET
  */
-labelingRouter.get('/:id', async (ctx) => {
-	await labelingController.getLabelingById(ctx);
+router.get('/:id', async (ctx) => {
+	await controller.getLabelingById(ctx);
 });
 
 /**
@@ -30,28 +28,8 @@ labelingRouter.get('/:id', async (ctx) => {
  * route:					/datasets/{id}/labelings
  * method type: 	POST
  */
-labelingRouter.post('/', KoaBody(), async (ctx) => {
-	await labelingController.createLabeling(ctx);
-});
-
-/**
- * for handling requests that try to POST a new labeling
- * with id -> Method not allowed (405)
- * route:					/datasets/{id}/labelings/:id
- * method type: 	POST
- */
-labelingRouter.post('/:id', async (ctx) => {
-	ctx.status = 500;
-	ctx.body = {error: 'Method Not Allowed'};
-});
-
-/**
- *  update a bulk of labelings
- * route:					/datasets/{id}/labelings
- * method type: 	PUT
- */
-labelingRouter.put('/', KoaBody(), async (ctx) => {
-	await labelingController.updateLabelings(ctx);
+router.post('/', KoaBody(), async (ctx) => {
+	await controller.createLabeling(ctx);
 });
 
 /**
@@ -59,8 +37,8 @@ labelingRouter.put('/', KoaBody(), async (ctx) => {
  * route:					/datasets/{id}/labelings/:id
  * method type: 	PUT
  */
-labelingRouter.put('/:id', KoaBody(), async (ctx) => {
-	await labelingController.updateLabelingById(ctx);
+router.put('/:id', KoaBody(), async (ctx) => {
+	await controller.updateLabelingById(ctx);
 });
 
 /**
@@ -68,8 +46,8 @@ labelingRouter.put('/:id', KoaBody(), async (ctx) => {
  * route:					/datasets/{id}/labelings
  * method type: 	DELETE
  */
-labelingRouter.del('/', async (ctx) => {
-	await labelingController.deleteLabelings(ctx);
+router.del('/', async (ctx) => {
+	await controller.deleteLabelings(ctx);
 });
 
 /**
@@ -77,9 +55,9 @@ labelingRouter.del('/', async (ctx) => {
  * route:					/datasets/{id}/Labelings/:id
  * method type: 	DELETE
  */
-labelingRouter.del('/:id', async (ctx) => {
-	await labelingController.deleteLabelingById(ctx);
+router.del('/:id', async (ctx) => {
+	await controller.deleteLabelingById(ctx);
 });
 
 
-module.exports = labelingRouter;
+module.exports = router;

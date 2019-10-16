@@ -1,19 +1,17 @@
 const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
-// import controller
-const timeseriesController = require('../../../controller/timeseries');
+const controller = require('../../../controller/timeseries');
 
-// mounted at /timeseries
-const timeseriesRouter = new Router();
+const router = new Router();
 
 /**
  * get all timeseries for current user
  * route:					/datasets/{id}/timeseries
  * method type: 	GET
  */
-timeseriesRouter.get('/', async (ctx) => {
-	await timeseriesController.getTimeseries(ctx);
+router.get('/', async (ctx) => {
+	await controller.getTimeseries(ctx);
 });
 
 /**
@@ -21,8 +19,8 @@ timeseriesRouter.get('/', async (ctx) => {
  * route:					/datasets/{id}/timeseries/:id
  * method type: 	GET
  */
-timeseriesRouter.get('/:id', async (ctx) => {
-	await timeseriesController.getTimeserieById(ctx);
+router.get('/:id', async (ctx) => {
+	await controller.getTimeserieById(ctx);
 });
 
 /**
@@ -30,28 +28,8 @@ timeseriesRouter.get('/:id', async (ctx) => {
  * route:					/datasets/{id}/timeseries
  * method type: 	POST
  */
-timeseriesRouter.post('/', KoaBody(), async (ctx) => {
-	await timeseriesController.createTimeserie(ctx);
-});
-
-/**
- * for handling requests that try to POST a new timeserie
- * with id -> Method not allowed (405)
- * route:					/datasets/{id}/timeseries/:id
- * method type: 	POST
- */
-timeseriesRouter.post('/:id', async (ctx) => {
-	ctx.status = 500;
-	ctx.body = {error: 'Method Not Allowed'};
-});
-
-/**
- *  update a bulk of timeseries
- * route:					/datasets/{id}/timeseries
- * method type: 	PUT
- */
-timeseriesRouter.put('/', KoaBody(), async (ctx) => {
-	await timeseriesController.updateTimeseries(ctx);
+router.post('/', KoaBody(), async (ctx) => {
+	await controller.createTimeserie(ctx);
 });
 
 /**
@@ -59,8 +37,8 @@ timeseriesRouter.put('/', KoaBody(), async (ctx) => {
  * route:					/datasets/{id}/timeseries/:id
  * method type: 	PUT
  */
-timeseriesRouter.put('/:id', KoaBody(), async (ctx) => {
-	await timeseriesController.updateTimeserieById(ctx);
+router.put('/:id', KoaBody(), async (ctx) => {
+	await controller.updateTimeserieById(ctx);
 });
 
 /**
@@ -68,8 +46,8 @@ timeseriesRouter.put('/:id', KoaBody(), async (ctx) => {
  * route:					/datasets/{id}/timeseries
  * method type: 	DELETE
  */
-timeseriesRouter.del('/', async (ctx) => {
-	await timeseriesController.deleteTimeseries(ctx);
+router.del('/', async (ctx) => {
+	await controller.deleteTimeseries(ctx);
 });
 
 /**
@@ -77,9 +55,9 @@ timeseriesRouter.del('/', async (ctx) => {
  * route:					/datasets/{id}/Timeseries/:id
  * method type: 	DELETE
  */
-timeseriesRouter.del('/:id', async (ctx) => {
-	await timeseriesController.deleteTimeserieById(ctx);
+router.del('/:id', async (ctx) => {
+	await controller.deleteTimeserieById(ctx);
 });
 
 
-module.exports = timeseriesRouter;
+module.exports = router;
