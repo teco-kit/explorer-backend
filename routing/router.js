@@ -13,6 +13,7 @@ const subroutes = {
 	device: require('./routes/device'),
 	service: require('./routes/service'),
 	sensor: require('./routes/sensor'),
+	instructions: require('./routes/instruction')
 };
 
 // dataset routing
@@ -25,5 +26,6 @@ router.use('/labelings', subroutes.labeling.routes(), subroutes.labeling.allowed
 router.use('/devices', subroutes.device.routes(), subroutes.device.allowedMethods());
 router.use('/services', subroutes.service.routes(), subroutes.service.allowedMethods());
 router.use('/sensors', subroutes.sensor.routes(), subroutes.sensor.allowedMethods());
+router.use('/instructions', subroutes.instructions.routes(), subroutes.instructions.allowedMethods());
 
 module.exports = router;

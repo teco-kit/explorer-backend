@@ -35,7 +35,7 @@ async function createDataset(ctx) {
 		dataset.userId = user._id;
 	}
 
-	const document = new Model(ctx.request.body);
+	const document = new Model(dataset);
 	await document.save();
 
 	ctx.body = document;
