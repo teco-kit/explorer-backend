@@ -44,7 +44,7 @@ async function updateResultById(ctx) {
 	const updateResult = await results.id(ctx.params.id);
 	await updateResult.set(ctx.request.body);
 	await dataset.save();
-	ctx.body = {message: `updated result with id: ${ctx.params.datasetId}`};
+	ctx.body = {message: `updated result with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;
 }
@@ -68,7 +68,7 @@ async function deleteResultById(ctx) {
 	const dataset = await DatasetModel.findById(ctx.params.datasetId);
 	await dataset.results.id(ctx.params.id).remove();
 	await dataset.save();
-	ctx.body = {message: `deleted event type with id: ${ctx.params.datasetId}`};
+	ctx.body = {message: `deleted result with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;
 }

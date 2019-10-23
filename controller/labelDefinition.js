@@ -45,7 +45,7 @@ async function updateLabelDefinitionById(ctx) {
  */
 async function deleteLabelDefinitions(ctx) {
 	await Model.deleteMany({});
-	ctx.body = {message: 'deleted all eventTypes'};
+	ctx.body = {message: 'deleted all labelDefinitions'};
 	ctx.status = 200;
 	return ctx;
 }

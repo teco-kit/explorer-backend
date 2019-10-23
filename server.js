@@ -16,14 +16,7 @@ const authenticate = require('./authentication/authenticate');
 const server = new Koa();
 
 // connect to Mongo
-mongoose.connect(config.db, {useNewUrlParser: true})
-	.then(
-		() => { },
-		(e) => {
-			console.error(e, 'MongoDB connection error:');
-			server.close();
-		}
-	);
+mongoose.connect(config.db, {useNewUrlParser: true});
 
 // suppress deprecation warnings
 mongoose.set('useFindAndModify', false);
@@ -35,9 +28,7 @@ const swaggerSpec = swaggerJSDoc(options);
 // setup koa middlewares
 server.use(cors());
 // only display logs in development
-if(config.logger) {
-	server.use(Logger());
-}
+if(config.logger) server.use(Logger());
 
 server.use(swaggerUi.serve);
 server.use(convert(mount('/docs', swaggerUi.setup(swaggerSpec, false, {docExpansion: 'none'}, '#header { display: none }')))); // mount endpoint for access
@@ -54,6 +45,7 @@ server.use(async (ctx, next) => {
 	} catch (error) {
 		ctx.body = {error: error.message};
 		ctx.status = error.status || 500;
+		console.error(error.message);
 	}
 });
 

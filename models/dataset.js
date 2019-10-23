@@ -20,13 +20,7 @@ const Dataset = new mongoose.Schema({
 	},
 	end: {
 		type: Number,
-		required: [true, 'please enter an end time'],
-		validate: [
-			function () {
-				return this.start < this.end;
-			},
-			'End time cannot be before start time'
-		]
+		required: [true, 'please enter an end time']
 	},
 	events: {
 		type: [Event],
@@ -59,9 +53,9 @@ const Dataset = new mongoose.Schema({
 		default: []
 	},
 	instructions: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Instruction',
-			default: null
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Instruction',
+		default: null
 	}
 });
 

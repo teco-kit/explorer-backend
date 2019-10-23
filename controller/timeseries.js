@@ -68,7 +68,7 @@ async function deleteTimeserieById(ctx) {
 	const dataset = await DatasetModel.findById(ctx.params.datasetId);
 	await dataset.timeSeries.id(ctx.params.id).remove();
 	await dataset.save();
-	ctx.body = {message: `deleted timeSeries with id: ${ctx.params.id}`};
+	ctx.body = {message: `deleted timeseries with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;
 }

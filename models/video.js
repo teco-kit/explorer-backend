@@ -2,12 +2,10 @@ const mongoose = require('mongoose');
 
 const Video = new mongoose.Schema({
 	url: {
-		type: String,
-		default: ''
+		type: String
 	},
 	offset: {
-		type: Number,
-		default: 0
+		type: Number
 	}
 });
 

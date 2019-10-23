@@ -1,7 +1,7 @@
 {
-  "name": "aura-backend",
+  "name": "backend",
   "version": "0.0.1",
-  "description": "Backend for aura (vocnea)",
+  "description": "Backend for AURA",
   "main": "server.js",
   "scripts": {
     "start": "node $NODE_DEBUG_OPTION server.js",
@@ -16,7 +16,7 @@
     "url": "ssh://aura-development@vs-ssh.visualstudio.com:22/Aura/_ssh/backend",
     "type": "git"
   },
-  "author": "Moritz Hoffmann <mhoffmann@teco.edu>",
+  "author": "Jennifer Münk <muenk@teco.edu>",
   "license": "MIT",
   "dependencies": {
     "@koa/cors": "^2.2.3",

@@ -33,26 +33,6 @@ router.post('/', KoaBody(), async (ctx) => {
 });
 
 /**
- * for handling requests that try to POST a new service
- * with id -> Method not allowed (405)
- * route:					/services/:id
- * method type: 	POST
- */
-router.post('/:id', async (ctx) => {
-	ctx.status = 500;
-	ctx.body = {error: 'Method Not Allowed'};
-});
-
-/**
- *  update a bulk of services
- * route:					/services
- * method type: 	PUT
- */
-router.put('/', KoaBody(), async (ctx) => {
-	await controller.updateServices(ctx);
-});
-
-/**
  * update a specific services
  * route:					/services/:id
  * method type: 	PUT

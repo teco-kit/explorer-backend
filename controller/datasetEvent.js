@@ -43,7 +43,7 @@ async function updateEventById(ctx) {
 	const updateEvent = await events.id(ctx.params.id);
 	await updateEvent.set(ctx.request.body);
 	await dataset.save();
-	ctx.body = {message: `updated event type with id: ${ctx.params.id}`};
+	ctx.body = {message: `updated event with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;
 }
@@ -67,7 +67,7 @@ async function deleteEventById(ctx) {
 	const dataset = await DatasetModel.findById(ctx.params.datasetId);
 	await dataset.events.id(ctx.params.id).remove();
 	await dataset.save();
-	ctx.body = {message: `deleted event type with id: ${ctx.params.id}`};
+	ctx.body = {message: `deleted event with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;
 }

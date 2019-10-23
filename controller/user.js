@@ -5,7 +5,7 @@ const Model = require('../models/user').model;
  */
 async function getUsers(ctx) {
 	const {authId} = ctx.state;
-	ctx.body = await Model.find({authId});
+	ctx.body = await Model.findOne({authId});
 	ctx.status = 200;
 }
 
@@ -13,7 +13,6 @@ async function getUsers(ctx) {
  * update own user
  */
 async function updateUser(ctx) {
-	console.log(ctx.request.body);
 	const {authId} = ctx.state;
 	ctx.body = await Model.findOneAndUpdate({authId}, {$set: ctx.request.body});
 	ctx.status = 200;

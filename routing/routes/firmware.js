@@ -33,26 +33,6 @@ router.post('/', KoaBody(), async (ctx) => {
 });
 
 /**
- * for handling requests that try to POST a new firmware
- * with id -> Method not allowed (405)
- * route:					/firmware/:id
- * method type: 	POST
- */
-router.post('/:id', async (ctx) => {
-	ctx.status = 500;
-	ctx.body = {error: 'Method Not Allowed'};
-});
-
-/**
- * update a bulk of firmware
- * route:					/firmware
- * method type: 	PUT
- */
-router.put('/', KoaBody(), async (ctx) => {
-	await controller.updateFirmware(ctx);
-});
-
-/**
  * update a firmware specified by id
  * route:					/firmware/:id
  * method type: 	PUT

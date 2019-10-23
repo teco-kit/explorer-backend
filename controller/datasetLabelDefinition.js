@@ -1,5 +1,5 @@
 const DatasetModel = require('../models/dataset').model;
-const model = require('../models/datasetLabeling').model;
+const {model} = require('../models/datasetLabeling');
 
 /**
  * get all labelings
@@ -38,18 +38,11 @@ async function createLabeling(ctx) {
  * update a specific labeling
  */
 async function updateLabelingById(ctx) {
-	await DatasetModel.updateOne(
-		{ _id: ctx.params.datasetId, 'labelings._id': ctx.params.id },
-		{'labelings.$': ctx.request.body},
-		{new: true},
-		(error) => {
-			if(error) {
-				ctx.body = {error: error.message};
-				ctx.status = 500;
-				return ctx;
-			}
-		}
-	);
+	const dataset = await DatasetModel.findById(ctx.params.datasetId);
+	const {labelings} = dataset;
+	const updatedLabeling = await labelings.id(ctx.params.id);
+	await updatedLabeling.set(ctx.request.body);
+	await dataset.save();
 	ctx.body = {message: `updated labeling with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;

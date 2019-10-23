@@ -1,7 +1,7 @@
 const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
-const controller = require('../../controller/label');
+const controller = require('../../controller/labelType');
 
 const router = new Router();
 

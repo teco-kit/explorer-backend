@@ -21,7 +21,7 @@ router.use('/datasets', subroutes.datasets.routes(), subroutes.datasets.allowedM
 router.use('/users', subroutes.users.routes(), subroutes.users.allowedMethods());
 router.use('/firmware', subroutes.firmware.routes(), subroutes.firmware.allowedMethods());
 router.use('/eventTypes', subroutes.eventTypes.routes(), subroutes.eventTypes.allowedMethods());
-router.use('/labels', subroutes.label.routes(), subroutes.label.allowedMethods());
+router.use('/labelTypes', subroutes.label.routes(), subroutes.label.allowedMethods());
 router.use('/labelDefinitions', subroutes.labelDefinitions.routes(), subroutes.labelDefinitions.allowedMethods());
 router.use('/devices', subroutes.device.routes(), subroutes.device.allowedMethods());
 router.use('/services', subroutes.service.routes(), subroutes.service.allowedMethods());

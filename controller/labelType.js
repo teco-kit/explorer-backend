@@ -1,4 +1,4 @@
-const Model = require('../models/labelTypeType').model;
+const Model = require('../models/labelType').model;
 
 /**
  * get all labelTypes
@@ -35,7 +35,7 @@ async function createLabelType(ctx) {
  */
 async function updateLabelTypeById(ctx) {
 	await Model.findByIdAndUpdate(ctx.params.id, {$set: ctx.request.body});
-	ctx.body = {message: `updated labelTypeType with id: ${ctx.params.id}`};
+	ctx.body = {message: `updated labelType with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;
 }
@@ -45,7 +45,7 @@ async function updateLabelTypeById(ctx) {
  */
 async function deletelabelTypes(ctx) {
 	await Model.deleteMany({});
-	ctx.body = {message: 'deleted all labelTypeTypes'};
+	ctx.body = {message: 'deleted all labelTypes'};
 	ctx.status = 200;
 	return ctx;
 }

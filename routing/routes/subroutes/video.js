@@ -11,7 +11,7 @@ const router = new Router();
  * method type: 	GET
  */
 router.get('/', async (ctx) => {
-	await controller.getVideoById(ctx);
+	await controller.getVideo(ctx);
 });
 
 /**

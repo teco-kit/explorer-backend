@@ -1,5 +1,5 @@
 {
 	"db": "mongodb://mongo:27017/aura_dev",
-	"auth": "auth.aura.rest/authenticate",
+	"auth": "http://authentication:3002",
 	"logger": false
 }

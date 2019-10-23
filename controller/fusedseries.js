@@ -44,7 +44,7 @@ async function updateFusedserieById(ctx) {
 	const updateFS = await fusedSeries.id(ctx.params.id);
 	await updateFS.set(ctx.request.body);
 	await dataset.save();
-	ctx.body = {message: `updated fusedSeries with id: ${ctx.params.id}`};
+	ctx.body = {message: `updated fusedseries with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;
 }
@@ -56,7 +56,7 @@ async function deleteFusedseries(ctx) {
 	const dataset = await DatasetModel.findById(ctx.params.datasetId);
 	await dataset.set({fusedSeries: []});
 	await dataset.save();
-	ctx.body = {message: 'deleted all fusedSeries'};
+	ctx.body = {message: 'deleted all fusedseries'};
 	ctx.status = 200;
 	return ctx;
 }
@@ -68,7 +68,7 @@ async function deleteFusedserieById(ctx) {
 	const dataset = await DatasetModel.findById(ctx.params.datasetId);
 	await dataset.fusedSeries.id(ctx.params.id).remove();
 	await dataset.save();
-	ctx.body = {message: `deleted fusedSeries with id: ${ctx.params.id}`};
+	ctx.body = {message: `deleted fusedseries with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;
 }
