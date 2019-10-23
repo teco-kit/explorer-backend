@@ -1,0 +1,5 @@
+{
+	"db": "mongodb://mongo:27017/aura_live",
+	"db_test": "mongodb://mongo:27017/aura_test",
+	"auth": "http://authentication:3002"
+}

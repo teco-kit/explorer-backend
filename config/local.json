@@ -1,0 +1,5 @@
+{
+	"db": "mongodb://localhost:27017/aura_dev",
+	"db_test": "mongodb://localhost:27017/aura_test",
+	"auth": "http://localhost:3002"
+}

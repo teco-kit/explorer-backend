@@ -1,5 +1,4 @@
 const Koa          = require('koa');
-const Logger       = require('koa-logger');
 const config       = require('config');
 const mongoose     = require('mongoose');
 const cors				 = require('koa-cors');
@@ -27,8 +26,6 @@ const swaggerSpec = swaggerJSDoc(options);
 
 // setup koa middlewares
 server.use(cors());
-// only display logs in development
-if(config.logger) server.use(Logger());
 
 server.use(swaggerUi.serve);
 server.use(convert(mount('/docs', swaggerUi.setup(swaggerSpec, false, {docExpansion: 'none'}, '#header { display: none }')))); // mount endpoint for access
@@ -45,7 +42,6 @@ server.use(async (ctx, next) => {
 	} catch (error) {
 		ctx.body = {error: error.message};
 		ctx.status = error.status || 500;
-		console.error(error.message);
 	}
 });
 

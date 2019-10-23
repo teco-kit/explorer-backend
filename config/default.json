@@ -1,5 +1,0 @@
-{
-	"db": "mongodb://localhost:27017/aura_dev",
-	"auth": "http://localhost:3002",
-	"logger": true
-}
