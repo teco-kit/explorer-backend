@@ -979,7 +979,6 @@ describe('Testing API Routes', () => {
 					.send({name: 'ResultNeu'})
 					.expect(200)
 					.end((err, res) => {
-						console.log();
 						expect(res.body.message).to.be
 							.equal(`updated labeling with id: ${datasetLabelDefintion._id}`);
 						done(err);
@@ -991,7 +990,6 @@ describe('Testing API Routes', () => {
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
-						console.log(res.body);
 						expect(res.body.message).to.be
 							.equal(`deleted labeling with id: ${datasetLabelDefintion._id}`);
 						done(err);
@@ -1092,7 +1090,6 @@ describe('Testing API Routes', () => {
 					.send({name: 'TSNeu'})
 					.expect(200)
 					.end((err, res) => {
-						console.log();
 						expect(res.body.message).to.be
 							.equal(`updated timeseries with id: ${timeseries._id}`);
 						done(err);
@@ -1104,7 +1101,6 @@ describe('Testing API Routes', () => {
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
-						console.log(res.body);
 						expect(res.body.message).to.be
 							.equal(`deleted timeseries with id: ${timeseries._id}`);
 						done(err);
@@ -1173,7 +1169,6 @@ describe('Testing API Routes', () => {
 					.send({timeSeries: []})
 					.expect(200)
 					.end((err, res) => {
-						console.log();
 						expect(res.body.message).to.be
 							.equal(`updated fusedseries with id: ${fusedseries._id}`);
 						done(err);
@@ -1185,7 +1180,6 @@ describe('Testing API Routes', () => {
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
-						console.log(res.body);
 						expect(res.body.message).to.be
 							.equal(`deleted fusedseries with id: ${fusedseries._id}`);
 						done(err);
