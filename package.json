@@ -4,15 +4,9 @@
   "description": "Backend for AURA",
   "main": "server.js",
   "scripts": {
-    "start": "NODE_ENV=docker node $NODE_DEBUG_OPTION server.js",
-    "start:local": "NODE_ENV=local node $NODE_DEBUG_OPTION server.js",
-    "start:dev": "$(npm bin)/nodemon server.js --ignore tools --ignore build --ignore analysis",
-    "lint": "$(npm bin)/eslint .",
-    "test": "NODE_ENV=docker nyc mocha --exit",
-    "test:local": "NODE_ENV=docker nyc mocha --exit",
-    "docker:build": "docker build . -t registry.aura.rest/edge",
-    "docker:push": "docker push registry.aura.rest/edge",
-    "docker:deploy": "docker build . -t registry.aura.rest/edge && docker push registry.aura.rest/edge"
+    "start": "node $NODE_DEBUG_OPTION server.js",
+    "start:docker": "NODE_ENV=docker node $NODE_DEBUG_OPTION server.js",
+    "test": "NODE_ENV=test nyc mocha --exit"
   },
   "repository": {
     "url": "ssh://aura-development@vs-ssh.visualstudio.com:22/Aura/_ssh/backend",
@@ -34,6 +28,7 @@
     "koa-logger": "^3.2.0",
     "koa-mount": "^4.0.0",
     "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
     "mongoose": "^5.2.4",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
