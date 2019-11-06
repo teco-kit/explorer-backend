@@ -1,6 +1,9 @@
 # REST API for AURA Backend
 A REST API for AURA backend. 
 
+You can find an UML for the database scheme 
+<a href="https://drive.google.com/open?id=15c_GufI5fqn6T1DA8TLKNCUdbo4u7VCh">here</a>.
+
 # Getting started
 Before you get started clone *this repository* and the *authentication repository* 
 and make sure, both repositories are located in the same folder.
