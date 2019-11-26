@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 
+const prefixRouter =  new Router();
 const router =  new Router();
 
 // subroutes to be mounted
@@ -28,4 +29,5 @@ router.use('/services', subroutes.service.routes(), subroutes.service.allowedMet
 router.use('/sensors', subroutes.sensor.routes(), subroutes.sensor.allowedMethods());
 router.use('/instructions', subroutes.instructions.routes(), subroutes.instructions.allowedMethods());
 
-module.exports = router;
+prefixRouter.use('/api', router.routes(), router.allowedMethods());
+module.exports = prefixRouter;

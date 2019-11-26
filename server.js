@@ -28,7 +28,7 @@ const swaggerSpec = swaggerJSDoc(options);
 server.use(cors());
 
 server.use(swaggerUi.serve);
-server.use(convert(mount('/docs', swaggerUi.setup(swaggerSpec, false, {docExpansion: 'none'}, '#header { display: none }')))); // mount endpoint for access
+server.use(convert(mount('/api/docs', swaggerUi.setup(swaggerSpec, false, {docExpansion: 'none'}, '#header { display: none }')))); // mount endpoint for access
 
 // check authentication
 server.use(async (ctx, next) => {

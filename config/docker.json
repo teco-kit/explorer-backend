@@ -1,4 +1,4 @@
 {
 	"db": "mongodb://mongo:27017/aura_live",
-	"auth": "http://authentication:3002"
+	"auth": "http://authentication:3002/auth"
 }
