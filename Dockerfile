@@ -1,6 +1,6 @@
 FROM node:10
 
-WORKDIR /opt/aura-backend
+WORKDIR /usr/src/backend
 COPY package*.json ./
 RUN npm install
 COPY . .

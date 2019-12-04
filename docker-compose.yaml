@@ -16,7 +16,6 @@ services:
       - NODE_ENV=production
     ports:
       - "3001:3001"
-    #command: npm start
     volumes:
       - static-content:/usr/src/app/build
   authentication:

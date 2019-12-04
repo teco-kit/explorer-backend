@@ -2,11 +2,10 @@ const Koa          = require('koa');
 const config       = require('config');
 const mongoose     = require('mongoose');
 const cors				 = require('koa-cors');
-const swaggerUi    = require('swagger-ui-koa');
-const swaggerJSDoc = require('swagger-jsdoc');
 const convert 		 = require('koa-convert');
 const mount 			 = require('koa-mount');
-const options 		 = require('./docs/config');
+const serve 			 = require('koa-static');
+
 
 const router = require('./routing/router.js');
 const authenticate = require('./authentication/authenticate');
@@ -21,14 +20,10 @@ mongoose.connect(config.db, {useNewUrlParser: true});
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
-// load swagger options
-const swaggerSpec = swaggerJSDoc(options);
-
 // setup koa middlewares
 server.use(cors());
 
-server.use(swaggerUi.serve);
-server.use(convert(mount('/api/docs', swaggerUi.setup(swaggerSpec, false, {docExpansion: 'none'}, '#header { display: none }')))); // mount endpoint for access
+server.use(convert(mount('/docs', serve('docs'))));
 
 // check authentication
 server.use(async (ctx, next) => {

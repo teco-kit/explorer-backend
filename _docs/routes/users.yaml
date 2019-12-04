@@ -2,8 +2,8 @@
   get:
     tags:
     - "users"
-    summary: "Returns all users"
-    description: "Returns a list of all available users"
+    summary: "Returns requesting user"
+    description: "Returns user data of requesting user"
     operationId: "getUsers"
     produces:
     - "application/json"
