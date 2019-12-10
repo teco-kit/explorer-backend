@@ -54,18 +54,6 @@ async function updateDatasetById(ctx) {
 }
 
 /**
- * delete all datasets
- */
-async function deleteDatasets(ctx) {
-	const {authId} = ctx.state;
-	const user = await UserModel.findOne({authId});
-	await Model.deleteMany({userId: user._id});
-	ctx.body = {message: 'deleted all datasets'};
-	ctx.status = 200;
-	return ctx;
-}
-
-/**
  * delete a dataset specified by id
  */
 async function deleteDatasetById(ctx) {
@@ -82,6 +70,5 @@ module.exports = {
 	getDatasetById,
 	createDataset,
 	updateDatasetById,
-	deleteDatasets,
 	deleteDatasetById
 };

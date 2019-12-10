@@ -58,15 +58,6 @@ router.put('/:id', KoaBody(), async (ctx) => {
 });
 
 /**
- * delete all datasets
- * route:					/datasets
- * method type: 	DELETE
- */
-router.del('/', async (ctx) => {
-	await controller.deleteDatasets(ctx);
-});
-
-/**
  * delete a specific dataset
  * route:					/datasets/:id
  * method type: 	DELETE

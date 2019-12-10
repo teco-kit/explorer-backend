@@ -133,6 +133,7 @@ describe('Testing API Routes', () => {
 			if(err) {
 				done(err);
 			} else {
+				console.log(body);
 				token = body.access_token.replace('Bearer ', '');
 				done();
 			}
@@ -141,7 +142,7 @@ describe('Testing API Routes', () => {
 
 	describe('Testing /user...', () => {
 		it('Returns own user', (done) => {
-			request.get('/users')
+			request.get('/api/users')
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -154,7 +155,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Update own user', (done) => {
-			request.put('/users')
+			request.put('/api/users')
 				.set({Authorization: token})
 				.send(user)
 				.expect(200)
@@ -167,7 +168,7 @@ describe('Testing API Routes', () => {
 
 	describe('Testing authentication handling...', () => {
 		it('No token provided', (done) => {
-			request.get('/users')
+			request.get('/api/users')
 				.expect(401)
 				.end((err, res) => {
 					expect(res.body.error).to.be
@@ -177,7 +178,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Invalid token provided', (done) => {
-			request.put('/users')
+			request.put('/api/users')
 				.set({Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNTE4YTc0MjNjNGZlMTQ5ZGRiOGM1ZCIsImlhdCI6MTU2NTYyNDk0OCwiZXhwIjoxNTY1NjI0OTQ5fQ.KPY1kI-t-QbQlYVwPYrcMCQZMy3GfjLQx78j6pzdpvI'})
 				.send(user)
 				.expect(401)
@@ -191,7 +192,7 @@ describe('Testing API Routes', () => {
 
 	describe('Testing /labelTypes...', () => {
 		it('Saves a new label', (done) => {
-			request.post('/labelTypes')
+			request.post('/api/labelTypes')
 				.set({Authorization: token})
 				.send({name: 'Label1'})
 				.expect(201)
@@ -202,7 +203,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a list of labels', (done) => {
-			request.get('/labelTypes')
+			request.get('/api/labelTypes')
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -212,7 +213,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a label by id', (done) => {
-			request.get(`/labelTypes/${labelType._id}`)
+			request.get(`/api/labelTypes/${labelType._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -222,7 +223,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Update a label by id', (done) => {
-			request.put(`/labelTypes/${labelType._id}`)
+			request.put(`/api/labelTypes/${labelType._id}`)
 				.set({Authorization: token})
 				.send({name: 'LabelNew'})
 				.expect(200)
@@ -233,7 +234,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete a label by id', (done) => {
-			request.delete(`/labelTypes/${labelType._id}`)
+			request.delete(`/api/labelTypes/${labelType._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -243,8 +244,8 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete all labels', (done) => {
-			request.delete(`/labelTypes`)
-           	 	.set({Authorization: token})
+			request.delete(`/api/labelTypes`)
+				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
 					expect(res.body.message).to.be.equal(`deleted all labelTypes`);
@@ -255,7 +256,7 @@ describe('Testing API Routes', () => {
 
 	describe('Testing /labelDefinitions...', () => {
 		it('Saves a new labelDefinition', (done) => {
-			request.post('/labelDefinitions')
+			request.post('/api/labelDefinitions')
 				.set({Authorization: token})
 				.send({labels: []})
 				.expect(201)
@@ -266,8 +267,8 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a list of labelDefinitions', (done) => {
-			request.get('/labelDefinitions')
-             	 .set({Authorization: token})
+			request.get('/api/labelDefinitions')
+			  .set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
 					expect(res.body).to.be.an('array');
@@ -276,7 +277,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a labelDefinition by id', (done) => {
-			request.get(`/labelDefinitions/${labelDefinition._id}`)
+			request.get(`/api/labelDefinitions/${labelDefinition._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -286,7 +287,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Update a labelDefinition by id', (done) => {
-			request.put(`/labelDefinitions/${labelDefinition._id}`)
+			request.put(`/api/labelDefinitions/${labelDefinition._id}`)
 				.set({Authorization: token})
 				.send({labels: []})
 				.expect(200)
@@ -298,7 +299,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete a labelDefinition by id', (done) => {
-			request.delete(`/labelDefinitions/${labelDefinition._id}`)
+			request.delete(`/api/labelDefinitions/${labelDefinition._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -309,7 +310,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete all labelDefinitions', (done) => {
-			request.delete(`/labelDefinitions`)
+			request.delete(`/api/labelDefinitions`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -321,7 +322,7 @@ describe('Testing API Routes', () => {
 
 	describe('Testing /eventTypes...', () => {
 		it('Saves a new eventType', (done) => {
-			request.post('/eventTypes')
+			request.post('/api/eventTypes')
 				.set({Authorization: token})
 				.send({name: 'Training'})
 				.expect(201)
@@ -332,7 +333,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a list of eventTypes', (done) => {
-			request.get('/eventTypes')
+			request.get('/api/eventTypes')
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -342,7 +343,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a eventType by id', (done) => {
-			request.get(`/eventTypes/${labelDefinition._id}`)
+			request.get(`/api/eventTypes/${labelDefinition._id}`)
 
 				.set({Authorization: token})
 				.expect(200)
@@ -353,8 +354,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Update a eventType by id', (done) => {
-			request.put(`/eventTypes/${labelDefinition._id}`)
-
+			request.put(`/api/eventTypes/${labelDefinition._id}`)
 				.set({Authorization: token})
 				.send({name: 'Food'})
 				.expect(200)
@@ -366,7 +366,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete a eventType by id', (done) => {
-			request.delete(`/eventTypes/${labelDefinition._id}`)
+			request.delete(`/api/eventTypes/${labelDefinition._id}`)
 
 				.set({Authorization: token})
 				.expect(200)
@@ -378,7 +378,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete all eventType', (done) => {
-			request.delete(`/eventTypes`)
+			request.delete(`/api/eventTypes`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -390,7 +390,7 @@ describe('Testing API Routes', () => {
 
 	describe('Testing /firmware...', () => {
 		it('Saves a new firmware', (done) => {
-			request.post('/firmware')
+			request.post('/api/firmware')
 				.set({Authorization: token})
 				.send(firmware)
 				.expect(201)
@@ -401,7 +401,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a list of firmware', (done) => {
-			request.get('/firmware')
+			request.get('/api/firmware')
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -411,7 +411,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a firmware by id', (done) => {
-			request.get(`/firmware/${firmware._id}`)
+			request.get(`/api/firmware/${firmware._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -423,7 +423,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Update a firmware by id', (done) => {
-			request.put(`/firmware/${firmware._id}`)
+			request.put(`/api/firmware/${firmware._id}`)
 				.set({Authorization: token})
 				.send({generation: 2})
 				.expect(200)
@@ -435,7 +435,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete a firmware by id', (done) => {
-			request.delete(`/firmware/${firmware._id}`)
+			request.delete(`/api/firmware/${firmware._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -446,7 +446,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete all firmware', (done) => {
-			request.delete(`/firmware`)
+			request.delete(`/api/firmware`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -458,7 +458,7 @@ describe('Testing API Routes', () => {
 
 	describe('Testing /devices...', () => {
 		it('Saves a new firmware', (done) => {
-			request.post('/firmware')
+			request.post('/api/firmware')
 				.set({Authorization: token})
 				.send(firmware)
 				.expect(201)
@@ -470,7 +470,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Saves a new device', (done) => {
-			request.post('/devices')
+			request.post('/api/devices')
 				.set({Authorization: token})
 				.send(device)
 				.expect(201)
@@ -481,7 +481,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a list of devices', (done) => {
-			request.get('/devices')
+			request.get('/api/devices')
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -491,7 +491,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a device by id', (done) => {
-			request.get(`/devices/${device._id}`)
+			request.get(`/api/devices/${device._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -503,7 +503,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Update a device by id', (done) => {
-			request.put(`/devices/${device._id}`)
+			request.put(`/api/devices/${device._id}`)
 				.set({Authorization: token})
 				.send({generation: 2})
 				.expect(200)
@@ -515,7 +515,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete a device by id', (done) => {
-			request.delete(`/devices/${device._id}`)
+			request.delete(`/api/devices/${device._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -526,7 +526,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete all devices', (done) => {
-			request.delete(`/devices`)
+			request.delete(`/api/devices`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -538,7 +538,7 @@ describe('Testing API Routes', () => {
 
 	describe('Testing /sensors...', () => {
 		it('Saves a new sensors', (done) => {
-			request.post('/sensors')
+			request.post('/api/sensors')
 				.set({Authorization: token})
 				.send({name: 'Sensor1'})
 				.expect(201)
@@ -549,7 +549,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a list of sensors', (done) => {
-			request.get('/sensors')
+			request.get('/api/sensors')
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -559,7 +559,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a sensors by id', (done) => {
-			request.get(`/sensors/${sensor._id}`)
+			request.get(`/api/sensors/${sensor._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -569,7 +569,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Update a sensors by id', (done) => {
-			request.put(`/sensors/${sensor._id}`)
+			request.put(`/api/sensors/${sensor._id}`)
 				.set({Authorization: token})
 				.send({name: 'Sensor2'})
 				.expect(200)
@@ -581,7 +581,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete a sensors by id', (done) => {
-			request.delete(`/sensors/${sensor._id}`)
+			request.delete(`/api/sensors/${sensor._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -592,7 +592,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete all sensors', (done) => {
-			request.delete(`/sensors`)
+			request.delete(`/api/sensors`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -604,7 +604,7 @@ describe('Testing API Routes', () => {
 
 	describe('Testing /services...', () => {
 		it('Saves a new service', (done) => {
-			request.post('/services')
+			request.post('/api/services')
 				.set({Authorization: token})
 				.send({name: 'Service1', version: 1})
 				.expect(201)
@@ -615,7 +615,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a list of services', (done) => {
-			request.get('/services')
+			request.get('/api/services')
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -625,7 +625,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a services by id', (done) => {
-			request.get(`/services/${service._id}`)
+			request.get(`/api/services/${service._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -635,7 +635,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Update a services by id', (done) => {
-			request.put(`/services/${service._id}`)
+			request.put(`/api/services/${service._id}`)
 				.set({Authorization: token})
 				.send({name: 'Sensor2'})
 				.expect(200)
@@ -647,7 +647,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete a services by id', (done) => {
-			request.delete(`/services/${service._id}`)
+			request.delete(`/api/services/${service._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -658,7 +658,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete all services', (done) => {
-			request.delete(`/services`)
+			request.delete(`/api/services`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -670,7 +670,7 @@ describe('Testing API Routes', () => {
 
 	describe('Testing /instructions...', () => {
 		it('Saves a new instruction', (done) => {
-			request.post('/instructions')
+			request.post('/api/instructions')
 				.set({Authorization: token})
 				.send({name: 'Instruction', labels: []})
 				.expect(201)
@@ -681,7 +681,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns a list of instructions', (done) => {
-			request.get('/instructions')
+			request.get('/api/instructions')
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -691,7 +691,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Returns an instruction by id', (done) => {
-			request.get(`/instructions/${instruction._id}`)
+			request.get(`/api/instructions/${instruction._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -701,7 +701,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Update an instruction by id', (done) => {
-			request.put(`/instructions/${instruction._id}`)
+			request.put(`/api/instructions/${instruction._id}`)
 				.set({Authorization: token})
 				.send({name: 'Sensor2'})
 				.expect(200)
@@ -713,7 +713,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete an instruction by id', (done) => {
-			request.delete(`/instructions/${instruction._id}`)
+			request.delete(`/api/instructions/${instruction._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -724,7 +724,7 @@ describe('Testing API Routes', () => {
 		});
 
 		it('Delete all instructions', (done) => {
-			request.delete(`/instructions`)
+			request.delete(`/api/instructions`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -737,7 +737,7 @@ describe('Testing API Routes', () => {
 	describe('Testing /datasets...', () => {
 		it('Saves a new firmware', (done) => {
 			delete firmware._id;
-			request.post('/firmware')
+			request.post('/api/firmware')
 				.set({Authorization: token})
 				.send(firmware)
 				.expect(201)
@@ -750,7 +750,7 @@ describe('Testing API Routes', () => {
 
 		it('Saves a new device', (done) => {
 			delete device._id;
-			request.post('/devices')
+			request.post('/api/devices')
 				.set({Authorization: token})
 				.send(device)
 				.expect(201)
@@ -764,7 +764,7 @@ describe('Testing API Routes', () => {
 
 		it('Saves a new dataset', (done) => {
 			delete dataset.userId;
-			request.post('/datasets')
+			request.post('/api/datasets')
 				.set({Authorization: token})
 				.send(dataset)
 				.expect(201)
@@ -776,7 +776,7 @@ describe('Testing API Routes', () => {
 
 		describe('Testing /datasets/{id}/results...', () => {
 			it('Saves a new result', (done) => {
-				request.post(`/datasets/${dataset._id}/results`)
+				request.post(`/api/datasets/${dataset._id}/results`)
 					.set({Authorization: token})
 					.send(result)
 					.expect(201)
@@ -787,7 +787,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Returns a list of result', (done) => {
-				request.get(`/datasets/${dataset._id}/results`)
+				request.get(`/api/datasets/${dataset._id}/results`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -797,7 +797,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Returns a result by id', (done) => {
-				request.get(`/datasets/${dataset._id}/results/${result._id}`)
+				request.get(`/api/datasets/${dataset._id}/results/${result._id}`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -807,7 +807,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Update a result by id', (done) => {
-				request.put(`/datasets/${dataset._id}/results/${result._id}`)
+				request.put(`/api/datasets/${dataset._id}/results/${result._id}`)
 					.set({Authorization: token})
 					.send({name: 'ResultNeu'})
 					.expect(200)
@@ -819,7 +819,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Delete a result by id', (done) => {
-				request.delete(`/datasets/${dataset._id}/results/${result._id}`)
+				request.delete(`/api/datasets/${dataset._id}/results/${result._id}`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -830,7 +830,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Delete all results', (done) => {
-				request.delete(`/datasets/${dataset._id}/results/`)
+				request.delete(`/api/datasets/${dataset._id}/results/`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -842,7 +842,7 @@ describe('Testing API Routes', () => {
 
 		describe('Testing /datasets/{id}/events...', () => {
 			it('Saves a new eventType', (done) => {
-				request.post('/eventTypes')
+				request.post('/api/eventTypes')
 					.set({Authorization: token})
 					.send({name: 'Training'})
 					.expect(201)
@@ -853,7 +853,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Saves a new event', (done) => {
-				request.post(`/datasets/${dataset._id}/events`)
+				request.post(`/api/datasets/${dataset._id}/events`)
 					.set({Authorization: token})
 					.send(event)
 					.expect(201)
@@ -864,7 +864,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Returns a list of events', (done) => {
-				request.get(`/datasets/${dataset._id}/events`)
+				request.get(`/api/datasets/${dataset._id}/events`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -874,7 +874,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Returns an event by id', (done) => {
-				request.get(`/datasets/${dataset._id}/events/${event._id}`)
+				request.get(`/api/datasets/${dataset._id}/events/${event._id}`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -884,7 +884,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Update an event by id', (done) => {
-				request.put(`/datasets/${dataset._id}/events/${event._id}`)
+				request.put(`/api/datasets/${dataset._id}/events/${event._id}`)
 					.set({Authorization: token})
 					.send({name: 'EventNeu'})
 					.expect(200)
@@ -896,7 +896,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Delete an event by id', (done) => {
-				request.delete(`/datasets/${dataset._id}/events/${event._id}`)
+				request.delete(`/api/datasets/${dataset._id}/events/${event._id}`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -907,7 +907,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Delete all events', (done) => {
-				request.delete(`/datasets/${dataset._id}/events/`)
+				request.delete(`/api/datasets/${dataset._id}/events/`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -919,7 +919,7 @@ describe('Testing API Routes', () => {
 
 		describe('Testing /datasets/{id}/labelings...', () => {
 			it('Saves a new service', (done) => {
-				request.post('/services')
+				request.post('/api/services')
 					.set({Authorization: token})
 					.send({name: 'Service1', version: 1})
 					.expect(201)
@@ -931,7 +931,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Saves a new labelDefinition', (done) => {
-				request.post('/labelDefinitions')
+				request.post('/api/labelDefinitions')
 					.set({Authorization: token})
 					.send({labels: []})
 					.expect(201)
@@ -943,7 +943,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Saves a new labeling', (done) => {
-				request.post(`/datasets/${dataset._id}/labelings`)
+				request.post(`/api/datasets/${dataset._id}/labelings`)
 					.set({Authorization: token})
 					.send(datasetLabelDefintion)
 					.expect(201)
@@ -954,7 +954,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Returns a list of labeling', (done) => {
-				request.get(`/datasets/${dataset._id}/labelings`)
+				request.get(`/api/datasets/${dataset._id}/labelings`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -964,7 +964,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Returns a labeling by id', (done) => {
-				request.get(`/datasets/${dataset._id}/labelings/${datasetLabelDefintion._id}`)
+				request.get(`/api/datasets/${dataset._id}/labelings/${datasetLabelDefintion._id}`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -974,7 +974,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Update a labeling by id', (done) => {
-				request.put(`/datasets/${dataset._id}/labelings/${datasetLabelDefintion._id}`)
+				request.put(`/api/datasets/${dataset._id}/labelings/${datasetLabelDefintion._id}`)
 					.set({Authorization: token})
 					.send({name: 'ResultNeu'})
 					.expect(200)
@@ -986,7 +986,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Delete a labeling by id', (done) => {
-				request.delete(`/datasets/${dataset._id}/labelings/${datasetLabelDefintion._id}`)
+				request.delete(`/api/datasets/${dataset._id}/labelings/${datasetLabelDefintion._id}`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -997,7 +997,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Delete all labelings', (done) => {
-				request.delete(`/datasets/${dataset._id}/labelings/`)
+				request.delete(`/api/datasets/${dataset._id}/labelings/`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -1009,7 +1009,7 @@ describe('Testing API Routes', () => {
 
 		describe('Testing /datasets/{id}/video...', () => {
 			it('Saves a new video', (done) => {
-				request.post(`/datasets/${dataset._id}/video`)
+				request.post(`/api/datasets/${dataset._id}/video`)
 					.set({Authorization: token})
 					.send({url: 'aura.de/testvideo', offset: 0})
 					.expect(201)
@@ -1020,7 +1020,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Returns the video', (done) => {
-				request.get(`/datasets/${dataset._id}/video`)
+				request.get(`/api/datasets/${dataset._id}/video`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -1030,7 +1030,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Update the video', (done) => {
-				request.put(`/datasets/${dataset._id}/video`)
+				request.put(`/api/datasets/${dataset._id}/video`)
 					.set({Authorization: token})
 					.send({offset: 1})
 					.expect(200)
@@ -1041,7 +1041,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Delete the video', (done) => {
-				request.delete(`/datasets/${dataset._id}/video`)
+				request.delete(`/api/datasets/${dataset._id}/video`)
 					.set({Authorization: token})
 					.send(datasetLabelDefintion)
 					.expect(200)
@@ -1054,7 +1054,7 @@ describe('Testing API Routes', () => {
 
 		describe('Testing /datasets/{id}/timeseries...', () => {
 			it('Saves a new timeseries', (done) => {
-				request.post(`/datasets/${dataset._id}/timeseries`)
+				request.post(`/api/datasets/${dataset._id}/timeseries`)
 					.set({Authorization: token})
 					.send(timeseries)
 					.expect(201)
@@ -1065,7 +1065,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Returns a list of timeseries', (done) => {
-				request.get(`/datasets/${dataset._id}/timeseries`)
+				request.get(`/api/datasets/${dataset._id}/timeseries`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -1075,7 +1075,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Returns a timeseries by id', (done) => {
-				request.get(`/datasets/${dataset._id}/timeseries/${timeseries._id}`)
+				request.get(`/api/datasets/${dataset._id}/timeseries/${timeseries._id}`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -1085,7 +1085,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Update a timeseries by id', (done) => {
-				request.put(`/datasets/${dataset._id}/timeseries/${timeseries._id}`)
+				request.put(`/api/datasets/${dataset._id}/timeseries/${timeseries._id}`)
 					.set({Authorization: token})
 					.send({name: 'TSNeu'})
 					.expect(200)
@@ -1097,7 +1097,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Delete a timeseries by id', (done) => {
-				request.delete(`/datasets/${dataset._id}/timeseries/${timeseries._id}`)
+				request.delete(`/api/datasets/${dataset._id}/timeseries/${timeseries._id}`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -1108,7 +1108,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Delete all timeseries', (done) => {
-				request.delete(`/datasets/${dataset._id}/timeseries/`)
+				request.delete(`/api/datasets/${dataset._id}/timeseries/`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -1121,7 +1121,7 @@ describe('Testing API Routes', () => {
 		describe('Testing /datasets/{id}/fusedseries...', () => {
 			it('Saves a new timeseries', (done) => {
 				delete timeseries._id;
-				request.post(`/datasets/${dataset._id}/timeseries`)
+				request.post(`/api/datasets/${dataset._id}/timeseries`)
 					.set({Authorization: token})
 					.send(timeseries)
 					.expect(201)
@@ -1133,7 +1133,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Saves a new fusedseries', (done) => {
-				request.post(`/datasets/${dataset._id}/fusedseries`)
+				request.post(`/api/datasets/${dataset._id}/fusedseries`)
 					.set({Authorization: token})
 					.send(fusedseries)
 					.expect(201)
@@ -1144,7 +1144,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Returns a list of fusedseries', (done) => {
-				request.get(`/datasets/${dataset._id}/fusedseries`)
+				request.get(`/api/datasets/${dataset._id}/fusedseries`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -1154,7 +1154,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Returns a fusedseries by id', (done) => {
-				request.get(`/datasets/${dataset._id}/fusedseries/${fusedseries._id}`)
+				request.get(`/api/datasets/${dataset._id}/fusedseries/${fusedseries._id}`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -1164,7 +1164,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Update a fusedseries by id', (done) => {
-				request.put(`/datasets/${dataset._id}/fusedseries/${fusedseries._id}`)
+				request.put(`/api/datasets/${dataset._id}/fusedseries/${fusedseries._id}`)
 					.set({Authorization: token})
 					.send({timeSeries: []})
 					.expect(200)
@@ -1176,7 +1176,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Delete a fusedseries by id', (done) => {
-				request.delete(`/datasets/${dataset._id}/fusedseries/${fusedseries._id}`)
+				request.delete(`/api/datasets/${dataset._id}/fusedseries/${fusedseries._id}`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -1187,7 +1187,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Delete all fusedseries', (done) => {
-				request.delete(`/datasets/${dataset._id}/fusedseries/`)
+				request.delete(`/api/datasets/${dataset._id}/fusedseries/`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -1199,7 +1199,7 @@ describe('Testing API Routes', () => {
 
 		describe('Testing /datasets...', () => {
 			it('Returns a list of datasets', (done) => {
-				request.get('/datasets')
+				request.get('/api/datasets')
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -1209,7 +1209,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Returns a dataset by id', (done) => {
-				request.get(`/datasets/${dataset._id}`)
+				request.get(`/api/datasets/${dataset._id}`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -1222,7 +1222,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Update a datasets by id', (done) => {
-				request.put(`/datasets/${dataset._id}`)
+				request.put(`/api/datasets/${dataset._id}`)
 					.set({Authorization: token})
 					.send({generation: 2})
 					.expect(200)
@@ -1234,7 +1234,7 @@ describe('Testing API Routes', () => {
 			});
 
 			it('Delete a datasets by id', (done) => {
-				request.delete(`/datasets/${dataset._id}`)
+				request.delete(`/api/datasets/${dataset._id}`)
 					.set({Authorization: token})
 					.expect(200)
 					.end((err, res) => {
@@ -1243,22 +1243,12 @@ describe('Testing API Routes', () => {
 						done(err);
 					});
 			});
-
-			it('Delete all datasets', (done) => {
-				request.delete(`/datasets`)
-					.set({Authorization: token})
-					.expect(200)
-					.end((err, res) => {
-						expect(res.body.message).to.be.equal(`deleted all datasets`);
-						done(err);
-					});
-			});
 		});
 	});
 
 	describe('Testing server error ...', () => {
 		it('Server error returns 500', (done) => {
-			request.post('/eventTypes')
+			request.post('/api/eventTypes')
 				.set({Authorization: token})
 				.send({})
 				.expect(500)
