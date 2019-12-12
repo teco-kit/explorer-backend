@@ -5,7 +5,7 @@ const Experiment = new mongoose.Schema({
 		type: String,
 		required: [true, 'experiment name cannot be empty']
 	},
-  instructions: Array
+	instructions: Array
 });
 
 module.exports = {
