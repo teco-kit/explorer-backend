@@ -17,7 +17,7 @@ let labelType;
 let labelDefinition;
 let sensor;
 let service;
-let instruction;
+let experiment;
 
 const device = {
 	sensors: [],
@@ -668,20 +668,20 @@ describe('Testing API Routes', () => {
 		});
 	});
 
-	describe('Testing /instructions...', () => {
-		it('Saves a new instruction', (done) => {
-			request.post('/api/instructions')
+	describe('Testing /experiments...', () => {
+		it('Saves a new experiment', (done) => {
+			request.post('/api/experiments')
 				.set({Authorization: token})
 				.send({name: 'Instruction', labels: []})
 				.expect(201)
 				.end((err, res) => {
-					instruction = res.body;
+					experiment = res.body;
 					done(err);
 				});
 		});
 
-		it('Returns a list of instructions', (done) => {
-			request.get('/api/instructions')
+		it('Returns a list of experiments', (done) => {
+			request.get('/api/experiments')
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
@@ -690,45 +690,45 @@ describe('Testing API Routes', () => {
 				});
 		});
 
-		it('Returns an instruction by id', (done) => {
-			request.get(`/api/instructions/${instruction._id}`)
+		it('Returns an experiment by id', (done) => {
+			request.get(`/api/experiments/${experiment._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
-					expect(res.body).to.have.all.keys('_id', 'name', 'labels', '__v');
+					expect(res.body).to.have.all.keys('_id', 'name', 'instructions', '__v');
 					done(err);
 				});
 		});
 
-		it('Update an instruction by id', (done) => {
-			request.put(`/api/instructions/${instruction._id}`)
+		it('Update an experiment by id', (done) => {
+			request.put(`/api/experiments/${experiment._id}`)
 				.set({Authorization: token})
 				.send({name: 'Sensor2'})
 				.expect(200)
 				.end((err, res) => {
 					expect(res.body.message).to.be
-						.equal(`updated instruction with id: ${instruction._id}`);
+						.equal(`updated experiment with id: ${experiment._id}`);
 					done(err);
 				});
 		});
 
-		it('Delete an instruction by id', (done) => {
-			request.delete(`/api/instructions/${instruction._id}`)
+		it('Delete an experiment by id', (done) => {
+			request.delete(`/api/experiments/${experiment._id}`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
 					expect(res.body.message).to.be
-						.equal(`deleted instruction with id: ${instruction._id}`);
+						.equal(`deleted experiment with id: ${experiment._id}`);
 					done(err);
 				});
 		});
 
-		it('Delete all instructions', (done) => {
-			request.delete(`/api/instructions`)
+		it('Delete all experiments', (done) => {
+			request.delete(`/api/experiments`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {
-					expect(res.body.message).to.be.equal(`deleted all instructions`);
+					expect(res.body.message).to.be.equal(`deleted all experiments`);
 					done(err);
 				});
 		});
@@ -1216,7 +1216,7 @@ describe('Testing API Routes', () => {
 						expect(res.body).to.have.all
 							.keys('_id', 'userId', 'start', 'end',
 								'events', 'isPublished', 'timeSeries', 'fusedSeries', 'labelings',
-								'video', 'device', 'results', 'instructions', '__v');
+								'video', 'device', 'results', 'experiments', '__v');
 						done(err);
 					});
 			});
