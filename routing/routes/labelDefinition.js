@@ -6,8 +6,8 @@ const controller = require('../../controller/labelDefinition');
 const router = new Router();
 
 /**
- * get all labelings for current user
- * route:					/labelings
+ * get all labelDefinition for current user
+ * route:					/labelDefinition
  * method type: 	GET
  */
 router.get('/', async (ctx) => {
@@ -16,7 +16,7 @@ router.get('/', async (ctx) => {
 
 /**
  * get labeling by id
- * route:					/labelings/:id
+ * route:					/labelDefinition/:id
  * method type: 	GET
  */
 router.get('/:id', async (ctx) => {
@@ -25,7 +25,7 @@ router.get('/:id', async (ctx) => {
 
 /**
  * create a new labeling
- * route:					/labelings
+ * route:					/labelDefinition
  * method type: 	POST
  */
 router.post('/', KoaBody(), async (ctx) => {
@@ -33,8 +33,8 @@ router.post('/', KoaBody(), async (ctx) => {
 });
 
 /**
- * update a specific labelings
- * route:					/labelings/:id
+ * update a specific labelDefinition
+ * route:					/labelDefinition/:id
  * method type: 	PUT
  */
 router.put('/:id', KoaBody(), async (ctx) => {
@@ -42,8 +42,8 @@ router.put('/:id', KoaBody(), async (ctx) => {
 });
 
 /**
- * delete all labelings
- * route:					/labelings
+ * delete all labelDefinition
+ * route:					/labelDefinition
  * method type: 	DELETE
  */
 router.del('/', async (ctx) => {
@@ -52,7 +52,7 @@ router.del('/', async (ctx) => {
 
 /**
  * delete a specific labeling
- * route:					/labelings/:id
+ * route:					/labelDefinition/:id
  * method type: 	DELETE
  */
 router.del('/:id', async (ctx) => {

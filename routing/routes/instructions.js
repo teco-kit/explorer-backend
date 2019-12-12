@@ -1,4 +1,4 @@
-const Router       = require('koa-router');
+const Router      = require('koa-router');
 const KoaBody      = require('koa-body');
 
 const controller = require('../../controller/instruction');
@@ -6,7 +6,7 @@ const controller = require('../../controller/instruction');
 const router = new Router();
 
 /**
- * get all instructions
+ * get all instructions for current user
  * route:					/instructions
  * method type: 	GET
  */
@@ -15,7 +15,7 @@ router.get('/', async (ctx) => {
 });
 
 /**
- * get instruction by id
+ * get label by id
  * route:					/instructions/:id
  * method type: 	GET
  */
@@ -24,7 +24,7 @@ router.get('/:id', async (ctx) => {
 });
 
 /**
- * create a new instruction
+ * create a new label
  * route:					/instructions
  * method type: 	POST
  */

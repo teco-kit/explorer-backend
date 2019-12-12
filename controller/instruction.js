@@ -1,4 +1,4 @@
-const Model = require('../models/instruction').model;
+const Model = require('../models/instructions').model;
 
 /**
  * get all instructions

@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const LabelDefinition = new mongoose.Schema({
-	labels: [{
+	instructions: [{
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'LabelType'
+		ref: 'Instructions '
 	}],
 	name: {
 		type: String

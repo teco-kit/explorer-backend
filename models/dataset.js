@@ -52,7 +52,7 @@ const Dataset = new mongoose.Schema({
 		type: [Result],
 		default: []
 	},
-	instructions: {
+	experiments: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Instruction',
 		default: null

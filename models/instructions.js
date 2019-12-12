@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const Instruction = new mongoose.Schema({
 	name: {
 		type: String,
-		required: [true, 'instruction name cannot be empty']
+		required: [true, 'please enter an instruction name']
 	},
-	labels: Array
+	color: {
+		type: String
+	}
 });
 
 module.exports = {
