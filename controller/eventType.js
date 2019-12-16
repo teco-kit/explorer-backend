@@ -54,7 +54,7 @@ async function deleteEventTypes(ctx) {
  * delete a eventType specified by id
  */
 async function deleteEventTypeById(ctx) {
-	await Model.findOneAndDelete(ctx.params.id);
+	await Model.findOneAndDelete({_id: ctx.params.id});
 	ctx.body = {message: `deleted eventType with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;

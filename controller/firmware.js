@@ -54,7 +54,7 @@ async function deleteFirmware(ctx) {
  * delete a firmware specified by id
  */
 async function deleteFirmwareById(ctx) {
-	await Model.findOneAndDelete(ctx.params.id);
+	await Model.findOneAndDelete({_id: ctx.params.id});
 	ctx.body = {message: `deleted firmware with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;

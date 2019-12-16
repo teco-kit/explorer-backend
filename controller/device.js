@@ -54,7 +54,7 @@ async function deleteDevices(ctx) {
  * delete a device specified by id
  */
 async function deleteDeviceById(ctx) {
-	await Model.findOneAndDelete(ctx.params.id);
+	await Model.findOneAndDelete({_id: ctx.params.id});
 	ctx.body = {message: `deleted device with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;

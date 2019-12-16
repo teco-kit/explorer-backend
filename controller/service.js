@@ -54,7 +54,7 @@ async function deleteServices(ctx) {
  * delete a service specified by id
  */
 async function deleteServiceById(ctx) {
-	await Model.findOneAndDelete(ctx.params.id);
+	await Model.findOneAndDelete({_id: ctx.params.id});
 	ctx.body = {message: `deleted service with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;

@@ -1,5 +1,5 @@
 const DatasetModel = require('../models/dataset').model;
-const {model} = require('../models/datasetLabeling');
+const Model = require('../models/datasetLabeling').model;
 
 /**
  * get all labelings
@@ -26,7 +26,7 @@ async function getLabelingById(ctx) {
  */
 async function createLabeling(ctx) {
 	const dataset = await DatasetModel.findById(ctx.params.datasetId);
-	const labeling = new model(ctx.request.body);
+	const labeling = new Model(ctx.request.body);
 	await dataset.labelings.push(labeling);
 	await dataset.save();
 	ctx.body = labeling;

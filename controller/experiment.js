@@ -54,7 +54,7 @@ async function deleteExperiments(ctx) {
  * delete a experiment specified by id
  */
 async function deleteExperimentById(ctx) {
-	await Model.findOneAndDelete(ctx.params.id);
+	await Model.findOneAndDelete({_id: ctx.params.id});
 	ctx.body = {message: `deleted experiment with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;

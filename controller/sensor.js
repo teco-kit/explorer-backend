@@ -54,7 +54,7 @@ async function deleteSensors(ctx) {
  * delete a sensor specified by id
  */
 async function deleteSensorById(ctx) {
-	await Model.findOneAndDelete(ctx.params.id);
+	await Model.findOneAndDelete({_id: ctx.params.id});
 	ctx.body = {message: `deleted sensor with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;

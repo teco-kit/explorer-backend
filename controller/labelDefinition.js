@@ -54,7 +54,7 @@ async function deleteLabelDefinitions(ctx) {
  * delete a labelDefinition specified by id
  */
 async function deleteLabelDefinitionById(ctx) {
-	await Model.findOneAndDelete(ctx.params.id);
+	await Model.findOneAndDelete({_id: ctx.params.id});
 	ctx.body = {message: `deleted labelDefinition with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;
