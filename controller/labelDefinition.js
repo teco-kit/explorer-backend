@@ -1,4 +1,5 @@
 const Model = require('../models/labelDefinition').model;
+const LabelModel = require('../models/labelType').model;
 
 /**
  * get all labelDefinitions
@@ -54,6 +55,12 @@ async function deleteLabelDefinitions(ctx) {
  * delete a labelDefinition specified by id
  */
 async function deleteLabelDefinitionById(ctx) {
+	const labelDefinition = await Model.findOne({_id: ctx.params.id});
+	// delete labelTypes first
+	labelDefinition.labels.forEach(async (label) => {
+		await LabelModel.findOneAndDelete({_id: label._id});
+	});
+	// delete labelDefinition
 	await Model.findOneAndDelete({_id: ctx.params.id});
 	ctx.body = {message: `deleted labelDefinition with id: ${ctx.params.id}`};
 	ctx.status = 200;
