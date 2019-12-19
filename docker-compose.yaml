@@ -28,6 +28,7 @@ services:
       - mongo
   nginx:
     image: nginx
+    restart: always
     links:
      - authentication
      - backend
@@ -40,6 +41,7 @@ services:
       - static-content:/usr/src/app/build
   mongo:
     container_name: mongo
+    restart: always
     image: mongo
     volumes:
       - ./data:/data/db
