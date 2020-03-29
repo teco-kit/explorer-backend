@@ -1,4 +1,4 @@
 {
 	"db": "mongodb://localhost:27017/aura_test",
-	"auth": "http://localhost:3002/auth"
+	"auth": "http://aura.dmz.teco.edu/auth"
 }
