@@ -1,4 +1,7 @@
 # REST API for AURA Backend
+
+![Tests](https://github.com/teco-kit/explorer-backend/workflows/Tests/badge.svg?branch=master)
+
 A REST API for AURA backend. 
 
 You can find an UML for the database scheme 
