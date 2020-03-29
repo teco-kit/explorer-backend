@@ -9,6 +9,7 @@ const serve 			 = require('koa-static');
 
 const router = require('./routing/router.js');
 const authenticate = require('./authentication/authenticate');
+const authorize = require('./authorization/authorization');
 
 // create server
 const server = new Koa();
@@ -28,6 +29,11 @@ server.use(convert(mount('/docs', serve('docs'))));
 // check authentication
 server.use(async (ctx, next) => {
 	await authenticate(ctx, next);
+});
+
+// check authorization
+server.use(async (ctx, next) => {
+	await authorize(ctx, next);
 });
 
 // catch errors
