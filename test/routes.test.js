@@ -669,10 +669,41 @@ describe('Testing API Routes', () => {
 	});
 
 	describe('Testing /experiments...', () => {
+		it('Saves a new labelTypes', (done) => {
+			request.post('/api/labelTypes')
+				.set({Authorization: token})
+				.send({name: 'Label1', color: '#ffffff'})
+				.expect(201)
+				.end((err, res) => {
+					labelType = res.body;
+					done(err);
+				});
+		});
+
+		it('Saves a new labelDefinitions', (done) => {
+			request.post('/api/labelDefinitions')
+				.set({Authorization: token})
+				.send({labels: [labelType._id], name: 'TestLabeling'})
+				.expect(201)
+				.end((err, res) => {
+					labelDefinition = res.body;
+					done(err);
+				});
+		});
+
 		it('Saves a new experiment', (done) => {
 			request.post('/api/experiments')
 				.set({Authorization: token})
-				.send({name: 'Instruction', labels: []})
+				.send({
+					name: 'Instruction',
+					instructions: [
+						{
+							duration: 1,
+							labelingId: labelDefinition._id,
+							labelType: labelType._id
+						}
+					]
+				})
 				.expect(201)
 				.end((err, res) => {
 					experiment = res.body;
@@ -692,6 +723,16 @@ describe('Testing API Routes', () => {
 
 		it('Returns an experiment by id', (done) => {
 			request.get(`/api/experiments/${experiment._id}`)
+				.set({Authorization: token})
+				.expect(200)
+				.end((err, res) => {
+					expect(res.body).to.have.all.keys('_id', 'name', 'instructions', '__v');
+					done(err);
+				});
+		});
+
+		it('Returns an experiment by id that is populated', (done) => {
+			request.get(`/api/experiments/${experiment._id}/populated`)
 				.set({Authorization: token})
 				.expect(200)
 				.end((err, res) => {

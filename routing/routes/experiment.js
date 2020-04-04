@@ -24,6 +24,16 @@ router.get('/:id', async (ctx) => {
 });
 
 /**
+ * get experiment by id
+ * route:					/experiments/:id
+ * method type: 	GET
+ */
+router.get('/:id/populated', async (ctx) => {
+  await controller.getExperimentByIdPopulated(ctx);
+});
+
+
+/**
  * create a new experiment
  * route:					/experiments
  * method type: 	POST

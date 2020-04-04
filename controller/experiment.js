@@ -19,6 +19,23 @@ async function getExperimentById(ctx) {
 }
 
 /**
+ * get experiment by id
+ * experiment is populated by LabelDefinition and LabelTypes
+ */
+async function getExperimentByIdPopulated(ctx) {
+	const experiment = await Model.findOne({_id: ctx.params.id});
+	await experiment
+		.populate('instructions.labelingId')
+		.execPopulate();
+	await experiment
+		.populate('instructions.labelType')
+		.execPopulate();
+	ctx.body = experiment;
+	ctx.status = 200;
+	return ctx;
+}
+
+/**
  * create a new experiment
  */
 async function createExperiment(ctx) {
@@ -63,6 +80,7 @@ async function deleteExperimentById(ctx) {
 module.exports = {
 	getExperiments,
 	getExperimentById,
+	getExperimentByIdPopulated,
 	createExperiment,
 	updateExperimentById,
 	deleteExperiments,
