@@ -7,7 +7,7 @@ const Experiment = new mongoose.Schema({
 	},
 	instructions: [{
 		duration: {
-			type: String,
+			type: Number,
 			required: [true, 'please define a duration']
 		},
 		labelingId: {
