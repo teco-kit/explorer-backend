@@ -1,4 +1,6 @@
-# REST API for AURA Backend
+# Explorer Backend
+The backend part of the explorer project which can be found [here](https://github.com/teco-kit/explorer/blob/master/README.md).
+
 
 ![Tests](https://github.com/teco-kit/explorer-backend/workflows/Tests/badge.svg?branch=master)
 
