@@ -14,24 +14,6 @@ and make sure, both repositories are located in the same folder.
 
 You can either run the application within a docker container or directly.
 
-## Installing docker
-Please follow the instructions to install <a href="https://docs.docker.com/install/"> 
-docker</a> and <a href="https://docs.docker.com/compose/install/">install docker-compose</a>.
-
-Then run the following command to build the images and to pull the mongoDB image.
-
-```
-sudo docker-compose build
-
-```
-
-Running the following command will start the dockerized application on your local machine:
-
-```
-docker-compose up
-
-```
-
 ## Development
 If you want to run the application locally, please follow the 
 <a href="https://docs.mongodb.com/manual/installation/">mongoDB installation guide</a>.
