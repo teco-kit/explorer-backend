@@ -37,9 +37,7 @@ async function autoCreateLabelings(dataset) {
  * get all datasets
  */
 async function getDatasets(ctx) {
-	const {authId} = ctx.state;
-	const user = await UserModel.findOne({authId});
-	ctx.body = await Model.find({userId: user._id});
+	ctx.body = await Model.find({});
 	ctx.status = 200;
 }
 
@@ -47,9 +45,7 @@ async function getDatasets(ctx) {
  * get dataset by id
  */
 async function getDatasetById(ctx) {
-	const {authId} = ctx.state;
-	const user = await UserModel.findOne({authId});
-	ctx.body = await Model.findById({_id: ctx.params.id, userId: user._id});
+	ctx.body = await Model.findById({_id: ctx.params.id});
 	ctx.status = 200;
 	return ctx.body;
 }
