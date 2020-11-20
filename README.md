@@ -4,7 +4,7 @@ The backend part of the explorer project which can be found [here](https://githu
 
 ![Tests](https://github.com/teco-kit/explorer-backend/workflows/Tests/badge.svg?branch=master)
 
-A REST API for AURA backend. 
+A REST API for the <a href="https://github.com/teco-kit/explorer-backend">explorer backend</a>.
 
 You can find an UML for the database scheme 
 <a href="https://drive.google.com/open?id=15c_GufI5fqn6T1DA8TLKNCUdbo4u7VCh">here</a>.
