@@ -8,19 +8,16 @@ const UserModel = require("../models/user").model;
  */
 async function getProjects(ctx, next) {
   const {authId} = ctx.state;
-  const users = await UserModel.find({authId})
-  const projects = await Project.find({});
   ctx.body = await Project.find({});
   ctx.status = 200;
 }
 
 async function createProject(ctx) {
   const project = ctx.request.body;
-
   // The admin is the one creating the project
-  const { authId } = ctx.state;
-  const user = await UserModel.findOne({ authId });
-  project.admin = user._id;
+  //const { authId } = ctx.state;
+  //const user = await UserModel.findOne({ authId });
+  project.admin = authId;
   const document = new Project(project);
   await document.save();
 

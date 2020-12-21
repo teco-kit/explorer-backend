@@ -37,7 +37,8 @@ async function autoCreateLabelings(dataset) {
  * get all datasets
  */
 async function getDatasets(ctx) {
-	ctx.body = await Model.find({});
+	const projectId = ctx.header.project;
+	ctx.body = await Model.find({projectId: projectId});
 	ctx.status = 200;
 }
 
@@ -54,8 +55,8 @@ async function getDatasetById(ctx) {
  * create a new dataset
  */
 async function createDataset(ctx) {
-	const dataset = ctx.request.body;
-
+	var dataset = ctx.request.body;
+	dataset.projectId = ctx.header.project
 	// if userId empty, set it to requesting user
 	if(!dataset.userId) {
 		const {authId} = ctx.state;
