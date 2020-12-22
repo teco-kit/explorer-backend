@@ -3,6 +3,7 @@ const UserModel = require('../models/user').model;
 const Experiment = require('../models/experiment').model;
 const DatasetLabeling = require('../models/datasetLabeling').model;
 const DatasetLabel = require('../models/datasetLabel').model;
+const ProjectModel = require('../models/project').model;
 
 /**
  * Util Function
@@ -38,7 +39,9 @@ async function autoCreateLabelings(dataset) {
  */
 async function getDatasets(ctx) {
 	const projectId = ctx.header.project;
-	ctx.body = await Model.find({projectId: projectId});
+	const project = await ProjectModel.findOne({_id: projectId})
+	const datasets = await Model.find({_id: project.datasets});
+	ctx.body = datasets
 	ctx.status = 200;
 }
 
@@ -63,7 +66,7 @@ async function createDataset(ctx) {
 		const user = await UserModel.findOne({authId});
 		dataset.userId = user._id;
 	}
-
+	
 	if('experiments' in dataset && dataset.experiments !== null
     && !('labelings' in dataset)) {
 		dataset.labelings = await autoCreateLabelings(dataset);
@@ -74,8 +77,12 @@ async function createDataset(ctx) {
 		return ctx;
 	}
 
+	const project = await ProjectModel.findOne({_id: ctx.header.project});
 	const document = new Model(dataset);
 	await document.save();
+
+	project.datasets.push(document._id);
+	await ProjectModel.findByIdAndUpdate(ctx.header.project, {$set: {datasets: project.datasets}});
 
 	ctx.body = document;
 	ctx.status = 201;
@@ -99,6 +106,9 @@ async function deleteDatasetById(ctx) {
 	const {authId} = ctx.state;
 	const user = await UserModel.findOne({authId});
 	await Model.findOneAndDelete({_id: ctx.params.id, userId: user._id});
+	const project = await ProjectModel.findOne({_id: ctx.header.project});
+	project.datasets.splice(project.datasets.findIndex(elm => ctx.params.id === elm), 1);
+	await ProjectModel.findByIdAndUpdate(ctx.header.project, {$set: {datasets: project.datasets}})
 	ctx.body = {message: `deleted dataset with id: ${ctx.params.id}`};
 	ctx.status = 200;
 	return ctx;

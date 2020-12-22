@@ -14,11 +14,6 @@ const Dataset = new mongoose.Schema({
 		ref: 'User',
 		required: [true, 'object needs to be associated with user']
 	},
-	projectId: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Project',
-		required: [true, 'object needs to be associated with a dataset']
-	},
 	start: {
 		type: Number,
 		required: [true, 'please enter a start time']

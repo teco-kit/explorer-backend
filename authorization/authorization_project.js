@@ -7,7 +7,6 @@ module.exports = async (ctx, next) => {
     if (ctx.url.split("/")[2] === "projects"){
         return next();
     }
-    console.log(ctx)
     var authId = ctx.state.authId;
     const projectId = ctx.header.project;
     if (!projectId) {
@@ -18,7 +17,7 @@ module.exports = async (ctx, next) => {
         return ctx;
     }
     const project = await Project.findById({_id: projectId});
-    if (!project.users.includes(authId)) {
+    if (!(project.users.includes(authId) || project.admin === authId)) {
         // User does not have access to this project
         ctx.status = 401;
         ctx.body = {
