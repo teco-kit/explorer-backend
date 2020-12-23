@@ -2,6 +2,13 @@ const project = require("../models/project");
 const Project = require("../models/project").model;
 const UserModel = require("../models/user").model;
 
+function filterProjectNonAdmin(ctx, project) {
+  const { authId } = ctx.state;
+  return String(authId) === String(project.admin)
+    ? project
+    : { name: project.name, _id: project._id };
+}
+
 /**
  * get all projects where the user has access to
  */
@@ -10,7 +17,7 @@ async function getProjects(ctx, next) {
   const body = await Project.find({
     $or: [{ admin: authId }, { users: authId }],
   });
-  ctx.body = body;
+  ctx.body = body.map((elm) => filterProjectNonAdmin(ctx, elm));
   ctx.status = 200;
   return ctx;
 }
@@ -61,12 +68,13 @@ async function updateProjectById(ctx) {
 }
 
 async function getProjectById(ctx) {
-  ctx.body = await Project.findOne({
+  const project = await Project.findOne({
     $and: [
       { _id: ctx.params.id },
       { $or: [{ admin: authId }, { users: authId }] },
     ],
   });
+  ctx.body = filterProjectNonAdmin(ctx, project);
   ctx.status = 200;
 }
 
