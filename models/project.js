@@ -22,7 +22,22 @@ const Project = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'dataset',
 		default: []
-	}
+    },
+    experiments: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'experiments',
+        default: []
+    },
+    labelDefinitions: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'labelDefinitions',
+        default: []
+    },
+    labelTypes: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'lalbelTypes',
+        default: []
+    }
 });
 
 module.exports = {

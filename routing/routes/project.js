@@ -14,7 +14,7 @@ router.get('/:id', async (ctx) => {
 })
 
 router.del('/:id', async (ctx) => {
-	await controller.deleteDatasetById(ctx);
+	await controller.deleteProjectById(ctx);
 });
 
 router.post('/', KoaBody(), async (ctx) => {

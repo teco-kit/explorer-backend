@@ -4,7 +4,7 @@ const UserModel = require("../models/user").model;
 
 function filterProjectNonAdmin(ctx, project) {
   const { authId } = ctx.state;
-  return String(authId) === String(project.admin)
+  return authId === String(project.admin)
     ? project
     : { name: project.name, _id: project._id };
 }
@@ -27,6 +27,7 @@ async function getProjects(ctx, next) {
 async function createProject(ctx) {
   const project = ctx.request.body;
   // The admin is the one creating the project
+  const { authId } = ctx.state;
   project.admin = authId;
   const document = new Project(project);
   await document.save();
@@ -39,8 +40,8 @@ async function createProject(ctx) {
 /*
  * Deletes a project when a user has the access rights
  */
-async function deleteProjectById() {
-  var authId = ctx.state.authId;
+async function deleteProjectById(ctx) {
+  const authId = ctx.state.authId;
   await Project.findOneAndDelete({
     $and: [
       { _id: ctx.params.id },
@@ -53,14 +54,14 @@ async function deleteProjectById() {
 }
 
 async function updateProjectById(ctx) {
+  const { authId } = ctx.state;
+  const project = ctx.request.body;
+  project.users = ctx.request.body.users.map((elm) => {
+    return typeof elm === "object" ? elm._id : elm;
+  });
   await Project.findOneAndUpdate(
-    {
-      $and: [
-        { _id: ctx.params.id },
-        { $or: [{ admin: authId }, { users: authId }] },
-      ],
-    },
-    { $set: ctx.request.body }
+    { $and: [{ _id: ctx.params.id }, { admin: authId }] },
+    { $set: project }
   );
   ctx.body = { message: `updated project with id: ${ctx.params.id}` };
   ctx.status = 200;
@@ -68,6 +69,7 @@ async function updateProjectById(ctx) {
 }
 
 async function getProjectById(ctx) {
+  const { authId } = ctx.state;
   const project = await Project.findOne({
     $and: [
       { _id: ctx.params.id },
