@@ -7,11 +7,11 @@ const ProjectModel = require("../models/project").model;
  * get all labelTypes
  */
 async function getlabelTypes(ctx) {
-  const project = await ProjectModel.findOne({ _id: ctx.header.project });
+  const projectId = ctx.header.project;
+  const project = await ProjectModel.findOne({ _id: projectId });
   const labelTypes = await Model.find({ _id: project.labelTypes });
   ctx.body = labelTypes;
   ctx.status = 200;
-  return ctx;
 }
 
 /**
@@ -40,9 +40,8 @@ async function createLabelType(ctx) {
   const project = await ProjectModel.findOne({ _id: ctx.header.project });
   const document = new Model(ctx.request.body);
   await document.save();
-  project.labelTypes.push(document._id);
   await ProjectModel.findByIdAndUpdate(ctx.header.project, {
-    $set: { labelTypes: project.labelTypes },
+    $push: { labelTypes: document._id },
   });
   ctx.body = document;
   ctx.status = 201;
@@ -80,7 +79,7 @@ async function deletelabelTypes(ctx) {
  * delete a labelType specified by id
  */
 async function deleteLabelTypeById(ctx) {
-  const project = await  ProjectModel.findOne({ _id: ctx.header.project });
+  const project = await ProjectModel.findOne({ _id: ctx.header.project });
   if (project.labelTypes.includes(ctx.params.id)) {
     await Model.findOneAndDelete({ _id: ctx.params.id });
     const newLalbeTypes = project.labelTypes.filter(

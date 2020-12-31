@@ -41,11 +41,9 @@ async function createLabelDefinition(ctx) {
   const project = await ProjectModel.findOne({ _id: ctx.header.project });
   const document = new Model(ctx.request.body);
   await document.save();
-  project.labelDefinitions.push(document._id);
   await ProjectModel.findByIdAndUpdate(ctx.header.project, {
-    $set: { labelDefinitions: project.labelDefinitions },
+    $push: { labelDefinitions: document._id },
   });
-
   ctx.body = document;
   ctx.status = 201;
   return ctx;
@@ -90,10 +88,10 @@ async function deleteLabelDefinitionById(ctx) {
     });
     const newProjectLabelTypes = project.labelTypes.filter(
       (item) => !labelDefinition.labels.includes(item)
-	);
+    );
     const labelDefinitions = project.labelDefinitions.filter(
       (item) => String(item) !== String(ctx.params.id)
-	);
+    );
     // delete labelDefinition
     await Model.findOneAndDelete({ _id: ctx.params.id });
     await ProjectModel.findByIdAndUpdate(ctx.header.project, {

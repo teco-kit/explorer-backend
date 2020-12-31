@@ -96,10 +96,8 @@ async function createDataset(ctx) {
   const project = await ProjectModel.findOne({ _id: ctx.header.project });
   const document = new Model(dataset);
   await document.save();
-
-  project.datasets.push(document._id);
   await ProjectModel.findByIdAndUpdate(ctx.header.project, {
-    $set: { datasets: project.datasets },
+    $push: { datasets: document._id },
   });
 
   ctx.body = document;

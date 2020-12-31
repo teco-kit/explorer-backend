@@ -58,9 +58,8 @@ async function createExperiment(ctx) {
   const project = await ProjectModel.findOne({ _id: ctx.header.project });
   const document = new Model(ctx.request.body);
   await document.save();
-  project.experiments.push(document._id);
   await ProjectModel.findByIdAndUpdate(ctx.header.project, {
-    $set: { experiments: project.experiments },
+    $push: { experiments: document._id },
   });
   ctx.body = document;
   ctx.status = 201;
