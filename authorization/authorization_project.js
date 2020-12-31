@@ -4,7 +4,7 @@ const Project = require("../models/project").model;
 
 module.exports = async (ctx, next) => {
     try {
-    if (ctx.url.split("/")[2] === "projects"){
+    if (["projects", "users"].includes(ctx.url.split("/")[2] )){
         console.log("Project page")
         return next();
     }

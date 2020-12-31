@@ -132,12 +132,11 @@ async function deleteDatasetById(ctx) {
     $and: [{ _id: ctx.params.id }, { _id: project.datasets }],
   });
   if (dataset !== null) {
-    project.datasets.splice(
-      project.datasets.findIndex((elm) => ctx.params.id === elm),
-      1
+    const newDatasets = project.datasets.filter(
+      (item) => String(item) !== String(ctx.params.id)
     );
     await ProjectModel.findByIdAndUpdate(ctx.header.project, {
-      $set: { datasets: project.datasets },
+      $set: { datasets: newDatasets },
     });
     ctx.body = { message: `deleted dataset with id: ${ctx.params.id}` };
     ctx.status = 200;

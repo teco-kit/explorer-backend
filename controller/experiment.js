@@ -7,7 +7,7 @@ const ProjectModel = require("../models/project").model;
 async function getExperiments(ctx) {
   const project = await ProjectModel.findOne({ _id: ctx.header.project });
   const experiments = await Model.find({ _id: project.experiments });
-  ctx.body = experiments
+  ctx.body = experiments;
   ctx.status = 200;
   return ctx;
 }
@@ -16,7 +16,7 @@ async function getExperiments(ctx) {
  * get experiment by id
  */
 async function getExperimentById(ctx) {
-  const project = ProjectModel.findOne({ _id: ctx.header.project });
+  const project = await ProjectModel.findOne({ _id: ctx.header.project });
   const experiment = await Model.find({
     $and: [{ _id: ctx.params.id }, { _id: project.experiments }],
   });
@@ -24,7 +24,7 @@ async function getExperimentById(ctx) {
     ctx.body = { error: "Experiment not in dataset" };
     ctx.status = 400;
   } else {
-    ctx.body = dataset;
+    ctx.body = experiment[0];
     ctx.status = 200;
   }
   return ctx;
@@ -35,7 +35,7 @@ async function getExperimentById(ctx) {
  * experiment is populated by LabelDefinition and LabelTypes
  */
 async function getExperimentByIdPopulated(ctx) {
-  const project = ProjectModel.findOne({ _id: ctx.header.project });
+  const project = await ProjectModel.findOne({ _id: ctx.header.project });
   const experiment = await Model.find({
     $and: [{ _id: ctx.params.id }, { _id: project.experiments }],
   });
@@ -71,8 +71,8 @@ async function createExperiment(ctx) {
  * update a experiment specified by id
  */
 async function updateExperimentById(ctx) {
-  const project = ProjectModel.findOne({ _id: ctx.header.project });
-  if (project.experiments.includes(ctx.params.id)) {
+  const project = await ProjectModel.findOne({ _id: ctx.header.project });
+  if (project.experiments.some(elm => String(elm) === String(ctx.params.id))) {
     await Model.findByIdAndUpdate(ctx.params.id, { $set: ctx.request.body });
     ctx.body = { message: `updated experiment with id: ${ctx.params.id}` };
     ctx.status = 200;
@@ -97,9 +97,15 @@ async function deleteExperiments(ctx) {
  * delete a experiment specified by id
  */
 async function deleteExperimentById(ctx) {
-  const project = ProjectModel.findOne({ _id: ctx.header.project });
-  if (project.experiments.includes(ctx.params.id)) {
-    await Model.findOneAndDelete({ _id: ctx.params.id });
+  const project = await  ProjectModel.findOne({ _id: ctx.header.project });
+  const experiment = await Model.findOneAndDelete({
+    $and: [{ _id: ctx.params.id }, { _id: project.experiments }],
+  });
+  if (experiment !== null) {
+    project.experiments.filter((item) => item !== ctx.params.id);
+    await ProjectModel.findByIdAndUpdate(ctx.header.project, {
+      $set: { experiments: project.experiments },
+    });
     ctx.body = { message: `deleted experiment with id: ${ctx.params.id}` };
     ctx.status = 200;
   } else {
