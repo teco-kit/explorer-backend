@@ -7,10 +7,10 @@ const TimeSeries = new mongoose.Schema({
 	},
 	unit: {
 		type: String,
-		required: [true, 'timeSeries unit cannot be empty']
+		default: ''
 	},
 	data: {
-		type: [{"timestamp":Number, "datapoint": Number}]
+		type: [{ timestamp: Number, datapoint: Number }]
 	},
 	offset: {
 		type: Number,
