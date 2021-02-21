@@ -1,10 +1,10 @@
-const Koa          = require('koa');
-const config       = require('config');
-const mongoose     = require('mongoose');
-const cors				 = require('koa-cors');
-const convert 		 = require('koa-convert');
-const mount 			 = require('koa-mount');
-const serve 			 = require('koa-static');
+const Koa = require('koa');
+const config = require('config');
+const mongoose = require('mongoose');
+const cors = require('koa-cors');
+const convert = require('koa-convert');
+const mount = require('koa-mount');
+const serve = require('koa-static');
 
 
 const router = require('./routing/router.js');
@@ -16,7 +16,7 @@ const authorizeProjects = require('./authorization/authorization_project');
 const server = new Koa();
 
 // connect to Mongo
-mongoose.connect(config.db, {useNewUrlParser: true});
+mongoose.connect(config.db, { useNewUrlParser: true });
 
 // suppress deprecation warnings
 mongoose.set('useFindAndModify', false);
@@ -39,7 +39,7 @@ server.use(async (ctx, next) => {
 
 server.use(async (ctx, next) => {
 	await authorizeProjects(ctx, next);
-})
+});
 
 
 // catch errors
@@ -47,7 +47,7 @@ server.use(async (ctx, next) => {
 	try {
 		await next();
 	} catch (error) {
-		ctx.body = {error: error.message};
+		ctx.body = { error: error.message };
 		ctx.status = error.status || 500;
 	}
 });
@@ -59,7 +59,7 @@ server.use(router.routes());
 // if no other routing rules match
 // make sure it is added after everything else
 server.use((ctx) => {
-	ctx.body = {error: 'Not Found'};
+	ctx.body = { error: 'Not Found' };
 	ctx.status = 404;
 });
 

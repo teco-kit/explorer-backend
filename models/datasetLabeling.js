@@ -9,6 +9,7 @@ const DatasetLabeling = new mongoose.Schema({
 	},
 	labels: {
 		type: [Label],
+		ref: 'DatasetLabel',
 		default: []
 	},
 	creator: {

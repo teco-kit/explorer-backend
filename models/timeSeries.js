@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const timePoint = require('./timePoint').schema;
 
 const TimeSeries = new mongoose.Schema({
 	name: {
@@ -11,7 +10,16 @@ const TimeSeries = new mongoose.Schema({
 		default: ''
 	},
 	data: {
-		type: [timePoint],
+		type: [{
+			timestamp: {
+				type: Number,
+				required: [true, 'invalid timestamp'],
+			},
+			datapoint: {
+				type: Number,
+				required: [true, 'invalid datapoint'],
+			}
+		}],
 	},
 	offset: {
 		type: Number,

@@ -4,10 +4,10 @@ const mongoose = require('mongoose');
 const User = require('./user').schema
 
 const Project = new mongoose.Schema({
-	admin: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'User',
-		required: [true, 'a project needs an admin']
+    admin: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, 'a project needs an admin']
     },
     name: {
         type: String,
@@ -18,29 +18,29 @@ const Project = new mongoose.Schema({
         ref: 'User',
         default: []
     },
-	datasets: {
+    datasets: {
         type: [mongoose.Schema.Types.ObjectId],
-        ref: 'dataset',
-		default: []
+        ref: 'Dataset',
+        default: []
     },
     experiments: {
         type: [mongoose.Schema.Types.ObjectId],
-        ref: 'experiments',
+        ref: 'Experiment',
         default: []
     },
     labelDefinitions: {
         type: [mongoose.Schema.Types.ObjectId],
-        ref: 'labelDefinitions',
+        ref: 'LabelDefinition',
         default: []
     },
     labelTypes: {
         type: [mongoose.Schema.Types.ObjectId],
-        ref: 'lalbelTypes',
+        ref: 'LabelType',
         default: []
     }
 });
 
 module.exports = {
-	model: mongoose.model('Project', Project),
-	schema: Project
+    model: mongoose.model('Project', Project),
+    schema: Project
 };
