@@ -1,5 +1,5 @@
-const Model = require("../models/experiment").model;
-const ProjectModel = require("../models/project").model;
+const Model = require('../models/experiment').model;
+const ProjectModel = require('../models/project').model;
 
 /**
  * get all experiments for a project
@@ -21,7 +21,7 @@ async function getExperimentById(ctx) {
     $and: [{ _id: ctx.params.id }, { _id: project.experiments }],
   });
   if (experiment.length !== 1) {
-    ctx.body = { error: "Experiment not in dataset" };
+    ctx.body = { error: 'Experiment not in dataset' };
     ctx.status = 400;
   } else {
     ctx.body = experiment[0];
@@ -40,12 +40,12 @@ async function getExperimentByIdPopulated(ctx) {
     $and: [{ _id: ctx.params.id }, { _id: project.experiments }],
   });
   if (experiment.length !== 1) {
-    ctx.body = { error: "Experiment not in dataset" };
+    ctx.body = { error: 'Experiment not in dataset' };
     ctx.status = 400;
   } else {
-    await experiment.populate("instructions.labelingId").execPopulate();
-    await experiment.populate("instructions.labelType").execPopulate();
-    ctx.body = experiment;
+    await experiment[0].populate('instructions.labelingId').execPopulate();
+    await experiment[0].populate('instructions.labelType').execPopulate();
+    ctx.body = experiment[0];
     ctx.status = 200;
   }
   return ctx;
@@ -76,7 +76,7 @@ async function updateExperimentById(ctx) {
     ctx.body = { message: `updated experiment with id: ${ctx.params.id}` };
     ctx.status = 200;
   } else {
-    ctx.body = { error: "Forbidden" };
+    ctx.body = { error: 'Forbidden' };
     ctx.status = 403;
   }
   return ctx;
@@ -87,7 +87,7 @@ async function updateExperimentById(ctx) {
  */
 async function deleteExperiments(ctx) {
   await Model.deleteMany({});
-  ctx.body = { message: "deleted all experiments" };
+  ctx.body = { message: 'deleted all experiments' };
   ctx.status = 200;
   return ctx;
 }
@@ -96,19 +96,19 @@ async function deleteExperiments(ctx) {
  * delete a experiment specified by id
  */
 async function deleteExperimentById(ctx) {
-  const project = await  ProjectModel.findOne({ _id: ctx.header.project });
+  const project = await ProjectModel.findOne({ _id: ctx.header.project });
   const experiment = await Model.findOneAndDelete({
     $and: [{ _id: ctx.params.id }, { _id: project.experiments }],
   });
   if (experiment !== null) {
-    project.experiments.filter((item) => item !== ctx.params.id);
+    project.experiments.filter(item => item !== ctx.params.id);
     await ProjectModel.findByIdAndUpdate(ctx.header.project, {
       $set: { experiments: project.experiments },
     });
     ctx.body = { message: `deleted experiment with id: ${ctx.params.id}` };
     ctx.status = 200;
   } else {
-    ctx.body = { error: "Forbidden" };
+    ctx.body = { error: 'Forbidden' };
     ctx.status = 403;
   }
   return ctx;
