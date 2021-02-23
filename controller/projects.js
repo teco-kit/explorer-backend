@@ -25,7 +25,6 @@ async function getProjects(ctx, next) {
  */
 async function createProject(ctx) {
   try {
-    console.log("Creating project")
     const project = ctx.request.body;
     // The admin is the one creating the project
     const { authId } = ctx.state;
@@ -37,11 +36,12 @@ async function createProject(ctx) {
     ctx.status = 201;
     return ctx;
   } catch (e) {
-    console.log(e);
-    console.log("Error")
     if (e.code === 11000 && e.keyPattern.admin && e.keyPattern.name) {
       ctx.body = { error: 'A project with this name already exists' };
       ctx.status = 400;
+    } else {
+      ctx.status = 400;
+      ctx.body = { error: e.errors.name.properties.message };
     }
     return ctx;
   }
@@ -70,7 +70,8 @@ async function updateProjectById(ctx) {
     project.users = ctx.request.body.users.map(elm => (typeof elm === 'object' ? elm._id : elm));
     await Project.findOneAndUpdate(
       { $and: [{ _id: ctx.params.id }, { admin: authId }] },
-      { $set: project }
+      { $set: project },
+      { runValidators: true }
     );
     ctx.body = { message: `updated project with id: ${ctx.params.id}` };
     ctx.status = 200;
@@ -78,7 +79,9 @@ async function updateProjectById(ctx) {
     if (e.code === 11000 && e.keyPattern.admin && e.keyPattern.name) {
       ctx.body = { error: 'A project with this name already exists' };
       ctx.status = 400;
-      return ctx;
+    } else {
+      ctx.status = 400;
+      ctx.body = { error: e.errors.name.properties.message };
     }
   }
   return ctx;
