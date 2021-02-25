@@ -9,17 +9,13 @@ const subroutes = {
 	result: require('./subroutes/result'),
 	event: require('./subroutes/event'),
 	labeling: require('./subroutes/labeling'),
-	video: require('./subroutes/video'),
-	timeseries: require('./subroutes/timeseries'),
-	fusedseries: require('./subroutes/fusedseries')
+	video: require('./subroutes/video')
 };
 
 router.use('/:datasetId/results', subroutes.result.routes(), subroutes.result.allowedMethods());
 router.use('/:datasetId/events', subroutes.event.routes(), subroutes.event.allowedMethods());
 router.use('/:datasetId/labelings', subroutes.labeling.routes(), subroutes.labeling.allowedMethods());
 router.use('/:datasetId/video', subroutes.video.routes(), subroutes.video.allowedMethods());
-router.use('/:datasetId/timeseries', subroutes.timeseries.routes(), subroutes.timeseries.allowedMethods());
-router.use('/:datasetId/fusedseries', subroutes.fusedseries.routes(), subroutes.fusedseries.allowedMethods());
 
 /**
  * get all datasets for current user
