@@ -362,82 +362,6 @@ describe('Testing API Routes', () => {
     });
   });
 
-  describe('Testing /eventTypes...', () => {
-    it('Saves a new eventType', (done) => {
-      request
-        .post('/api/eventTypes')
-        .set({ Authorization: token, project: project._id })
-        .send({ name: 'Training' })
-        .expect(201)
-        .end((err, res) => {
-          labelDefinition = res.body;
-          done(err);
-        });
-    });
-
-    it('Returns a list of eventTypes', (done) => {
-      request
-        .get('/api/eventTypes')
-        .set({ Authorization: token, project: project._id })
-        .expect(200)
-        .end((err, res) => {
-          expect(res.body).to.be.an('array');
-          done(err);
-        });
-    });
-
-    it('Returns a eventType by id', (done) => {
-      request
-        .get(`/api/eventTypes/${labelDefinition._id}`)
-
-        .set({ Authorization: token, project: project._id })
-        .expect(200)
-        .end((err, res) => {
-          expect(res.body).to.have.all.keys('_id', 'name', '__v');
-          done(err);
-        });
-    });
-
-    it('Update a eventType by id', (done) => {
-      request
-        .put(`/api/eventTypes/${labelDefinition._id}`)
-        .set({ Authorization: token, project: project._id })
-        .send({ name: 'Food' })
-        .expect(200)
-        .end((err, res) => {
-          expect(res.body.message).to.be.equal(
-            `updated eventType with id: ${labelDefinition._id}`
-          );
-          done(err);
-        });
-    });
-
-    it('Delete a eventType by id', (done) => {
-      request
-        .delete(`/api/eventTypes/${labelDefinition._id}`)
-
-        .set({ Authorization: token, project: project._id })
-        .expect(200)
-        .end((err, res) => {
-          expect(res.body.message).to.be.equal(
-            `deleted eventType with id: ${labelDefinition._id}`
-          );
-          done(err);
-        });
-    });
-
-    it('Delete all eventType', (done) => {
-      request
-        .delete(`/api/eventTypes`)
-        .set({ Authorization: token, project: project._id })
-        .expect(200)
-        .end((err, res) => {
-          expect(res.body.message).to.be.equal(`deleted all eventTypes`);
-          done(err);
-        });
-    });
-  });
-
   describe('Testing /firmware...', () => {
     it('Saves a new firmware', (done) => {
       request
@@ -1008,99 +932,6 @@ describe('Testing API Routes', () => {
       });
     });
 
-    describe('Testing /datasets/{id}/events...', () => {
-      it('Saves a new eventType', (done) => {
-        request
-          .post('/api/eventTypes')
-          .set({ Authorization: token, project: project._id })
-          .send({ name: 'Training' })
-          .expect(201)
-          .end((err, res) => {
-            event.type = res.body._id;
-            done(err);
-          });
-      });
-
-      it('Saves a new event', (done) => {
-        request
-          .post(`/api/datasets/${dataset._id}/events`)
-          .set({ Authorization: token, project: project._id })
-          .send(event)
-          .expect(201)
-          .end((err, res) => {
-            event._id = res.body._id;
-            done(err);
-          });
-      });
-
-      it('Returns a list of events', (done) => {
-        request
-          .get(`/api/datasets/${dataset._id}/events`)
-          .set({ Authorization: token, project: project._id })
-          .expect(200)
-          .end((err, res) => {
-            expect(res.body).to.be.an('array');
-            done(err);
-          });
-      });
-
-      it('Returns an event by id', (done) => {
-        request
-          .get(`/api/datasets/${dataset._id}/events/${event._id}`)
-          .set({ Authorization: token, project: project._id })
-          .expect(200)
-          .end((err, res) => {
-            expect(res.body).to.have.all.keys(
-              '_id',
-              'name',
-              'value',
-              'type',
-              'time',
-              'unit',
-              'icon'
-            );
-            done(err);
-          });
-      });
-
-      it('Update an event by id', (done) => {
-        request
-          .put(`/api/datasets/${dataset._id}/events/${event._id}`)
-          .set({ Authorization: token, project: project._id })
-          .send({ name: 'EventNeu' })
-          .expect(200)
-          .end((err, res) => {
-            expect(res.body.message).to.be.equal(
-              `updated event with id: ${event._id}`
-            );
-            done(err);
-          });
-      });
-
-      it('Delete an event by id', (done) => {
-        request
-          .delete(`/api/datasets/${dataset._id}/events/${event._id}`)
-          .set({ Authorization: token, project: project._id })
-          .expect(200)
-          .end((err, res) => {
-            expect(res.body.message).to.be.equal(
-              `deleted event with id: ${event._id}`
-            );
-            done(err);
-          });
-      });
-
-      it('Delete all events', (done) => {
-        request
-          .delete(`/api/datasets/${dataset._id}/events/`)
-          .set({ Authorization: token, project: project._id })
-          .expect(200)
-          .end((err, res) => {
-            expect(res.body.message).to.be.equal(`deleted all events`);
-            done(err);
-          });
-      });
-    });
 
     describe('Testing /datasets/{id}/labelings...', () => {
       it('Saves a new service', (done) => {
@@ -1289,7 +1120,6 @@ describe('Testing API Routes', () => {
               'userId',
               'start',
               'end',
-              'events',
               'isPublished',
               'timeSeries',
               'fusedSeries',
@@ -1330,20 +1160,6 @@ describe('Testing API Routes', () => {
             done(err);
           });
       });
-    });
-  });
-
-  describe('Testing server error ...', () => {
-    it('Server error returns 500', (done) => {
-      request
-        .post('/api/eventTypes')
-        .set({ Authorization: token, project: project._id })
-        .send({})
-        .expect(500)
-        .end((err, res) => {
-          expect(res.body).to.have.all.keys('error');
-          done(err);
-        });
     });
   });
 
