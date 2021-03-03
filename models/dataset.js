@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 // import subdocumets
-const Event = require("./datasetEvent").schema;
 const TimeSeries = require("./timeSeries").schema;
 const FusedSeries = require("./fusedSeries").schema;
 const LabelingObject = require("./datasetLabeling").schema;
@@ -21,11 +20,6 @@ const Dataset = new mongoose.Schema({
 	end: {
 		type: Number,
 		required: [true, "please enter an end time"],
-	},
-	events: {
-		type: [Event],
-		ref: "DatasetEvent",
-		default: [],
 	},
 	isPublished: {
 		type: Boolean,
