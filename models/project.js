@@ -35,6 +35,11 @@ const Project = new mongoose.Schema({
         ref: 'LabelType',
         default: [],
     },
+    devices: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Device',
+        default: []
+    }
 });
 
 Project.index({ name: 1, admin: 1 }, { unique: true });
@@ -44,6 +49,7 @@ Project.path('name').validate(
     value => /^[\w, -]+$/.test(value),
     'Invalid project name'
 );
+
 module.exports = {
     model: mongoose.model('Project', Project),
     schema: Project,
