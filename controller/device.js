@@ -73,7 +73,7 @@ async function updateDeviceById(ctx) {
 async function deleteDevices(ctx) {
   const project = await Project.findById({ _id: ctx.header.project });
   await Datasets.updateMany(
-    { datasets: project.datasets },
+    { device: project.datasets },
     { $pull: { devices: project.devices } }
   );
   await Model.deleteMany({ _id: ctx.header.project });
@@ -92,7 +92,7 @@ async function deleteDevices(ctx) {
 async function deleteDeviceById(ctx) {
   const project = await Project.findById({ _id: ctx.header.project });
   await Datasets.updateMany(
-    { datasets: project.datasets },
+    { device: project.datasets },
     { $pull: { devices: ctx.params.id } }
   );
   await Project.updateOne(

@@ -39,6 +39,21 @@ const Project = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Device',
         default: []
+    },
+    services: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Service',
+        default: []
+    },
+    sensors: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Sensor',
+        default: []
+    }, 
+    firmware: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Firmware',
+        default: []
     }
 });
 
