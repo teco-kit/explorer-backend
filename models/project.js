@@ -1,4 +1,12 @@
 const mongoose = require('mongoose');
+const Dataset = require('./dataset').model;
+const Experiment = require('./experiment').model;
+const LabelDefinition = require('./labelDefinition').model;
+const LabelType = require('./labelType').model;
+const Device = require('./device').model;
+const Service = require('./service').model;
+const Sensor = require('./sensor').model;
+const Firmware = require('./firmware').model;
 
 const Project = new mongoose.Schema({
     admin: {
@@ -64,6 +72,21 @@ Project.path('name').validate(
     value => /^[\w, -]+$/.test(value),
     'Invalid project name'
 );
+
+Project.pre('remove', async function (next){
+    console.log("Pre remove project");
+    console.log(this)
+    await Dataset.deleteMany({_id: {$in: this.datasets}})
+    await Experiment.deleteMany({_id: {$in: this.experiments}})
+    await LabelDefinition.deleteMany({_id: {$in: this.labelDefinitions}})
+    await LabelType.deleteMany({_id: {$in: this.labelTypes}})
+    await Device.deleteMany({_id: {$in: this.devices}})
+    await Service.deleteMany({_id: {$in: this.services}})
+    await Sensor.deleteMany({_id: {$in: this.sensors}})
+    await Firmware.deleteMany({_id: {$in: this.firmware}})
+    console.log(this.model('Dataset'));
+    next();
+})
 
 module.exports = {
     model: mongoose.model('Project', Project),

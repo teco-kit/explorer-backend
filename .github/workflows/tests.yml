@@ -20,9 +20,6 @@ jobs:
         mongodb-version: [4]
 
     steps:
-    - name: Git checkout
-      uses: actions/checkout@v2
-
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -33,7 +30,20 @@ jobs:
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
 
-    - run: npm ci
-    - run: npm test
-      env:
-        CI: true
+    - name: Clone auth
+      run: git clone https://github.com/teco-kit/explorer-auth
+    
+    - name: Install Auth
+      working-directory: ./explorer-auth
+      run:  |
+        npm ci
+        npm start &
+    
+    - name: Git checkout
+      uses: actions/checkout@v2
+    - name: Install backend
+      run: npm ci
+    - name: Test
+      run: npm test
+  env:
+    CI: true

@@ -1,5 +1,4 @@
 const Project = require('../models/project').model;
-const UserModel = require('../models/user').model;
 
 function filterProjectNonAdmin(ctx, project) {
   const { authId } = ctx.state;
@@ -52,13 +51,19 @@ async function createProject(ctx) {
  */
 async function deleteProjectById(ctx) {
   const { authId } = ctx.state;
-  await Project.findOneAndDelete({
+  const project = await Project.findOne({
     $and: [
       { _id: ctx.params.id },
       { $or: [{ admin: authId }, { users: authId }] },
     ],
   });
-  ctx.body = { message: `deleted dataset with id: ${ctx.params.id}` };
+  if (project === undefined) {
+    ctx.body = {message: 'Cannot delete this project'};
+    ctx.status = 400;
+    return ctx;
+  }
+  project.remove();
+  ctx.body = { message: `deleted project with id: ${ctx.params.id}` };
   ctx.status = 200;
   return ctx;
 }
