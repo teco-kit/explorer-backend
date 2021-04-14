@@ -58,10 +58,6 @@ const Dataset = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Experiment",
 		default: null,
-	},
-	deviceApiKey: {
-		type: String,
-		default: null
 	}
 });
 

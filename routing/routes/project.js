@@ -25,4 +25,12 @@ router.put('/:id', KoaBody(), async (ctx) => {
     await controller.updateProjectById(ctx);
 });
 
+router.post('/enableDeviceApi/:id', async (ctx) => {
+	await controller.setApiKey(ctx);
+});
+
+router.post('/disableDeviceApi/:id', async (ctx) => {
+	await controller.disableApiKey(ctx);
+});
+
 module.exports = router

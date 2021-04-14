@@ -5,8 +5,6 @@ const DatasetLabeling = require("../models/datasetLabeling").model;
 const DatasetLabel = require("../models/datasetLabel").model;
 const ProjectModel = require("../models/project").model;
 
-const crypto = require("crypto");
-
 /**
  * Util Function
  * Create labelings from experiment
@@ -146,31 +144,10 @@ async function deleteDatasetById(ctx) {
   return ctx;
 }
 
-async function setApiKey(ctx) {
-  const project = await ProjectModel.findOne({ _id: ctx.header.project });
-  const dataset = await Model.findOne({
-    $and: [{ _id: ctx.params.id }, { _id: project.datasets }],
-  });
-  if (!dataset) {
-    ctx.body = { error: "No access to this dataset" };
-    ctx.status = 400;
-    return ctx;
-  }
-
-  //Generate new id with hat
-  const deviceApi = crypto.randomBytes(32).toString('base64');
-  dataset.deviceApiKey = deviceApi;
-  await dataset.save();
-  ctx.body = { message: "Generate new key" };
-  ctx.status = 200;
-  return ctx;
-}
-
 module.exports = {
   getDatasets,
   getDatasetById,
   createDataset,
   updateDatasetById,
-  deleteDatasetById,
-  setApiKey,
+  deleteDatasetById
 };

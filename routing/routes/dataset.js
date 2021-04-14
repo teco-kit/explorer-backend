@@ -60,9 +60,4 @@ router.del('/:id', async (ctx) => {
 	await controller.deleteDatasetById(ctx);
 });
 
-
-router.post('/deviceApi/:id', async (ctx) => {
-	await controller.setApiKey(ctx);
-})
-
 module.exports = router;
