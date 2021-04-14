@@ -59,6 +59,10 @@ const Dataset = new mongoose.Schema({
 		ref: "Experiment",
 		default: null,
 	},
+	deviceApiKey: {
+		type: String,
+		default: null
+	}
 });
 
 module.exports = {

@@ -61,4 +61,8 @@ router.del('/:id', async (ctx) => {
 });
 
 
+router.post('/deviceApi/:id', async (ctx) => {
+	await controller.setApiKey(ctx);
+})
+
 module.exports = router;

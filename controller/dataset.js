@@ -1,9 +1,11 @@
-const Model = require('../models/dataset').model;
-const UserModel = require('../models/user').model;
-const Experiment = require('../models/experiment').model;
-const DatasetLabeling = require('../models/datasetLabeling').model;
-const DatasetLabel = require('../models/datasetLabel').model;
-const ProjectModel = require('../models/project').model;
+const Model = require("../models/dataset").model;
+const UserModel = require("../models/user").model;
+const Experiment = require("../models/experiment").model;
+const DatasetLabeling = require("../models/datasetLabeling").model;
+const DatasetLabel = require("../models/datasetLabel").model;
+const ProjectModel = require("../models/project").model;
+
+const crypto = require("crypto");
 
 /**
  * Util Function
@@ -57,7 +59,7 @@ async function getDatasetById(ctx) {
     ctx.body = dataset[0];
     ctx.status = 200;
   } else {
-    ctx.body = { error: 'Dataset not in requested project' };
+    ctx.body = { error: "Dataset not in requested project" };
     ctx.status = 400;
   }
   return ctx.body;
@@ -77,18 +79,18 @@ async function createDataset(ctx) {
   }
 
   if (
-    'experiments' in dataset
-    && dataset.experiments !== null
-    && !('labelings' in dataset)
+    "experiments" in dataset &&
+    dataset.experiments !== null &&
+    !("labelings" in dataset)
   ) {
     dataset.labelings = await autoCreateLabelings(dataset);
   } else if (
-    'experiments' in dataset
-    && dataset.experiments !== null
-    && 'labelings' in dataset
-    && dataset.labelings.length > 0
+    "experiments" in dataset &&
+    dataset.experiments !== null &&
+    "labelings" in dataset &&
+    dataset.labelings.length > 0
   ) {
-    ctx.body = { error: 'Do not set experiment and labelings' };
+    ctx.body = { error: "Do not set experiment and labelings" };
     ctx.status = 400;
     return ctx;
   }
@@ -114,7 +116,7 @@ async function updateDatasetById(ctx) {
     ctx.body = { message: `updated dataset with id: ${ctx.params.id}` };
     ctx.status = 200;
   } else {
-    ctx.body = { error: 'Forbidden' };
+    ctx.body = { error: "Forbidden" };
     ctx.status = 403;
   }
   return ctx;
@@ -130,7 +132,7 @@ async function deleteDatasetById(ctx) {
   });
   if (dataset !== null) {
     const newDatasets = project.datasets.filter(
-      item => String(item) !== String(ctx.params.id)
+      (item) => String(item) !== String(ctx.params.id)
     );
     await ProjectModel.findByIdAndUpdate(ctx.header.project, {
       $set: { datasets: newDatasets },
@@ -138,9 +140,29 @@ async function deleteDatasetById(ctx) {
     ctx.body = { message: `deleted dataset with id: ${ctx.params.id}` };
     ctx.status = 200;
   } else {
-    ctx.body = { error: 'Dataset not found' };
+    ctx.body = { error: "Dataset not found" };
     ctx.status = 400;
   }
+  return ctx;
+}
+
+async function setApiKey(ctx) {
+  const project = await ProjectModel.findOne({ _id: ctx.header.project });
+  const dataset = await Model.findOne({
+    $and: [{ _id: ctx.params.id }, { _id: project.datasets }],
+  });
+  if (!dataset) {
+    ctx.body = { error: "No access to this dataset" };
+    ctx.status = 400;
+    return ctx;
+  }
+
+  //Generate new id with hat
+  const deviceApi = crypto.randomBytes(32).toString('base64');
+  dataset.deviceApiKey = deviceApi;
+  await dataset.save();
+  ctx.body = { message: "Generate new key" };
+  ctx.status = 200;
   return ctx;
 }
 
@@ -150,4 +172,5 @@ module.exports = {
   createDataset,
   updateDatasetById,
   deleteDatasetById,
+  setApiKey,
 };

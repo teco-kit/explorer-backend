@@ -74,8 +74,6 @@ Project.path('name').validate(
 );
 
 Project.pre('remove', async function (next){
-    console.log("Pre remove project");
-    console.log(this)
     await Dataset.deleteMany({_id: {$in: this.datasets}})
     await Experiment.deleteMany({_id: {$in: this.experiments}})
     await LabelDefinition.deleteMany({_id: {$in: this.labelDefinitions}})
@@ -84,7 +82,6 @@ Project.pre('remove', async function (next){
     await Service.deleteMany({_id: {$in: this.services}})
     await Sensor.deleteMany({_id: {$in: this.sensors}})
     await Firmware.deleteMany({_id: {$in: this.firmware}})
-    console.log(this.model('Dataset'));
     next();
 })
 
