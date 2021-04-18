@@ -10,9 +10,16 @@ const DeviceApi = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: [true, "User needs to be set"],
   },
+
   deviceApiKey: {
     type: String,
   },
+
+  datasets: {
+      type: [{dataset: mongoose.Schema.Types.ObjectId, datasetKey: String}],
+      default: []
+  }
+  
 });
 
 module.exports = {

@@ -25,4 +25,12 @@ router.post("/switchActive", KoaBody(), async (ctx) => {
   await controller.switchActive(ctx);
 });
 
+router.post("/initDatasetIncrement", KoaBody(), async (ctx) => {
+	await controller.initDatasetIncrement(ctx);
+})
+
+router.post("/addDatasetIncrement", KoaBody(), async (ctx) => {
+	await controller.addDatasetIncrement(ctx);
+})
+
 module.exports = router;
