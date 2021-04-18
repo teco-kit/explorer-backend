@@ -7,6 +7,7 @@ const Device = require("./device").model;
 const Service = require("./service").model;
 const Sensor = require("./sensor").model;
 const Firmware = require("./firmware").model;
+const DeviceApi = require("./deviceApi").model;
 
 const Project = new mongoose.Schema({
   admin: {
@@ -63,10 +64,10 @@ const Project = new mongoose.Schema({
     ref: "Firmware",
     default: [],
   },
-  deviceApiKey: {
-    type: String,
-    default: null,
-  },
+  enableDeviceApi: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 Project.index({ name: 1, admin: 1 }, { unique: true });
@@ -86,6 +87,7 @@ Project.pre("remove", async function (next) {
   await Service.deleteMany({ _id: { $in: this.services } });
   await Sensor.deleteMany({ _id: { $in: this.sensors } });
   await Firmware.deleteMany({ _id: { $in: this.firmware } });
+  await DeviceApi.deleteMany({projectId: this._id});
   next();
 });
 

@@ -14,7 +14,8 @@ const subroutes = {
 	service: require('./routes/service'),
 	sensor: require('./routes/sensor'),
 	experiments: require('./routes/experiment'),
-	projects: require('./routes/project')  
+	projects: require('./routes/project'),
+	deviceApi: require('./routes/deviceApi')
 };
 
 // dataset routing
@@ -28,6 +29,7 @@ router.use('/services', subroutes.service.routes(), subroutes.service.allowedMet
 router.use('/sensors', subroutes.sensor.routes(), subroutes.sensor.allowedMethods());
 router.use('/experiments', subroutes.experiments.routes(), subroutes.experiments.allowedMethods());
 router.use('/projects',  subroutes.projects.routes(), subroutes.projects.allowedMethods());
+router.use('/deviceApi', subroutes.deviceApi.routes(), subroutes.deviceApi.allowedMethods());
 
 prefixRouter.use('/api', router.routes(), router.allowedMethods());
 module.exports = prefixRouter;

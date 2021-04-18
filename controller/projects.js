@@ -1,5 +1,4 @@
 const Project = require("../models/project").model;
-const crypto = require("crypto");
 
 function filterProjectNonAdmin(ctx, project) {
   const { authId } = ctx.state;
@@ -107,53 +106,11 @@ async function getProjectById(ctx) {
   ctx.status = 200;
 }
 
-async function setApiKey(ctx) {
-  const { authId } = ctx.state;
-  const project = await Project.findOne({
-    $and: [{ _id: ctx.params.id }, {admin: authId }],
-  });
-
-  if (!project) {
-    ctx.body = {error: "No access to this project"};
-    ctx.status = 400;
-    return ctx;
-  }
-
-  //Generate new id with hat
-  const deviceApi = crypto.randomBytes(64).toString("base64");
-  project.deviceApiKey = deviceApi;
-  await project.save();
-  ctx.body = { message: "Generate new key" };
-  ctx.status = 200;
-  return ctx;
-}
-
-async function disableApiKey(ctx) {
-  const { authId } = ctx.state;
-  const project = await Project.findOne({
-    $and: [{ _id: ctx.params.id }, {admin: authId }],
-  });
-
-  if (!project) {
-    ctx.body = {error: "No access to this project"};
-    ctx.status = 400;
-    return ctx;
-  }
-
-  //Generate new id with hat
-  project.deviceApiKey = undefined;
-  await project.save();
-  ctx.body = { message: "Disabled device api" };
-  ctx.status = 200;
-  return ctx;
-}
 
 module.exports = {
   getProjects,
   deleteProjectById,
   createProject,
   updateProjectById,
-  getProjectById,
-  setApiKey,
-  disableApiKey
+  getProjectById
 };
