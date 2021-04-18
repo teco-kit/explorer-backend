@@ -140,7 +140,6 @@ async function addDatasetIncrement(ctx) {
   if (!dataTime) {
     dataTime = Math.floor(new Date().getTime() / 1000);
   }
-
   if (dataset.timeSeries[0].data.length === 0) {
     dataset.start = dataTime;
     dataset.end = dataTime;
@@ -153,7 +152,7 @@ async function addDatasetIncrement(ctx) {
   var i = 0;
   for (i = 0; i < dataset.timeSeries.length; i++) {
     dataset.timeSeries[i].data.push({
-      timestamp: time,
+      timestamp: dataTime,
       datapoint: datapoint[i],
     });
 
