@@ -86,7 +86,7 @@ async function initDatasetIncrement(ctx) {
   });
   const project = await Project.findOne(deviceApi.projectId);
   if (!project.enableDeviceApi) {
-    ctx.body = {error: "Active the device-Api to enable this feature"};
+    ctx.body = { error: "This feature is disabled" };
     ctx.status = 403;
     return ctx;
   }
@@ -123,7 +123,7 @@ async function addDatasetIncrement(ctx) {
   });
   const project = await Project.findOne(deviceApi.projectId);
   if (!project.enableDeviceApi) {
-    ctx.body = {error: "Active the device-Api to enable this feature"};
+    ctx.body = { error: "This feature is disabled" };
     ctx.status = 403;
     return ctx;
   }
@@ -181,17 +181,22 @@ async function uploadDataset(ctx) {
   try {
     const body = ctx.request.body.payload;
     const key = ctx.request.body.key;
-    const prj = await Project.findOne({ deviceApiKey: key });
-    if (!prj) {
-      ctx.body = { error: "Unauthorized" };
-      ctx.status = 401;
+
+    const deviceApi = await DeviceApi.findOne({
+      deviceApiKey: key,
+    });
+    const project = await Project.findOne(deviceApi.projectId);
+    if (!project || !project.enableDeviceApi) {
+      ctx.body = { error: "This feature is disabled" };
+      ctx.status = 403;
       return ctx;
     }
-    body.userId = prj.admin;
+
+    body.userId = deviceApi.userId;
     const document = new Dataset(body);
     await document.save();
     await Project.findByIdAndUpdate(
-      { _id: prj._id },
+      { _id: project._id },
       {
         $push: { datasets: document._id },
       }
@@ -200,7 +205,8 @@ async function uploadDataset(ctx) {
     ctx.body = { message: "Generated dataset" };
     ctx.status = 200;
     return ctx;
-  } catch {
+  } catch(e) {
+    console.log(e)
     ctx.status = 400;
     ctx.body = { error: "Error creating the dataset" };
     return ctx;
