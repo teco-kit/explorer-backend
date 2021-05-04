@@ -84,22 +84,22 @@ async function initDatasetIncrement(ctx) {
   const deviceApi = await DeviceApi.findOne({
     deviceApiKey: body.deviceApiKey,
   });
+  if (!deviceApi) {
+    ctx.body = { error: "Invalid key" };
+    ctx.status = 403;
+    return ctx;
+  }
   const project = await Project.findOne(deviceApi.projectId);
   if (!project.enableDeviceApi) {
     ctx.body = { error: "This feature is disabled" };
     ctx.status = 403;
     return ctx;
   }
-  const timeSeries = body.sensorNames.map((elm) => {
-    return {
-      name: elm,
-    };
-  });
+
   const dataset = Dataset({
     userId: deviceApi.userId,
     start: 0,
     end: 0,
-    timeSeries: timeSeries,
   });
 
   dataset.save();
@@ -117,10 +117,16 @@ async function initDatasetIncrement(ctx) {
 }
 
 async function addDatasetIncrement(ctx) {
-  const { datasetKey, time, datapoint } = ctx.request.body;
+  const { datasetKey, time, datapoint, sensorname } = ctx.request.body;
   const deviceApi = await DeviceApi.findOne({
     "datasets.datasetKey": datasetKey,
   });
+  if (!deviceApi) {
+    ctx.body = { error: "Invalid key" };
+    ctx.status = 403;
+    return ctx;
+  }
+
   const project = await Project.findOne(deviceApi.projectId);
   if (!project.enableDeviceApi) {
     ctx.body = { error: "This feature is disabled" };
@@ -131,37 +137,30 @@ async function addDatasetIncrement(ctx) {
     return elm.datasetKey === datasetKey;
   })[0].dataset;
   const dataset = await Dataset.findOne(datasetId);
-  if (!datapoint || datapoint.length != dataset.timeSeries.length) {
-    ctx.status = 400;
-    ctx.body = { error: "Datapoint has wrong dimensions" };
-    return ctx;
-  }
   var dataTime = time;
   if (!dataTime) {
     dataTime = Math.floor(new Date().getTime() / 1000);
   }
-  if (dataset.timeSeries[0].data.length === 0) {
-    dataset.start = dataTime;
-    dataset.end = dataTime;
-    var i = 0;
-    for (i = 0; i < dataset.timeSeries.length; i++) {
-      dataset.timeSeries[i].end = dataTime;
-      dataset.timeSeries[i].start = dataTime;
-    }
-  }
-  var i = 0;
-  for (i = 0; i < dataset.timeSeries.length; i++) {
-    dataset.timeSeries[i].data.push({
-      timestamp: dataTime,
-      datapoint: datapoint[i],
-    });
 
-    if (dataset.timeSeries[i].end < dataTime) {
-      dataset.timeSeries[i].end = dataTime;
-    }
-    if (dataset.timeSeries[i].start > dataTime) {
-      dataset.timeSeries[i].start = dataTime;
-    }
+  var timeSeriesIndex = dataset.timeSeries.findIndex(
+    (elm) => elm.name === sensorname
+  );
+  if (timeSeriesIndex === -1) {
+    const timeSeries = { name: sensorname, start: 0, end: 0 };
+    dataset.timeSeries.push(timeSeries);
+    timeSeriesIndex = dataset.timeSeries.length - 1;
+  }
+
+  dataset.timeSeries[timeSeriesIndex].data.push({
+    timestamp: dataTime,
+    datapoint: datapoint
+  });
+
+  if (dataset.timeSeries[timeSeriesIndex].end < dataTime) {
+    dataset.timeSeries[timeSeriesIndex].end = dataTime;
+  }
+  if (dataset.timeSeries[timeSeriesIndex].start > dataTime) {
+    dataset.timeSeries[timeSeriesIndex].start = dataTime;
   }
 
   if (dataset.end < dataTime) {
@@ -185,6 +184,11 @@ async function uploadDataset(ctx) {
     const deviceApi = await DeviceApi.findOne({
       deviceApiKey: key,
     });
+    if (!deviceApi) {
+      ctx.body = { error: "Invalid key" };
+      ctx.status = 403;
+      return ctx;
+    }
     const project = await Project.findOne(deviceApi.projectId);
     if (!project || !project.enableDeviceApi) {
       ctx.body = { error: "This feature is disabled" };
@@ -205,8 +209,7 @@ async function uploadDataset(ctx) {
     ctx.body = { message: "Generated dataset" };
     ctx.status = 200;
     return ctx;
-  } catch(e) {
-    console.log(e)
+  } catch (e) {
     ctx.status = 400;
     ctx.body = { error: "Error creating the dataset" };
     return ctx;

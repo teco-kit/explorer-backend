@@ -4,7 +4,7 @@ function filterProjectNonAdmin(ctx, project) {
   const { authId } = ctx.state;
   return authId === String(project.admin)
     ? project
-    : { name: project.name, _id: project._id, admin: project.admin };
+    : { name: project.name, _id: project._id, admin: project.admin, enableDeviceApi: project.enableDeviceApi };
 }
 
 /**
