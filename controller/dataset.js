@@ -4,6 +4,7 @@ const Experiment = require("../models/experiment").model;
 const DatasetLabeling = require("../models/datasetLabeling").model;
 const DatasetLabel = require("../models/datasetLabel").model;
 const ProjectModel = require("../models/project").model;
+const DeviceApi = require("../models/deviceApi").model;
 
 /**
  * Util Function
@@ -135,6 +136,9 @@ async function deleteDatasetById(ctx) {
     await ProjectModel.findByIdAndUpdate(ctx.header.project, {
       $set: { datasets: newDatasets },
     });
+
+    await DeviceApi.updateMany({projectId: project._id}, {$pull: {datasets: {dataset: ctx.params.id}}})
+
     ctx.body = { message: `deleted dataset with id: ${ctx.params.id}` };
     ctx.status = 200;
   } else {
