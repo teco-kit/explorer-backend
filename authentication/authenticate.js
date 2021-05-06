@@ -3,23 +3,23 @@ const request = require("request-promise-native");
 const Model = require("../models/user").model;
 
 module.exports = async (ctx, next) => {
-  const url = ctx.request.url.split("/");
-  if (
-    url[2].toLowerCase() === "deviceapi" &&
-    url[3].toLowerCase() !== "deletekey" && 
-    url[3].toLowerCase() !== "switchactive" && 
-    url[3].toLowerCase() !== "getkey" && 
-    url[3].toLowerCase() !== "setkey"
-  ) {
-    return next();
-  }
+  try {
+    const url = ctx.request.url.split("/");
+    if (
+      url[2].toLowerCase() === "deviceapi" &&
+      url[3].toLowerCase() !== "deletekey" &&
+      url[3].toLowerCase() !== "switchactive" &&
+      url[3].toLowerCase() !== "getkey" &&
+      url[3].toLowerCase() !== "setkey"
+    ) {
+      return next();
+    }
 
-  if (ctx.headers.authorization) {
-    // request sends 'Bearer ' so remove it from token
-    const token = ctx.headers.authorization.replace("Bearer ", "");
-    // call auth server to authenticate with jwt
-    const authRoute = config.auth + "/authenticate";
-    try {
+    if (ctx.headers.authorization) {
+      // request sends 'Bearer ' so remove it from token
+      const token = ctx.headers.authorization.replace("Bearer ", "");
+      // call auth server to authenticate with jwt
+      const authRoute = config.auth + "/authenticate";
       const result = await request
         .post(authRoute)
         .auth(null, null, true, token);
@@ -36,18 +36,18 @@ module.exports = async (ctx, next) => {
       // add authId to ctx so we can use it later
       ctx.state.authId = authId;
       return next();
-    } catch (err) {
+    } else {
+      // no token provided
       ctx.status = 401;
       ctx.body = {
-        error: "Unauthorized",
+        error: "Please provide a valid JWT token",
       };
       return ctx;
     }
-  } else {
-    // no token provided
+  } catch (err) {
     ctx.status = 401;
     ctx.body = {
-      error: "Please provide a valid JWT token",
+      error: "Unauthorized",
     };
     return ctx;
   }
