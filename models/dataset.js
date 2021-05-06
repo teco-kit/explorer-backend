@@ -58,7 +58,7 @@ const Dataset = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Experiment",
 		default: null,
-	},
+	}
 });
 
 module.exports = {

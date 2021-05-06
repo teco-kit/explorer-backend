@@ -1,18 +1,32 @@
-const config = require('config');
-const request = require('request-promise-native');
-const Model = require('../models/user').model;
+const config = require("config");
+const request = require("request-promise-native");
+const Model = require("../models/user").model;
 
 module.exports = async (ctx, next) => {
-  if (ctx.headers.authorization) {
-    // request sends 'Bearer ' so remove it from token
-    const token = ctx.headers.authorization.replace('Bearer ', '');
-    // call auth server to authenticate with jwt
-    const authRoute = config.auth + '/authenticate';
-    try {
-      const result = await request.post(authRoute).auth(null, null, true, token);
+  const url = ctx.request.url.split("/");
+  try {
+    if (
+      url[2].toLowerCase() === "deviceapi" &&
+      url[3].toLowerCase() !== "deletekey" &&
+      url[3].toLowerCase() !== "switchactive" &&
+      url[3].toLowerCase() !== "getkey" &&
+      url[3].toLowerCase() !== "setkey"
+    ) {
+      return next();
+    }
+  } catch (err) {}
+  try {
+    if (ctx.headers.authorization) {
+      // request sends 'Bearer ' so remove it from token
+      const token = ctx.headers.authorization.replace("Bearer ", "");
+      // call auth server to authenticate with jwt
+      const authRoute = config.auth + "/authenticate";
+      const result = await request
+        .post(authRoute)
+        .auth(null, null, true, token);
       // auth server returns user id, to store with user object
       // check if we see this user for the first time: do we have this authId already in db?
-      const authId = (JSON.parse(result)).userId;
+      const authId = JSON.parse(result).userId;
       const user = await Model.find({ authId });
       if (!user.length) {
         // if not, create a new user object
@@ -23,18 +37,18 @@ module.exports = async (ctx, next) => {
       // add authId to ctx so we can use it later
       ctx.state.authId = authId;
       return next();
-    } catch (err) {
+    } else {
+      // no token provided
       ctx.status = 401;
       ctx.body = {
-        error: 'Unauthorized'
+        error: "Please provide a valid JWT token",
       };
       return ctx;
     }
-  } else {
-    // no token provided
+  } catch (err) {
     ctx.status = 401;
     ctx.body = {
-      error: 'Please provide a valid JWT token'
+      error: "Unauthorized",
     };
     return ctx;
   }
