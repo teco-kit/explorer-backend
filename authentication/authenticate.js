@@ -3,8 +3,8 @@ const request = require("request-promise-native");
 const Model = require("../models/user").model;
 
 module.exports = async (ctx, next) => {
+  const url = ctx.request.url.split("/");
   try {
-    const url = ctx.request.url.split("/");
     if (
       url[2].toLowerCase() === "deviceapi" &&
       url[3].toLowerCase() !== "deletekey" &&
@@ -14,7 +14,8 @@ module.exports = async (ctx, next) => {
     ) {
       return next();
     }
-
+  } catch (err) {}
+  try {
     if (ctx.headers.authorization) {
       // request sends 'Bearer ' so remove it from token
       const token = ctx.headers.authorization.replace("Bearer ", "");

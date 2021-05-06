@@ -6,15 +6,19 @@ module.exports = async (ctx, next) => {
     const url = ctx.url.split("/");
     if (
       url[2].toLowerCase() === "deviceapi" &&
-      url[3].toLowerCase() !== "deletekey" && 
-      url[3].toLowerCase() !== "switchactive" && 
-      url[3].toLowerCase() !== "getkey" && 
+      url[3].toLowerCase() !== "deletekey" &&
+      url[3].toLowerCase() !== "switchactive" &&
+      url[3].toLowerCase() !== "getkey" &&
       url[3].toLowerCase() !== "setkey"
     ) {
       return next();
     }
-
-    if (["projects", "users"].includes(ctx.url.split("/")[2].toLowerCase())) {
+  } catch (err) {}
+  try {
+    if (
+      ctx.url.split("/")[2] &&
+      ["projects", "users"].includes(ctx.url.split("/")[2].toLowerCase())
+    ) {
       return next();
     }
     const { authId } = ctx.state;
