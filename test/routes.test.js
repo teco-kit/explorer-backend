@@ -10,7 +10,7 @@ const request = supertest(server);
 
 const email = 'test@aura.com';
 const password = 'testpw123';
-const userName = 'testUser';
+const userName = 'CItestUser';
 
 let project = '';
 
