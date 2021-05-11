@@ -2,6 +2,7 @@
 The backend part of the explorer project which can be found [here](https://github.com/teco-kit/explorer/blob/master/README.md).
 
 ![Tests](https://github.com/teco-kit/explorer-backend/workflows/Tests/badge.svg?branch=master)
+[![Publish Docker image](https://github.com/teco-kit/explorer-backend/actions/workflows/main.yml/badge.svg)](https://github.com/teco-kit/explorer-backend/actions/workflows/main.yml)
 
 A REST API for the <a href="https://github.com/teco-kit/explorer-backend">explorer backend</a>.
 
