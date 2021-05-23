@@ -16,6 +16,12 @@ paths:
     post:
       tags:
         - Dataset
+      parameters:
+        - in: header
+          name: project
+          schema:
+            type: string
+          required: true
       summary: Create a new dataset
       requestBody:
         description: Dataset to create
@@ -43,6 +49,12 @@ paths:
       tags:
         - Dataset
       summary: Get all datasets
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
       responses:
         "201":
           description: Created
@@ -70,6 +82,11 @@ paths:
         schema:
           type: string
           description: "ID of the dataset to update"
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
       requestBody:
         description: Updated dataset
         required: true
@@ -104,6 +121,11 @@ paths:
         schema:
           type: string
           description: "ID of the dataset to get"
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
       responses:
         "200":
           description: Created
@@ -130,6 +152,11 @@ paths:
         schema:
           type: string
           description: "ID of the dataset to delete"
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
       responses:
         "200":
           description: Created

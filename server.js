@@ -3,7 +3,10 @@ const config = require("config");
 const mongoose = require("mongoose");
 const cors = require("koa-cors");
 const koaSwagger = require('koa2-swagger-ui').koaSwagger;
-const yamljs = require("yamljs")
+const yamljs = require("yamljs");
+const path = require('path');
+const fs = require('fs');
+const koaIcon = require("koa-favicon");
 const router = require("./routing/router.js");
 const authenticate = require("./authentication/authenticate");
 const authorize = require("./authorization/authorization");
@@ -22,8 +25,19 @@ mongoose.set("useCreateIndex", true);
 // setup koa middlewares
 server.use(cors());
 
+// Serve documentation
 const spec = yamljs.load('./docs/docs.yaml');
-server.use(koaSwagger({routePrefix: '/docs', swaggerOptions: {spec}, hideTopbar: true}));
+server.use(koaSwagger({routePrefix: '/docs', swaggerOptions: {spec}, favicon: "/docs/favicon.ico", hideTopbar: true}));
+server.use((ctx, next) => {
+  console.log(ctx.path);
+  console.log(ctx.method)
+  if (ctx.path == "/docs/favicon.ico" && ctx.method == 'GET' && ctx.method != 'Head') {
+    ctx.body = fs.readFileSync(path.join(__dirname, "/docs/favicon.ico"))
+    ctx.status = 200;
+    return ctx;
+  }
+});
+
 
 // check authentication
 server.use(async (ctx, next) => {
