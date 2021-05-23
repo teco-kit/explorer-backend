@@ -31,11 +31,11 @@
         "koa-mount": "^4.0.0",
         "koa-router": "^7.4.0",
         "koa-static": "^5.0.0",
+        "koa2-swagger-ui": "*",
         "mongoose": "^5.11.18",
         "request": "^2.88.2",
         "request-promise-native": "^1.0.9",
-        "swagger-jsdoc": "^3.7.0",
-        "swagger-ui-koa": "0.0.1"
+        "yamljs": "^0.3.0"
     },
     "devDependencies": {
         "chai": "^4.3.0",
@@ -47,7 +47,6 @@
         "mocha": "^6.2.3",
         "nodemon": "^1.19.4",
         "nyc": "^14.1.1",
-        "supertest": "^4.0.2",
-        "swagger-node-codegen": "^1.6.3"
+        "supertest": "^4.0.2"
     }
 }
