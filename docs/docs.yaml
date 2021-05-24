@@ -71,7 +71,7 @@ paths:
       
   # Update dataset by Id
   /datasets/{datasetId}:
-    post:
+    put:
       tags:
         - Dataset
       summary: Update a dataset
@@ -291,7 +291,7 @@ paths:
       security:
       - bearerAuth: []
 
-    post:
+    put:
       tags:
         - Devices
       summary: Update a device by id
@@ -468,7 +468,7 @@ paths:
       security:
       - bearerAuth: []
 
-    post:
+    put:
       tags:
         - Experiments
       summary: Update a experiment by id
@@ -645,7 +645,7 @@ paths:
       security:
       - bearerAuth: []
 
-    post:
+    put:
       tags:
         - Firmware
       summary: Update a Firmware by id
@@ -822,7 +822,7 @@ paths:
       security:
       - bearerAuth: []
 
-    post:
+    put:
       tags:
         - LabelDefinition
       summary: Update a Firmware by id
@@ -999,7 +999,7 @@ paths:
       security:
       - bearerAuth: []
 
-    post:
+    put:
       tags:
         - LabelType
       summary: Update a labelType by id
@@ -1176,7 +1176,7 @@ paths:
       security:
       - bearerAuth: []
 
-    post:
+    put:
       tags:
         - Sensor
       summary: Update a sensor by id
@@ -1353,7 +1353,7 @@ paths:
       security:
       - bearerAuth: []
 
-    post:
+    put:
       tags:
         - Service
       summary: Update a service by id
@@ -1410,6 +1410,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Service'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+# Users
+  /users:
+    get:
+      tags:
+        - User
+      summary: Returns requesting user
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    put:
+      tags:
+        - User
+      summary: Returns requesting user
+      requestBody:
+        description: the new user data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
         "401":
           $ref: '#/components/schemas/Unauthorized'
         "500":
