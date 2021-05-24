@@ -29,18 +29,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/Dataset'
+              $ref: '#/components/schemas/Dataset'
       responses:
         "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/Dataset'
+                $ref: '#/components/schemas/Dataset'
         "401":
-          $ref: '#/Unauthorized'
+          $ref: '#/components/schemas/Unauthorized'
         "500":
-          $ref: '#/InternalServerError'
+          $ref: '#/components/schemas/InternalServerError'
       security:
       - bearerAuth: []
     
@@ -61,11 +61,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/Dataset'
+                $ref: '#/components/schemas/Dataset'
         "401":
-          $ref: '#/Unauthorized'
+          $ref: '#/components/schemas/Unauthorized'
         "500":
-          $ref: '#/InternalServerError'
+          $ref: '#/components/schemas/InternalServerError'
       security:
       - bearerAuth: []
       
@@ -93,18 +93,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/Dataset'
+              $ref: '#components/schemas//Dataset'
       responses:
         "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/Dataset'
+                $ref: '#/components/schemas/Dataset'
         "401":
-          $ref: '#/Unauthorized'
+          $ref: '#/components/schemas/Unauthorized'
         "500":
-          $ref: '#/InternalServerError'
+          $ref: '#/components/schemas/InternalServerError'
       security:
       - bearerAuth: []  
   
@@ -128,15 +128,15 @@ paths:
         required: true
       responses:
         "200":
-          description: Created
+          description: Ok
           content:
             application/json:
               schema:
-                $ref: '#/Dataset'
+                $ref: '#/components/schemas/Dataset'
         "401":
-          $ref: '#/Unauthorized'
+          $ref: '#/components/schemas/Unauthorized'
         "500":
-          $ref: '#/InternalServerError'
+          $ref: '#/components/schemas/InternalServerError'
       security:
       - bearerAuth: []
 
@@ -159,7 +159,7 @@ paths:
         required: true
       responses:
         "200":
-          description: Created
+          description: Ok
           content:
             application/json:
               schema:
@@ -170,511 +170,1047 @@ paths:
                     example: Deleted dataset with id 507f191e810c19729de860ea
                     
         "401":
-          $ref: '#/Unauthorized'
+          $ref: '#/components/schemas/Unauthorized'
         "500":
-          $ref: '#/InternalServerError'
+          $ref: '#/components/schemas/InternalServerError'
       security:
       - bearerAuth: []
 
+
+
+# Devices
+  /devices:
+    post:
+      tags:
+        - Devices
+      summary: Create a new device
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The device to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    get:
+      tags:
+        - Devices
+      summary: Get all devices in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+
+    delete:
+      tags:
+        - Devices
+      summary: Delete all devices in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+  /device/{deviceId}:
+    get:
+      tags:
+        - Devices
+      summary: Get a device by Id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: deviceId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    post:
+      tags:
+        - Devices
+      summary: Update a device by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: deviceId
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The device to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+  
+    delete:
+      tags:
+        - Devices
+      summary: Delete a device by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: deviceId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+# Experiments
+  /experiments:
+    post:
+      tags:
+        - Experiments
+      summary: Create a new experiment
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The experiment to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Experiment'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Experiment'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    get:
+      tags:
+        - Experiments
+      summary: Get all experiments in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Experiment'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+
+    delete:
+      tags:
+        - Experiments
+      summary: Delete all experiments in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Experiment'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+  /experiments/{experimentId}:
+    get:
+      tags:
+        - Experiments
+      summary: Get a device by Id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: experimentId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Experiment'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    post:
+      tags:
+        - Experiments
+      summary: Update a experiment by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: experimentId
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The experiment to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Experiment'
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+  
+    delete:
+      tags:
+        - Experiments
+      summary: Delete a experiment by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: experimentId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Experiment'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+# Firmware
+  /firmware:
+    post:
+      tags:
+        - Firmware
+      summary: Create a new firmware
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The firmware to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Firmware'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firmware'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    get:
+      tags:
+        - Firmware
+      summary: Get all firmwares in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Firmware'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+
+    delete:
+      tags:
+        - Firmware
+      summary: Delete all firmwares in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firmware'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+  /firmware/{firmwareId}:
+    get:
+      tags:
+        - Firmware
+      summary: Get a firmware by Id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: firmwareId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firmware'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    post:
+      tags:
+        - Firmware
+      summary: Update a Firmware by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: firmwareId
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The experiment to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Firmware'
+      responses:
+        "200":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firmware'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+  
+    delete:
+      tags:
+        - Firmware
+      summary: Delete a experiment by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: firmwareId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firmware'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+
+
+# Refs
 components:
+
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
 
+  schemas:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Error message
+                example: Please provide a valid JWT token
 
-# Refs
-Unauthorized:
-  description: Unauthorized
-  content:
-    application/json:
-      schema:
-        type: object
-        properties:
-          error:
-            type: string
-            description: Error message
-            example: Please provide a valid JWT token
-
-InternalServerError:
-  description: Internal Server Error
+    InternalServerError:
+      description: Internal Server Error
   
 
 
-AuthObject:
-  type: object
-  properties:
-    access_token:
-      type: string
-      description: Bearer JWT Token
-      example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZGQ4OWEwOTU3MzllMDAxOWI2NDE5YSIsImlhdCI6MTU3NDc5OTc4NSwiZXhwIjoxNTc1MDU4OTg1fQ.cSTapFKpbTirbx0qgwiiRVXbev2pvtKHfZokFemEfAg
-    refresh_token:
-      type: string
-      description: Refresh JWT Token - Not in us
-      example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZGQ4OWEwOTU3MzllMDAxOWI2NDE5YSIsImlhdCI6MTU3NDc5OTc4NSwiZXhwIjoxNTc1MDU4OTg1fQ.cSTapFKpbTirbx0qgwiiRVXbev2pvtKHfZokFemEfAg
+    AuthObject:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: Bearer JWT Token
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZGQ4OWEwOTU3MzllMDAxOWI2NDE5YSIsImlhdCI6MTU3NDc5OTc4NSwiZXhwIjoxNTc1MDU4OTg1fQ.cSTapFKpbTirbx0qgwiiRVXbev2pvtKHfZokFemEfAg
+        refresh_token:
+          type: string
+          description: Refresh JWT Token - Not in us
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZGQ4OWEwOTU3MzllMDAxOWI2NDE5YSIsImlhdCI6MTU3NDc5OTc4NSwiZXhwIjoxNTc1MDU4OTg1fQ.cSTapFKpbTirbx0qgwiiRVXbev2pvtKHfZokFemEfAg
 
-AuthUser:
-  type: object
-  properties:
-    email:
-      type: string
-      description: email of user
-      example: test@explorer.com
-    password:
-      type: string
-      description: password for user account
-      example: examplePW123
-  body:
-    properties:
-      email:
-        type: string
-        description: email of your user account
-        example: example@explorer.edu
+    AuthUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: email of user
+          example: test@explorer.com
+        password:
+          type: string
+          description: password for user account
+          example: examplePW123
+      body:
+        properties:
+          email:
+            type: string
+            description: email of your user account
+            example: example@explorer.edu
 
-Dataset:
-  type: object
-  properties:
-    userId:
-      type: string
-      description: id of user
-      example: 507f191e810c19729de860ea
-    start:
-      type: number
-      description: timestamp of start
-      example: 1576108800
-    end:
-      type: number
-      description: timestamp of start
-      example: 1576195200
-    events:
-      type: array
-      description: list of DatasetEvents
-      items:
-        "$ref": "#/DatasetEvent"
-    isPublished:
-      type: boolean
-      description: dataset is published
-      example: true
-    timeSeries:
-      type: array
-      description: list of timeseries
-      items:
-        "$ref": "#/TimeSeries"
-    fusedSeries:
-      type: array
-      description: list of fused series
-      items:
-        "$ref": "#/FusedSeries"
-    video:
-      "$ref": "#/Video"
-    device:
-      type: string
-      description: id of device
-      example: 507f191e810c19729de860ea
-    results:
-      type: array
-      description: array of results+
-      items:
-        "$ref": "#/Result"
-    experiments:
-      type: string
-      description: id of experiment
-      example: 507f191e810c19729de860ea
+    Dataset:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: id of user
+          example: 507f191e810c19729de860ea
+        start:
+          type: number
+          description: timestamp of start
+          example: 1576108800
+        end:
+          type: number
+          description: timestamp of start
+          example: 1576195200
+        events:
+          type: array
+          description: list of DatasetEvents
+          items:
+            "$ref": "#/components/schemas/DatasetEvent"
+        isPublished:
+          type: boolean
+          description: dataset is published
+          example: true
+        timeSeries:
+          type: array
+          description: list of timeseries
+          items:
+            "$ref": "#/components/schemas/TimeSeries"
+        fusedSeries:
+          type: array
+          description: list of fused series
+          items:
+            "$ref": "#/components/schemas/FusedSeries"
+        video:
+          "$ref": "#/components/schemas/Video"
+        device:
+          type: string
+          description: id of device
+          example: 507f191e810c19729de860ea
+        results:
+          type: array
+          description: array of results+
+          items:
+            "$ref": "#/components/schemas/Result"
+        experiments:
+          type: string
+          description: id of experiment
+          example: 507f191e810c19729de860ea
 
-DatasetEvent:
-  required:
-  - name
-  - time
-  - type
-  type: object
-  properties:
-    name:
-      type: string
-      description: name of dataset event
-      example: VOC
-    type:
-      type: string
-      description: id of event type
-      example: 507f191e810c19729de860ea
-    value:
-      type: number
-      description: value of measurment
-      example: 80
-    time:
-      type: number
-      description: timestamp
-      example: 1576108800
-    unit:
-      type: string
-      description: unit of measured event
-      example: VOC
-    icon:
-      type: string
-      description: url of icon
-      example: explorer.dmz.teco.edu/example_icon
+    DatasetEvent:
+      required:
+      - name
+      - time
+      - type
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of dataset event
+          example: VOC
+        type:
+          type: string
+          description: id of event type
+          example: 507f191e810c19729de860ea
+        value:
+          type: number
+          description: value of measurment
+          example: 80
+        time:
+          type: number
+          description: timestamp
+          example: 1576108800
+        unit:
+          type: string
+          description: unit of measured event
+          example: VOC
+        icon:
+          type: string
+          description: url of icon
+          example: explorer.dmz.teco.edu/example_icon
 
-DatasetLabel:
-  required:
-  - end
-  - start
-  - type
-  type: object
-  properties:
-    type:
-      type: string
-      description: id of label type
-      example: 507f191e810c19729de860ea
-    start:
-      type: number
-      description: timestamp of start
-      example: 1576108800
-    end:
-      type: number
-      description: timestamp of end
-      example: 1576195200
-
-
-DatasetLabeling:
-  type: object
-  properties:
-    labelingId:
-      type: string
-      description: id of LabelDefinition
-    labels:
-      type: array
-      description: List of labels associated with labeling
-      items:
-        "$ref": "#/DatasetLabel"
-    creator:
-      type: string
-      description: id of service
-      example: 507f191e810c19729de860ea
+    DatasetLabel:
+      required:
+      - end
+      - start
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: id of label type
+          example: 507f191e810c19729de860ea
+        start:
+          type: number
+          description: timestamp of start
+          example: 1576108800
+        end:
+          type: number
+          description: timestamp of end
+          example: 1576195200
 
 
-Device:
-  required:
-  - deviceId
-  - firmware
-  - generation
-  type: object
-  properties:
-    deviceId:
-      type: integer
-      description: device id
-      example: 342391
-    firmware:
-      type: integer
-      description: firmware of device
-      example: 1
-    sensors:
-      type: array
-      description: list of sensors
-      items:
-        "$ref": "#/Sensor"
-    generation:
-      type: number
-      description: device generation
-      example: 6
-    user:
-      type: string
-      description: id of owner
-      example: 507f191e810c19729de860ea
+    DatasetLabeling:
+      type: object
+      properties:
+        labelingId:
+          type: string
+          description: id of LabelDefinition
+        labels:
+          type: array
+          description: List of labels associated with labeling
+          items:
+            "$ref": "#/components/schemas/DatasetLabel"
+        creator:
+          type: string
+          description: id of service
+          example: 507f191e810c19729de860ea
 
 
-EventType:
-  required:
-  - name
-  type: object
-  properties:
-    name:
-      type: string
-      description: name of event
-      example: ExampleEvent
+    Device:
+      required:
+      - deviceId
+      - firmware
+      - generation
+      type: object
+      properties:
+        deviceId:
+          type: integer
+          description: device id
+          example: 342391
+        firmware:
+          type: integer
+          description: firmware of device
+          example: 1
+        sensors:
+          type: array
+          description: list of sensors
+          items:
+            "$ref": "#/components/schemas/Sensor"
+        generation:
+          type: number
+          description: device generation
+          example: 6
+        user:
+          type: string
+          description: id of owner
+          example: 507f191e810c19729de860ea
 
 
-Experiment:
-  required:
-  - name
-  type: object
-  properties:
-    name:
-      type: string
-      description: experiment type
-      example: respiration
-    instructions:
-      type: array
-      description: list of instructions
-      example:
-      - duration: 2000
+    EventType:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of event
+          example: ExampleEvent
+
+
+    Experiment:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: experiment type
+          example: respiration
+        instructions:
+          type: array
+          description: list of instructions
+          example:
+          - duration: 2000
+            labelDefinitions:
+            - 5e7b79a92868c32560719dbe
+          - duration: 2000
+            labelDefinitions:
+            - 5e7b79a92868c32560719dbe
+          items:
+            "$ref": "#/components/schemas/Experiment_instructions"
+
+
+    ExperimentPopulated:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: experiment type
+          example: respiration
+        instructions:
+          type: array
+          description: list of instructions
+          example:
+          - duration: 2000
+            labelDefinitions:
+            - name: ExampleLabelDefinition1
+              labels:
+              - name: Label1
+                color: "#fffff"
+              - name: Label2
+                color: "#cdcdcd"
+            - name: ExampleLabelDefinition2
+              labels:
+              - name: Label3
+                color: "#eeeeee"
+              - name: Label4
+                color: "#cfcfcf"
+          - duration: 2000
+            labelDefinitions:
+            - name: ExampleLabelDefinition3
+              labels:
+              - name: Label3
+                color: "#eeeeee"
+              - name: Label4
+                color: "#cfcfcf"
+          items:
+            "$ref": "#/components/schemas/ExperimentPopulated_instructions"
+
+
+    ExperimentPopulated_instructions:
+      type: object
+      properties:
+        duration:
+          type: integer
+        labelingId:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LabelDefinition"
+
+    Experiment_instructions:
+      type: object
+      properties:
         labelDefinitions:
-        - 5e7b79a92868c32560719dbe
-      - duration: 2000
-        labelDefinitions:
-        - 5e7b79a92868c32560719dbe
-      items:
-        "$ref": "#/Experiment_instructions"
+          type: array
+          items:
+            type: string
+        duration:
+          type: integer
+        unit:
+          type: string
+
+    Firmware:
+      required:
+      - binary
+      - hash
+      - supportedDevices
+      - version
+      type: object
+      properties:
+        version:
+          type: string
+          description: firmware version
+        binary:
+          type: string
+          description: binary
+        hash:
+          type: string
+          description: firmware hash
+        supportedDevices:
+          type: string
+          description: firmware version
 
 
-ExperimentPopulated:
-  required:
-  - name
-  type: object
-  properties:
-    name:
-      type: string
-      description: experiment type
-      example: respiration
-    instructions:
-      type: array
-      description: list of instructions
-      example:
-      - duration: 2000
-        labelDefinitions:
-        - name: ExampleLabelDefinition1
-          labels:
-          - name: Label1
-            color: "#fffff"
-          - name: Label2
-            color: "#cdcdcd"
-        - name: ExampleLabelDefinition2
-          labels:
-          - name: Label3
-            color: "#eeeeee"
-          - name: Label4
-            color: "#cfcfcf"
-      - duration: 2000
-        labelDefinitions:
-        - name: ExampleLabelDefinition3
-          labels:
-          - name: Label3
-            color: "#eeeeee"
-          - name: Label4
-            color: "#cfcfcf"
-      items:
-        "$ref": "#/ExperimentPopulated_instructions"
+    FusedSeries:
+      type: object
+      properties:
+        timeSeries:
+          type: array
+          description: array of fused timeserie objects
+          items:
+            "$ref": "#/components/schemas/TimeSeries"
 
 
-ExperimentPopulated_instructions:
-  type: object
-  properties:
-    duration:
-      type: integer
-    labelingId:
-      type: array
-      items:
-        "$ref": "#/LabelDefinition"
+    inline_response_200:
+      properties:
+        message:
+          type: string
+          example: deleted user with email 'example@explorer.edu'
 
-Experiment_instructions:
-  type: object
-  properties:
-    labelDefinitions:
-      type: array
-      items:
-        type: string
-    duration:
-      type: integer
-    unit:
-      type: string
-
-Firmware:
-  required:
-  - binary
-  - hash
-  - supportedDevices
-  - version
-  type: object
-  properties:
-    version:
-      type: string
-      description: firmware version
-    binary:
-      type: string
-      description: binary
-    hash:
-      type: string
-      description: firmware hash
-    supportedDevices:
-      type: string
-      description: firmware version
+    LabelDefinition:
+      required:
+      - name
+      type: object
+      properties:
+        labels:
+          type: array
+          description: array of label types
+          items:
+            "$ref": "#/components/schemas/LabelType"
+        name:
+          type: string
+          description: name of labeldefinition
+          example: Labeling1
 
 
-FusedSeries:
-  type: object
-  properties:
-    timeSeries:
-      type: array
-      description: array of fused timeserie objects
-      items:
-        "$ref": "#/TimeSeries"
+    LabelType:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of label type
+          example: exhale
+        color:
+          type: string
+          description: color of label type
+          example: red
 
 
-inline_response_200:
-  properties:
-    message:
-      type: string
-      example: deleted user with email 'example@explorer.edu'
-
-LabelDefinition:
-  required:
-  - name
-  type: object
-  properties:
-    labels:
-      type: array
-      description: array of label types
-      items:
-        "$ref": "#/LabelType"
-    name:
-      type: string
-      description: name of labeldefinition
-      example: Labeling1
+    Result:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of results
+          example: Apnea
+        value:
+          type: integer
+          description: value of classification/regression, use 0/1 for boolean representation
+          example: 1
+        text:
+          type: string
+          description: additional text field to store results
+          example: Apnea detected
 
 
-LabelType:
-  required:
-  - name
-  type: object
-  properties:
-    name:
-      type: string
-      description: name of label type
-      example: exhale
-    color:
-      type: string
-      description: color of label type
-      example: red
+    Sensor:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of sensor
+          example: voc sensor
 
 
-Result:
-  required:
-  - name
-  type: object
-  properties:
-    name:
-      type: string
-      description: name of results
-      example: Apnea
-    value:
-      type: integer
-      description: value of classification/regression, use 0/1 for boolean representation
-      example: 1
-    text:
-      type: string
-      description: additional text field to store results
-      example: Apnea detected
+    Service:
+      required:
+      - name
+      - version
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of service
+          example: ExampleService
+        version:
+          type: integer
+          description: version number
+          example: 1
 
 
-Sensor:
-  required:
-  - name
-  type: object
-  properties:
-    name:
-      type: string
-      description: name of sensor
-      example: voc sensor
+    TimeSeries:
+      required:
+      - name
+      - unit
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of measured data
+          example: VOC
+        unit:
+          type: integer
+          description: unit of data
+        data:
+          type: array
+          description: url of video
+          items:
+            type: integer
+        offset:
+          type: integer
+          description: offset of data in milliseconds
+          example: 100
+        start:
+          type: integer
+          description: unix timestamp of start time
+          example: 1576108800
+        end:
+          type: integer
+          description: unix timestamp of end time
+          example: 1576195200
+        samplingRate:
+          type: integer
+          description: sampling rate of data in milliseconds
+          example: 100
 
 
-Service:
-  required:
-  - name
-  - version
-  type: object
-  properties:
-    name:
-      type: string
-      description: name of service
-      example: ExampleService
-    version:
-      type: integer
-      description: version number
-      example: 1
+    User:
+      required:
+      - authId
+      type: object
+      properties:
+        sex:
+          type: string
+          description: sex of user
+          example: f
+          enum:
+          - m
+          - f
+          - d
+        birthday:
+          type: string
+          description: birthdate of user
+          example: "{}"
+        weight:
+          type: number
+          description: weight of user in kg
+          example: 60
+        clientVersion:
+          type: integer
+          description: version number of user device
+          format: int64
+          example: 1
+        platform:
+          type: string
+          description: platform of user device
+          example: android
+          enum:
+          - ios
+          - android
+          - windows
+        authId:
+          type: string
 
 
-TimeSeries:
-  required:
-  - name
-  - unit
-  type: object
-  properties:
-    name:
-      type: string
-      description: name of measured data
-      example: VOC
-    unit:
-      type: integer
-      description: unit of data
-    data:
-      type: array
-      description: url of video
-      items:
-        type: integer
-    offset:
-      type: integer
-      description: offset of data in milliseconds
-      example: 100
-    start:
-      type: integer
-      description: unix timestamp of start time
-      example: 1576108800
-    end:
-      type: integer
-      description: unix timestamp of end time
-      example: 1576195200
-    samplingRate:
-      type: integer
-      description: sampling rate of data in milliseconds
-      example: 100
-
-
-User:
-  required:
-  - authId
-  type: object
-  properties:
-    sex:
-      type: string
-      description: sex of user
-      example: f
-      enum:
-      - m
-      - f
-      - d
-    birthday:
-      type: string
-      description: birthdate of user
-      example: "{}"
-    weight:
-      type: number
-      description: weight of user in kg
-      example: 60
-    clientVersion:
-      type: integer
-      description: version number of user device
-      format: int64
-      example: 1
-    platform:
-      type: string
-      description: platform of user device
-      example: android
-      enum:
-      - ios
-      - android
-      - windows
-    authId:
-      type: string
-
-
-Video:
-  type: object
-  properties:
-    url:
-      type: string
-      description: url of video
-      example: explorer.dmz.teco.edu/example_video
-    offset:
-      type: integer
-      description: offset in milliseconds
-      example: 100
+    Video:
+      type: object
+      properties:
+        url:
+          type: string
+          description: url of video
+          example: explorer.dmz.teco.edu/example_video
+        offset:
+          type: integer
+          description: offset in milliseconds
+          example: 100
 

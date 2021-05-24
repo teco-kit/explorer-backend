@@ -6,7 +6,6 @@ const koaSwagger = require('koa2-swagger-ui').koaSwagger;
 const yamljs = require("yamljs");
 const path = require('path');
 const fs = require('fs');
-const koaIcon = require("koa-favicon");
 const router = require("./routing/router.js");
 const authenticate = require("./authentication/authenticate");
 const authorize = require("./authorization/authorization");
