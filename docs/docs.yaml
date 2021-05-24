@@ -709,6 +709,714 @@ paths:
       security:
       - bearerAuth: []
 
+# LabelDefinitions
+  /labelDefinitions:
+    post:
+      tags:
+        - LabelDefinition
+      summary: Create a new labelDefinition
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The labelDefinition to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelDefinition'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelDefinition'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    get:
+      tags:
+        - LabelDefinition
+      summary: Get all labelDefinitions in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LabelDefinition'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+
+    delete:
+      tags:
+        - LabelDefinition
+      summary: Delete all labelDefinitions in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelDefinition'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+  /labelDefinition/{labelDefinitionId}:
+    get:
+      tags:
+        - LabelDefinition
+      summary: Get a labelDefinition by Id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: labelDefinitionId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelDefinition'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    post:
+      tags:
+        - LabelDefinition
+      summary: Update a Firmware by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: labelDefinitionId
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The labelDefinition to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelDefinition'
+      responses:
+        "200":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelDefinition'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+  
+    delete:
+      tags:
+        - LabelDefinition
+      summary: Delete a labelDefinition by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: labelDefinitionId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelDefinition'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+# LabelTypes
+  /labelTypes:
+    post:
+      tags:
+        - LabelType
+      summary: Create a new LabelType
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The labelType to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelType'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelType'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    get:
+      tags:
+        - LabelType
+      summary: Get all labelTypes in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LabelType'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+
+    delete:
+      tags:
+        - LabelType
+      summary: Delete all labelTypes in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelType'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+  /labelType/{labelTypeId}:
+    get:
+      tags:
+        - LabelType
+      summary: Get a labelType by Id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: labelTypeId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelType'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    post:
+      tags:
+        - LabelType
+      summary: Update a labelType by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: labelTypeId
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The labelType to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelType'
+      responses:
+        "200":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelDefinition'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+  
+    delete:
+      tags:
+        - LabelType
+      summary: Delete a labelType by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: labelTypeId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelType'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+# Sensors
+  /sensors:
+    post:
+      tags:
+        - Sensor
+      summary: Create a new sensor
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The sensor to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sensor'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    get:
+      tags:
+        - Sensor
+      summary: Get all sensors in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sensor'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+
+    delete:
+      tags:
+        - Sensor
+      summary: Delete all sensors in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+  /sensors/{sensorId}:
+    get:
+      tags:
+        - Sensor
+      summary: Get a sensor by Id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: sensorId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    post:
+      tags:
+        - Sensor
+      summary: Update a sensor by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: sensorId
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The sensor to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sensor'
+      responses:
+        "200":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+  
+    delete:
+      tags:
+        - Sensor
+      summary: Delete a sensor by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: sensorId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+  # Services
+  /services:
+    post:
+      tags:
+        - Service
+      summary: Create a new service
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The service to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    get:
+      tags:
+        - Service
+      summary: Get all services in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+
+    delete:
+      tags:
+        - Service
+      summary: Delete all services in a project
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+  /services/{serviceId}:
+    get:
+      tags:
+        - Service
+      summary: Get a service by Id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: serviceId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
+    post:
+      tags:
+        - Service
+      summary: Update a service by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: serviceId
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: The service to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+      responses:
+        "200":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+  
+    delete:
+      tags:
+        - Service
+      summary: Delete a service by id
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: serviceId
+        schema:
+          type: string
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        "401":
+          $ref: '#/components/schemas/Unauthorized'
+        "500":
+          $ref: '#/components/schemas/InternalServerError'
+      security:
+      - bearerAuth: []
+
 
 
 # Refs
