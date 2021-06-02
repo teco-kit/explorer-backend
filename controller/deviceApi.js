@@ -18,7 +18,7 @@ async function switchActive(ctx) {
 
   project.enableDeviceApi = body.state;
   await project.save();
-  ctx.body = { message: "Switch deviceApi" };
+  ctx.body = { message: "DeviceApi for project " + project._id + ": " + body.state };
   ctx.status = 200;
   return ctx;
 }
@@ -98,7 +98,7 @@ async function initDatasetIncrement(ctx) {
 
   const dataset = Dataset({
     userId: deviceApi.userId,
-    start: 0,
+    start: 9999999999,
     end: 0,
   });
 
@@ -117,7 +117,16 @@ async function initDatasetIncrement(ctx) {
 }
 
 async function addDatasetIncrement(ctx) {
-  const { datasetKey, time, datapoint, sensorname } = ctx.request.body;
+  try {
+  const body = ctx.request.body;
+
+  if ( !"datasetKey" in body || !"time" in body || !"datapoint" in body || !"sensorname" in body) {
+    ctx.status = 400;
+    ctx.body = {error: "Wrong input parameters"}
+    return ctx; 
+  }
+
+  const { datasetKey, time, datapoint, sensorname } = body;
   const deviceApi = await DeviceApi.findOne({
     "datasets.datasetKey": datasetKey,
   });
@@ -146,14 +155,14 @@ async function addDatasetIncrement(ctx) {
     (elm) => elm.name === sensorname
   );
   if (timeSeriesIndex === -1) {
-    const timeSeries = { name: sensorname, start: 0, end: 0 };
+    const timeSeries = { name: sensorname, start: dataTime, end: dataTime };
     dataset.timeSeries.push(timeSeries);
     timeSeriesIndex = dataset.timeSeries.length - 1;
   }
 
   dataset.timeSeries[timeSeriesIndex].data.push({
     timestamp: dataTime,
-    datapoint: datapoint
+    datapoint: datapoint,
   });
 
   if (dataset.timeSeries[timeSeriesIndex].end < dataTime) {
@@ -174,6 +183,10 @@ async function addDatasetIncrement(ctx) {
   ctx.status = 200;
   ctx.body = { message: "Added data" };
   return ctx;
+} catch(e) {
+  ctx.status = 400;
+  ctx.body = {error: "Error adding increment"}
+}
 }
 
 async function uploadDataset(ctx) {
@@ -210,6 +223,7 @@ async function uploadDataset(ctx) {
     ctx.status = 200;
     return ctx;
   } catch (e) {
+    console.log(e)
     ctx.status = 400;
     ctx.body = { error: "Error creating the dataset" };
     return ctx;
