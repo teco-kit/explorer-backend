@@ -32,8 +32,10 @@
         "koa-router": "^7.4.0",
         "koa-static": "^5.0.0",
         "mongoose": "^5.11.18",
+        "optional-require": "^1.0.3",
         "request": "^2.88.2",
         "request-promise-native": "^1.0.9",
+        "side-channel": "^1.0.4",
         "swagger-jsdoc": "^3.7.0",
         "swagger-ui-koa": "0.0.1"
     },
@@ -45,6 +47,7 @@
         "eslint-plugin-node": "^7.0.1",
         "jest": "^24.9.0",
         "mocha": "^6.2.3",
+        "nock": "^13.1.0",
         "nodemon": "^1.19.4",
         "nyc": "^14.1.1",
         "supertest": "^4.0.2",
