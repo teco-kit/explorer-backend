@@ -13,6 +13,10 @@ const Dataset = new mongoose.Schema({
 		ref: "User",
 		required: [true, "object needs to be associated with user"],
 	},
+	name: {
+		type: String,
+		required: [true, "Dataset needs a name"]
+	},
 	start: {
 		type: Number,
 		required: [true, "please enter a start time"],
