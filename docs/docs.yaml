@@ -5,7 +5,7 @@ info:
     for more details.
     Go to <a href="aura.dmz.teco.edu">aura.dmz.teco.edu</a> to try it out!
   version: 1.0.0
-  title: Aura APIs
+  title: Explorer APIs
 servers:
   - url: http://explorer.dmz.teco.edu
 tags:
@@ -34,7 +34,7 @@ paths:
   /api/projects:
     get:
       tags:
-        - Project
+        - Projectss
       summary: Returns all projects the user has access to
       operationId: getProjects
       parameters: []
@@ -58,7 +58,7 @@ paths:
 
     post:
         tags:
-        - Project
+        - Projects
         summary: Add a new project
         operationId: createProject
         parameters: []
@@ -182,7 +182,7 @@ paths:
   /api/projects/{projectId}:
     get:
       tags:
-      - Project
+      - Projects
       summary: Find projectby Id 
       operationId: getProjectbyId
       parameters:
@@ -219,7 +219,7 @@ paths:
       - access_token: []
     put:
       tags:
-      - Project
+      - Projects
       summary: Update a project
       operationId: updateProjectById
       parameters:
@@ -265,7 +265,7 @@ paths:
       - access_token: []
     delete:
       tags:
-      - Project
+      - Projects
       summary: Delete a dataset by Id
       operationId: deleteDatasetsById
       parameters:

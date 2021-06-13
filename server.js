@@ -26,7 +26,7 @@ server.use(cors());
 
 // Serve documentation
 const spec = yamljs.load('./docs/docs.yaml');
-server.use(koaSwagger({routePrefix: '/docs', swaggerOptions: {spec}, favicon: "/docs/favicon.ico", hideTopbar: true}));
+server.use(koaSwagger({routePrefix: '/docs', title:'Explorer', swaggerOptions: {spec}, favicon: "/docs/favicon.ico", hideTopbar: true}));
 server.use((ctx, next) => {
   console.log(ctx.path);
   console.log(ctx.method)
