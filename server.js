@@ -2,14 +2,15 @@ const Koa = require("koa");
 const config = require("config");
 const mongoose = require("mongoose");
 const cors = require("koa-cors");
-const koaSwagger = require('koa2-swagger-ui').koaSwagger;
+const koaSwagger = require("koa2-swagger-ui").koaSwagger;
 const yamljs = require("yamljs");
-const path = require('path');
-const fs = require('fs');
+const path = require("path");
+const fs = require("fs");
 const router = require("./routing/router.js");
 const authenticate = require("./authentication/authenticate");
 const authorize = require("./authorization/authorization");
 const authorizeProjects = require("./authorization/authorization_project");
+const { dbSchema } = require("../../mongoose-erd-generator/bin/index");
 
 // create server
 const server = new Koa();
@@ -25,18 +26,37 @@ mongoose.set("useCreateIndex", true);
 server.use(cors());
 
 // Serve documentation
-const spec = yamljs.load('./docs/docs.yaml');
-server.use(koaSwagger({routePrefix: '/docs', title:'Explorer', swaggerOptions: {spec}, favicon: "/docs/favicon.ico", hideTopbar: true}));
+server.use(
+  dbSchema(
+    "/docs/db",
+    { modelsPath: __dirname + "/models", nameColor: "#007bff" },
+    __dirname + "/docs/dbSchema.html"
+  )
+);
+
+
+const spec = yamljs.load("./docs/docs.yaml");
+server.use(
+  koaSwagger({
+    routePrefix: "/docs",
+    title: "Explorer",
+    swaggerOptions: { spec },
+    favicon: "/docs/favicon.ico",
+    hideTopbar: true,
+  })
+);
 server.use((ctx, next) => {
-  console.log(ctx.path);
-  console.log(ctx.method)
-  if (ctx.path == "/docs/favicon.ico" && ctx.method == 'GET' && ctx.method != 'Head') {
-    ctx.body = fs.readFileSync(path.join(__dirname, "/docs/favicon.ico"))
+  if (
+    ctx.path == "/docs/favicon.ico" &&
+    ctx.method == "GET" &&
+    ctx.method != "Head"
+  ) {
+    ctx.body = fs.readFileSync(path.join(__dirname, "/docs/favicon.ico"));
     ctx.status = 200;
     return ctx;
   }
+  return next();
 });
-
 
 // check authentication
 server.use(async (ctx, next) => {

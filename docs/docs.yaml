@@ -1,9 +1,8 @@
 openapi: 3.0.0
 info:
-  description: API specification for Aura REST API. See <a target=_blank
-    href='https://drive.google.com/open?id=1r5UP4bS-ar_1ba3VrCOIdHIKzuWLY_TR'>UML</a>
-    for more details.
-    Go to <a href="aura.dmz.teco.edu">aura.dmz.teco.edu</a> to try it out!
+  description: API specification for Explorer REST API. See <a target=_blank
+    href='http://explorer.dmz.teco.edu/api/docs/db'>DB</a> for the database schema.
+    Go to <a href="http://explorer.dmz.teco.edu">explorer.dmz.teco.edu</a> to try it out!
   version: 1.0.0
   title: Explorer APIs
 servers:
