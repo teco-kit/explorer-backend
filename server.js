@@ -10,7 +10,7 @@ const router = require("./routing/router.js");
 const authenticate = require("./authentication/authenticate");
 const authorize = require("./authorization/authorization");
 const authorizeProjects = require("./authorization/authorization_project");
-const { dbSchema } = require("../../mongoose-erd-generator/bin/index");
+const dbSchema = require("koa-mongoose-erd-generator");
 
 // create server
 const server = new Koa();
