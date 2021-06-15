@@ -25,6 +25,7 @@ mongoose.set("useCreateIndex", true);
 // setup koa middlewares
 server.use(cors());
 
+
 // Serve documentation
 server.use(
   dbSchema(
@@ -57,6 +58,7 @@ server.use((ctx, next) => {
   }
   return next();
 });
+
 
 // check authentication
 server.use(async (ctx, next) => {

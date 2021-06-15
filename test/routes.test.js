@@ -82,6 +82,7 @@ const dataset = {
   labelings: [],
   video: {},
   results: [],
+  name: "TestDataset"
 };
 
 console.log("Testing with config:");
@@ -1248,6 +1249,7 @@ describe("Testing API Routes", () => {
               "labelings",
               "video",
               "device",
+              "name",
               "results",
               "experiments",
               "__v"
