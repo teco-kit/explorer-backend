@@ -1,0 +1,2891 @@
+openapi: 3.0.0
+info:
+  description: API specification for Explorer REST API. See <a target=_blank
+    href='http://explorer.dmz.teco.edu/api/docs/db'>DB</a> for the database schema.
+    Go to <a href="http://explorer.dmz.teco.edu">explorer.dmz.teco.edu</a> to try it out!
+  version: 1.0.0
+  title: Explorer APIs
+servers:
+  - url: http://explorer.dmz.teco.edu
+tags:
+  - name: User
+    description: 'backend api: user routes'
+  - name: Projects
+    description: 'bakcend api: project routes'
+  - name: Datasets
+    description: 'backend api: dataset routes'
+  - name: Devices
+    description: 'backend api: device routes'
+  - name: Experiment
+    description: 'backend api: experiment routes'
+  - name: Firmware
+    description: 'backend api: firmware routes'
+  - name: LabelDefinitions
+    description: 'backend api: labelDefinition routes'
+  - name: LabelTypes
+    description: 'backend api: labelType routes'
+  - name: Sensors
+    description: 'backend api: sensor routes'
+  - name: Services
+    description: 'backend api: services routes'
+paths:
+
+  /api/projects:
+    get:
+      tags:
+        - Projectss
+      summary: Returns all projects the user has access to
+      operationId: getProjects
+      parameters: []
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+
+    post:
+        tags:
+        - Projects
+        summary: Add a new project
+        operationId: createProject
+        parameters: []
+        requestBody:
+          description: Projec object that needs to be created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          required: true
+        responses:
+          201:
+            description: created
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Project'
+          401:
+            description: Unauthorized
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/responses/UnauthorizedError'
+                example: 
+                  error: Please provide a valid JWT token
+          500:
+            description: Internal Server Error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/responses/InternalServerError'
+                example: 
+                  error: Internal Server Error
+        security:
+          - access_token: []
+
+
+  /api/datasets:
+    get:
+      tags:
+      - Datasets
+      summary: Returns a list of Datasets in a project
+      operationId: getDatasets
+      parameters:
+        - in: header
+          name: project
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dataset'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Dataset not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+        - access_token: []
+    post:
+      tags:
+      - Datasets
+      summary: Add a new dataset to a project
+      operationId: createDataset
+      parameters:
+        - in: header
+          name: project
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: Dataset object that needs to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dataset'
+        required: true
+      responses:
+        201:
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+    
+  /api/projects/{projectId}:
+    get:
+      tags:
+      - Projects
+      summary: Find projectby Id 
+      operationId: getProjectbyId
+      parameters:
+      - name: projectId
+        in: path
+        description: ID of project to return
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Project not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    put:
+      tags:
+      - Projects
+      summary: Update a project
+      operationId: updateProjectById
+      parameters:
+      - name: projectId
+        in: path
+        description: ID of project that need to be updated
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: project object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'updated project with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Experiment not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    delete:
+      tags:
+      - Projects
+      summary: Delete a dataset by Id
+      operationId: deleteDatasetsById
+      parameters:
+      - name: projectId
+        in: path
+        description: ID of project that need to be updated
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'deleted project with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Experiment not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+      
+  /api/datasets/{datasetId}:
+    get:
+      tags:
+      - Datasets
+      summary: Find dataset in a project by Id 
+      operationId: getDatasetById
+      parameters:
+      - name: datasetId
+        in: path
+        description: ID of dataset to return
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: dataset not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    put:
+      tags:
+      - Datasets
+      summary: Update a dataset by Id in a project
+      operationId: updateDatasetById
+      parameters:
+      - name: datasetId
+        in: path
+        description: ID of dataset that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: dataset object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dataset'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'updated dataset with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Experiment not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    delete:
+      tags:
+      - Datasets
+      summary: Delete a dataset by Id in a project
+      operationId: deleteDatasetsById
+      parameters:
+      - name: datasetId
+        in: path
+        description: ID of dataset that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'deleted dataset with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Experiment not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+  /api/devices:
+    get:
+      tags:
+      - Devices
+      summary: Returns a list of devices in a project
+      operationId: getDevices
+      parameters:
+        - in: header
+          name: project
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Device not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+        - access_token: []
+    post:
+      tags:
+      - Devices
+      summary: Add a new device to a project
+      operationId: createDevice
+      parameters:
+        - in: header
+          name: project
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: device object that needs to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+        required: true
+      responses:
+        201:
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+    delete:
+      tags:
+      - Devices
+      summary: Deletes all devices in a project
+      operationId: deleteDevices
+      parameters:
+        - in: header
+          name: project
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                description: deleted all devices
+                example: 
+                  message: deleted all devices
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+  /api/devices/{deviceId}:
+    get:
+      tags:
+      - Devices
+      summary: Find device in a project by Id
+      operationId: getDeviceById
+      parameters:
+      - name: deviceId
+        in: path
+        description: ID of device to return
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Device not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    put:
+      tags:
+      - Devices
+      summary: Update a device in a project by Id
+      operationId: updateDeviceById
+      parameters:
+      - name: deviceId
+        in: path
+        description: ID of device that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: device object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'updated device with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: device not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    delete:
+      tags:
+      - Devices
+      summary: Delete an device by Id in a project
+      operationId: deleteDeviceById
+      parameters:
+      - name: deviceId
+        in: path
+        description: ID of device that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'deleted device with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: device not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+  
+  /api/experiments:
+    get:
+      tags:
+      - Experiment
+      summary: Returns a list of experiments in a project
+      operationId: getExperiments
+      parameters:
+        - in: header
+          name: project
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Experiment'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Experiment not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+        - access_token: []
+    post:
+      tags:
+      - Experiment
+      summary: Add a new experiment to a project
+      operationId: createExperiment
+      parameters:
+        - in: header
+          name: project
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: Experiment object that needs to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Experiment'
+        required: true
+      responses:
+        201:
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Experiment'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+    delete:
+      tags:
+      - Experiment
+      summary: Deletes all experiments in a project
+      operationId: deleteExperiments
+      parameters:
+        - in: header
+          name: project
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                description: deleted all experiments
+                example: 
+                  message: deleted all experiments
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+  /api/experiments/{experimentId}:
+    get:
+      tags:
+      - Experiment
+      summary: Find experiment in a project by Id
+      operationId: getExperimentById
+      parameters:
+      - name: experimentId
+        in: path
+        description: ID of experiment to return
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Experiment'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Experiment not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    put:
+      tags:
+      - Experiment
+      summary: Update an experiment by Id
+      operationId: updateExperimentById
+      parameters:
+      - name: experimentId
+        in: path
+        description: ID of experiment that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: Experiment object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Experiment'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'updated experiment with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Experiment not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    delete:
+      tags:
+      - Experiment
+      summary: Delete an experiment in a project by Id
+      operationId: deleteExperimentById
+      parameters:
+      - name: experimentId
+        in: path
+        description: ID of experiment that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'deleted experiment with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Experiment not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+  /api/experiments/{experimentId}/populated:
+    get:
+      tags:
+      - Experiment
+      summary: Find a populated experiment in a project by Id
+      operationId: getExperimentById
+      parameters:
+      - name: experimentId
+        in: path
+        description: ID of experiment to return
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Experiment'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Experiment not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+  /api/firmware:
+    get:
+      tags:
+      - Firmware
+      summary: Returns a list of firmwares in a project
+      operationId: getFirmware
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Firmware'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Firmware not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+        - access_token: []
+    post:
+      tags:
+      - Firmware
+      summary: Add a new firmware to a project
+      operationId: createFirmware
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: Firmware object that needs to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Firmware'
+        required: true
+      responses:
+        201:
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firmware'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+    delete:
+      tags:
+      - Firmware
+      summary: Deletes all firmwares in a project
+      operationId: deleteFirmware
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                description: deleted all firmware
+                example: 
+                  message: deleted all firmware
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+  /api/firmware/{firmwareId}:
+    get:
+      tags:
+      - Firmware
+      summary: Find a firmware in a project by Id
+      operationId: getFirmwareById
+      parameters:
+      - name: firmwareId
+        in: path
+        description: ID of firmware to return
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firmware'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Firmware not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    put:
+      tags:
+      - Firmware
+      summary: Update a firmware in a project by Id
+      operationId: updateFirmwareById
+      parameters:
+      - name: firmwareId
+        in: path
+        description: ID of firmware that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: Firmware object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Firmware'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'updated firmware with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Firmware not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    delete:
+      tags:
+      - Firmware
+      summary: Delete a firmware in a project by Id
+      operationId: deleteFirmwareById
+      parameters:
+      - name: firmwareId
+        in: path
+        description: ID of firmware that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'deleted firmware with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: Firmware not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+
+
+  
+  /api/labelDefinitions:
+    get:
+      tags:
+      - LabelDefinitions
+      summary: Returns a list of labelDefinitions in a project
+      operationId: getLabelDefinitions
+      parameters: 
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LabelDefinition'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: LabelDefinition not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+        - access_token: []
+    post:
+      tags:
+      - LabelDefinitions
+      summary: Add a new labelDefinitions to a project
+      operationId: createLabelDefinitions
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: labelDefinitions object that needs to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelDefinition'
+        required: true
+      responses:
+        201:
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelDefinition'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+    delete:
+      tags:
+      - LabelDefinitions
+      summary: Deletes all LabelDefinition in a project
+      operationId: deleteLabelDefinition
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                description: deleted all LabelDefinitions
+                example: 
+                  message: deleted all LabelDefinitions
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+  /api/labelDefinitions/{labelDefinitionId}:
+    get:
+      tags:
+      - LabelDefinitions
+      summary: Find LabelDefinition in a project by Id
+      operationId: getLabelDefinitionById
+      parameters:
+      - name: labelDefinitionId
+        in: path
+        description: ID of LabelDefinition to return
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firmware'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: LabelDefinition not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    put:
+      tags:
+      - LabelDefinitions
+      summary: Update a labelDefinition in a project by Id
+      parameters:
+      - name: labelDefinitionId
+        in: path
+        description: ID of labelDefinition that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: labelDefinition object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelDefinition'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'updated LabelDefinition with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: LabelDefinition not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    delete:
+      tags:
+      - LabelDefinitions
+      summary: Delete a LabelDefinition in a project by Id
+      operationId: deleteLabelDefinitionById
+      parameters:
+      - name: labelDefinitionId
+        in: path
+        description: ID of LabelDefinition that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'deleted LabelDefinition with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: LabelDefinition not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+
+
+  /api/labelTypes:
+    get:
+      tags:
+      - LabelTypes
+      summary: Returns a list of labelTypes in a project
+      operationId: getLabelTypes
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LabelType'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: labelTypes not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+        - access_token: []
+    post:
+      tags:
+      - LabelTypes
+      summary: Add a new labelType to a project
+      operationId: createLabelTypes
+      requestBody:
+        description: labelType object that needs to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelType'
+        required: true
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        201:
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelType'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+    delete:
+      tags:
+      - LabelTypes
+      summary: Deletes all LabelType in a project
+      operationId: deleteLabelType
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                description: deleted all LabelType
+                example: 
+                  message: deleted all LabelType
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+  /api/labelTypes/{labelTypeId}:
+    get:
+      tags:
+      - LabelTypes
+      summary: Find labelType in a project by Id
+      operationId: getLabelTypesById
+      parameters:
+      - name: labelTypeId
+        in: path
+        description: ID of labelTypes to return
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelType'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: labelTypes not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    put:
+      tags:
+      - LabelTypes
+      summary: Update a labelTypes in a project by Id
+      description: Update a labelTypes by Id
+      operationId: updateLabelTypesById
+      parameters:
+      - name: labelTypeId
+        in: path
+        description: ID of labelTypes that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: labelTypes object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelType'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'updated labelTypes with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: labelTypes not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    delete:
+      tags:
+      - LabelTypes
+      summary: Delete a labelTypes in a project by Id
+      operationId: deleteLabelTypesById
+      parameters:
+      - name: labelTypeId
+        in: path
+        description: ID of labelTypes that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'deleted labelTypes with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: labelTypes not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+  /api/sensors:
+    get:
+      tags:
+      - Sensors
+      summary: Returns a list of sensors in a project
+      operationId: getSensors
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sensor'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: sensor not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+        - access_token: []
+    post:
+      tags:
+      - Sensors
+      summary: Add a new sensors to a project
+      operationId: createSensor
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: sensors object that needs to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sensor'
+        required: true
+      responses:
+        201:
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+    delete:
+      tags:
+      - Sensors
+      summary: Deletes all Sensors in a project
+      operationId: deleteSensor
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                description: deleted all sensors
+                example: 
+                  message: deleted all sensors
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+  /api/sensors/{sensorId}:
+    get:
+      tags:
+      - Sensors
+      summary: Find sensors in a project by Id
+      operationId: getSensorsById
+      parameters:
+      - name: sensorId
+        in: path
+        description: ID of sensor to return
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sensor'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: sensor not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    put:
+      tags:
+      - Sensors
+      summary: Update a sensor in a project by Id
+      operationId: updateSensorById
+      parameters:
+      - name: sensorId
+        in: path
+        description: ID of sensors that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: sensors object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sensor'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'updated sensor with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: sensors not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    delete:
+      tags:
+      - Sensors
+      summary: Delete a sensors in a project by Id
+      operationId: deleteSensorById
+      parameters:
+      - name: sensorId
+        in: path
+        description: ID of sensor that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'deleted sensor with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: sensor not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+
+
+  /api/services:
+    get:
+      tags:
+      - Services
+      summary: Returns a list of services in a project
+      operationId: getServices
+      parameters: 
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: service not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+        - access_token: []
+    post:
+      tags:
+      - Services
+      summary: Add a new services to a project
+      operationId: createServices
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: services object that needs to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+        required: true
+      responses:
+        201:
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+    delete:
+      tags:
+      - Services
+      summary: Deletes all services in a project
+      operationId: deleteServices
+      parameters:
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                description: deleted all services
+                example: 
+                  message: deleted all services
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/InternalServerError'
+              example: 
+                error: Internal Server Error
+      security:
+        - access_token: []
+  /api/services/{serviceId}:
+    get:
+      tags:
+      - Services
+      summary: Find service in a project by Id
+      operationId: getServiceById
+      parameters:
+      - name: serviceId
+        in: path
+        description: ID of services to return
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: service not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    put:
+      tags:
+      - Services
+      summary: Update a service in a project by Id
+      operationId: updateServiceById
+      parameters:
+      - name: serviceId
+        in: path
+        description: ID of service that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: service object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'updated service with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: service not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+    delete:
+      tags:
+      - Services
+      summary: Delete a service in a project by Id
+      operationId: deleteServiceById
+      parameters:
+      - name: serviceId
+        in: path
+        description: ID of services that need to be updated
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: project
+        schema:
+          type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: 'deleted services with id: 507f191e810c19729de860ea'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+        404:
+          description: service not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/responses/NotFoundError'
+              example: 
+                error: Not Found
+      security:
+      - access_token: []
+
+
+  /api/users:
+    get:
+      tags:
+      - User
+      summary: Returns requesting user
+      description: Returns user data of requesting user
+      operationId: getUsers
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+      security:
+        - access_token: []
+    put:
+      tags:
+      - User
+      summary: Update requesting user
+      description: Update user data of requesting user
+      operationId: updateUser
+      parameters: []
+      requestBody:
+        description: Update a user object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnauthorizedError'
+              example: 
+                error: Please provide a valid JWT token
+      security:
+        - access_token: []
+
+
+components:
+  securitySchemes:
+    access_token:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    UnauthorizedError:
+      description: Please provide a valid JWT token
+      headers:
+        WWW_Authenticate:
+          schema:
+            type: string
+    NotFoundError:
+      description: Not Found
+      headers:
+        WWW_Authenticate:
+          schema:
+            type: string
+    InternalServerError:
+      description: Not Found
+      headers:
+        WWW_Authenticate:
+          schema:
+            type: string
+  schemas:
+  # Authentication Schemas
+    AuthUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: email of user
+          example: test@aura.com
+        password:
+          type: string
+          description: password for user account
+          example: examplePW123
+      xml:
+        name: UserforAuth
+    AuthObject:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: Bearer JWT Token
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZGQ4OWEwOTU3MzllMDAxOWI2NDE5YSIsImlhdCI6MTU3NDc5OTc4NSwiZXhwIjoxNTc1MDU4OTg1fQ.cSTapFKpbTirbx0qgwiiRVXbev2pvtKHfZokFemEfAg
+        refresh_token:
+          type: string
+          description: Refresh JWT Token - Not in us
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkZGQ4OWEwOTU3MzllMDAxOWI2NDE5YSIsImlhdCI6MTU3NDc5OTc4NSwiZXhwIjoxNTc1MDU4OTg1fQ.cSTapFKpbTirbx0qgwiiRVXbev2pvtKHfZokFemEfAg
+      xml:
+        name: AuthObject
+  # API Schemas
+    User:
+      type: object
+      properties:
+        sex:
+          type: string
+          description: sex of user
+          enum: [m, f, d]
+          example: f
+        birthday:
+          type: string
+          description: birthdate of user
+          example: 1990-01-01
+        weight:
+          type: number
+          description: weight of user in kg
+          example: 60
+        clientVersion:
+          type: integer
+          description: version number of user device
+          format: int64
+          example: 1
+        platform:
+          type: string
+          description: platform of user device
+          enum: [ios, android, windows]
+          example: android
+        authId:
+          type: string
+      required: 
+      - authId
+      xml:
+        name: User
+    Experiment:
+      type: object
+      properties:
+        name:
+          type: string
+          description: experiment type
+          example: respiration
+        instructions:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              duration:
+                type: integer
+              unit:
+                type: string
+          description: list of instructions
+          example: 
+            - name: einatmen
+              duration: 2000
+              unit: s
+            - name: ausatmen
+              duration: 2000
+              unit: s      
+      required: 
+      - name
+      xml:
+        name: Experiment
+
+    Project:
+      type: object
+      properties:
+        admin:
+          type: string
+          description: id of the project admin
+          example: 507f191e810c19729de860ea
+        name:
+          type: string
+          description: name of the project
+          example: testProject
+        users:
+          type: array
+          default: []
+          items:
+            type: string
+            description: id of the user
+            example: 507f191e810c19729de860ea
+        datasets:
+          type: array
+          default: []
+          items:
+            type: string
+            description: id of dataset
+            example: 507f191e810c19729de860ea
+        experiments:
+          type: array
+          default: []
+          items:
+            type: string
+            description: id of experiment
+            example: 507f191e810c19729de860ea
+        labelDefinitions:
+          type: array
+          default: []
+          items:
+            type: string
+            description: id of labelDefinition
+            example: 507f191e810c19729de860ea
+        labelTypes:
+          type: array
+          default: []
+          items:
+            type: string
+            description: id of labelType
+            example: 507f191e810c19729de860ea
+        devices:
+          type: array
+          default: []
+          items:
+            type: string
+            description: id of the device
+            example: 507f191e810c19729de860ea
+        services:
+          type: array
+          default: []
+          items:
+            type: string
+            description: id of the service
+            example: 507f191e810c19729de860ea
+        sensors:
+          type: array
+          default: []
+          items:
+            type: string
+            description: id of the sensor
+            example: 507f191e810c19729de860ea
+        firmware:
+          type: array
+          default: []
+          items:
+            type: string
+            description: id of the firmware
+            example: 507f191e810c19729de860ea
+        enableDeviceApi:
+          type: boolean
+          default: false
+      required:
+        - admin
+        - name
+          
+
+    Dataset:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: id of user
+          example: 507f191e810c19729de860ea
+        start:
+          type: number
+          description: timestamp of start
+          example: 1576108800
+        end:
+          type: number
+          description: timestamp of start
+          example: 1576195200
+        events:
+          type: array
+          description: list of DatasetEvents
+          items:
+            $ref: '#/components/schemas/DatasetEvent'
+        isPublished:
+          type: boolean
+          description: dataset is published
+          example: true
+        timeSeries:
+          type: array
+          description: list of timeseries
+          items:
+            $ref: '#/components/schemas/TimeSeries'
+        fusedSeries:
+          type: array
+          description: list of fused series
+          items:
+            $ref: '#/components/schemas/FusedSeries'
+        video:
+          $ref: '#/components/schemas/Video'
+        device:
+          type: string
+          description: id of device
+          example: 507f191e810c19729de860ea
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Result'
+          description: array of results+
+        experiments:
+          type: string
+          description: id of experiment
+          example: 507f191e810c19729de860ea
+    DatasetEvent:
+      type: object
+      properties:
+        name: 
+          type: string
+          description: name of dataset event
+          example: VOC
+        type: 
+          type: string
+          description: id of event type
+          example: 507f191e810c19729de860ea
+        value: 
+          type: number
+          description: value of measurment
+          example: 80
+        time: 
+          type: number
+          description: timestamp
+          example: 1576108800
+        unit: 
+          type: string
+          description: unit of measured event
+          example: VOC
+        icon: 
+          type: string
+          description: url of icon
+          example: aura.dmz.teco.edu/example_icon
+      required:
+      - name
+      - type
+      - time
+      xml: 
+        name: DatasetEvent
+    DatasetLabel:
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of label
+          example: Label1
+        type:
+          type: string
+          description: id of label type
+          example: 507f191e810c19729de860ea
+        start:
+          type: number
+          description: timestamp of start
+          example: 1576108800
+        end:
+          type: number
+          description: timestamp of end
+          example: 1576195200
+      required:
+      - name
+      - start
+      - end
+      xml:
+        name: DatasetLabel
+    DatasetLabeling:
+      type: object
+      properties:
+        labelingId:
+          type: string
+          description: id of LabelDefinition
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatasetLabel'
+          description: List of labels associated with labeling
+        creator:
+          type: string
+          description: id of service
+          example: 507f191e810c19729de860ea
+      xml:
+        name: DatasetLabeling
+    Device:
+      type: object
+      properties:
+        deviceId:
+          type: integer
+          description: device id 
+          example: 01234567
+        firmware:
+          type: integer
+          description: firmware of device
+          example: 1
+        sensors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sensor'
+          description: list of sensors
+        generation:
+          type: number
+          description: device generation
+          example: 6.0
+        user:
+          type: string
+          description: id of owner
+          example: 507f191e810c19729de860ea
+      required:
+      - deviceId
+      - Firmware
+      - generation
+      xml:
+        name: Device
+    EventType:
+      type: object
+      properties:
+        name: 
+          type: string
+          description: name of event
+          example: ExampleEvent
+      required:
+      - name
+      xml:
+        name: EventType
+    Firmware:
+      type: object
+      properties:
+        version:
+          type: string
+          description: firmware version
+          example: 
+        binary:
+          type: string
+          description: binary
+          example: 
+        hash:
+          type: string
+          description: firmware hash
+          example: 
+        supportedDevices:
+          type: string
+          description: firmware version
+          example: 
+      required:
+      - version
+      - binary
+      - hash
+      - supportedDevices
+      xml:
+        name: Firmware
+    FusedSeries:
+      type: object
+      properties:
+        timeSeries:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeSeries'
+          description: array of fused timeserie objects
+      xml:
+        name: FusedSeries
+    LabelDefinition:
+      type: object
+      properties:
+        labels:
+          type: array
+          items:
+              $ref: '#/components/schemas/LabelType'
+          description: array of label types
+        name:
+          type: string
+          description: name of labeldefinition
+          example: Labeling1
+      required:
+      - name
+      xml:
+        name: LabelDefinition
+    LabelType:
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of label type
+          example: exhale
+        color:
+          type: string
+          description: color of label type
+          example: red
+      required:
+      - name
+      xml:
+        name: LabelType
+    Result:
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of results
+          example: Apnea
+        value:
+          type: integer
+          description: value of classification/regression, use 0/1 for boolean representation
+          example: 1
+        text:
+          type: string
+          description: additional text field to store results
+          example: Apnea detected
+      required:
+      - name
+      xml:
+        name: Result
+    Sensor:
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of sensor
+          example: voc sensor
+      required:
+      - name
+      xml:
+        name: Sensor
+    Service:
+      type: object
+      properties:
+        name: 
+          type: string
+          description: name of service
+          example: ExampleService
+        version: 
+          type: integer
+          description: version number
+          example: 1
+      required: 
+      - name
+      - version
+      xml:
+        name: Service
+    TimeSeries:
+      type: object
+      properties:
+        name: 
+          type: string
+          description: name of measured data
+          example: VOC
+        unit: 
+          type: integer
+          description: unit of data
+          example: kOhm
+        data: 
+          type: array
+          items:
+            type: integer
+          description: url of video
+          example: 
+        offset: 
+          type: integer
+          description: offset of data in milliseconds
+          example: 100
+        start:
+          type: integer
+          description: unix timestamp of start time
+          example: 1576108800
+        end: 
+          type: integer
+          description: unix timestamp of end time
+          example: 1576195200
+        samplingRate:
+          type: integer
+          description: sampling rate of data in milliseconds
+          example: 100
+      required:
+      - unit
+      - name
+      xml:
+        name: TimeSeries
+    Video:
+      type: object
+      properties:
+        url:
+          type: string
+          description: url of video
+          example: aura.dmz.teco.edu/example_video
+        offset:
+          type: integer
+          description: offset in milliseconds
+          example: 100
+      xml:
+        name: Video
+security:
+  - access_token: []
