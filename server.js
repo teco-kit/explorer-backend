@@ -29,7 +29,7 @@ server.use(cors());
 // Serve documentation
 server.use(
   dbSchema(
-    "/docs/db",
+    "/api/docs/db",
     { modelsPath: __dirname + "/models", nameColor: "#007bff" },
     __dirname + "/docs/dbSchema.html"
   )
@@ -42,13 +42,14 @@ server.use(
     routePrefix: "/docs",
     title: "Explorer",
     swaggerOptions: { spec },
-    favicon: "/docs/favicon.ico",
+    favicon: "/api/docs/favicon.ico",
     hideTopbar: true,
   })
 );
+
 server.use((ctx, next) => {
   if (
-    ctx.path == "/docs/favicon.ico" &&
+    ctx.path == "/api/docs/favicon.ico" &&
     ctx.method == "GET" &&
     ctx.method != "Head"
   ) {
