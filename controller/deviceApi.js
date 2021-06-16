@@ -106,7 +106,7 @@ async function initDatasetIncrement(ctx) {
   const dataset = Dataset({
     name: body.name,
     userId: deviceApi.userId,
-    start: 9999999999,
+    start: 99999999999999,
     end: 0,
   });
 
@@ -156,7 +156,7 @@ async function addDatasetIncrement(ctx) {
   const dataset = await Dataset.findOne(datasetId);
   var dataTime = time;
   if (!dataTime) {
-    dataTime = Math.floor(new Date().getTime() / 1000);
+    dataTime = Math.floor(new Date().getTime());
   }
 
   var timeSeriesIndex = dataset.timeSeries.findIndex(

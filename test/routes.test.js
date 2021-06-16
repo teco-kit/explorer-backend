@@ -241,7 +241,7 @@ describe("Testing API Routes", () => {
     it("Generate datasetCollector", (done) => {
       request
         .post("/api/deviceApi/initDatasetIncrement")
-        .send({ deviceApiKey: deviceApiKey })
+        .send({ deviceApiKey: deviceApiKey, name: "testName" })
         .expect(200)
         .end((err, res) => {
           expect(res.body).to.have.all.keys("datasetKey");
