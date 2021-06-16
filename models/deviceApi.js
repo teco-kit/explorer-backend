@@ -4,11 +4,13 @@ const DeviceApi = new mongoose.Schema({
   projectId: {
     type: mongoose.Schema.Types.ObjectId,
     required: [true, "Project needs to be set"],
+    ref: "Project"
   },
 
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: [true, "User needs to be set"],
+    ref: "User"
   },
 
   deviceApiKey: {
@@ -17,7 +19,8 @@ const DeviceApi = new mongoose.Schema({
 
   datasets: {
       type: [{dataset: mongoose.Schema.Types.ObjectId, datasetKey: String}],
-      default: []
+      default: [],
+      ref: "Dataset"
   }
   
 });
