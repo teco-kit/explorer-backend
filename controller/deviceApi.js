@@ -84,6 +84,13 @@ async function initDatasetIncrement(ctx) {
   const deviceApi = await DeviceApi.findOne({
     deviceApiKey: body.deviceApiKey,
   });
+
+  if (!body.name) {
+    ctx.body = {error: "Wrong input parameters"}
+    ctx.status = 400;
+    return ctx;
+  }
+
   if (!deviceApi) {
     ctx.body = { error: "Invalid key" };
     ctx.status = 403;
@@ -97,6 +104,7 @@ async function initDatasetIncrement(ctx) {
   }
 
   const dataset = Dataset({
+    name: body.name,
     userId: deviceApi.userId,
     start: 9999999999,
     end: 0,
