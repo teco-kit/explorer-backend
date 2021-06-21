@@ -86,7 +86,7 @@ async function initDatasetIncrement(ctx) {
   });
 
   if (!body.name) {
-    ctx.body = {error: "Wrong input parameters"}
+    ctx.body = { error: "Wrong input parameters" }
     ctx.status = 400;
     return ctx;
   }
@@ -106,7 +106,7 @@ async function initDatasetIncrement(ctx) {
   const dataset = Dataset({
     name: body.name,
     userId: deviceApi.userId,
-    start: 99999999999999,
+    start: 9999999999999,
     end: 0,
   });
 
@@ -126,75 +126,65 @@ async function initDatasetIncrement(ctx) {
 
 async function addDatasetIncrement(ctx) {
   try {
-  const body = ctx.request.body;
+    const body = ctx.request.body;
 
-  if ( !"datasetKey" in body || !"time" in body || !"datapoint" in body || !"sensorname" in body) {
+    if (!"datasetKey" in body || !"time" in body || !"datapoint" in body || !"sensorname" in body) {
+      ctx.status = 400;
+      ctx.body = { error: "Wrong input parameters" }
+      return ctx;
+    }
+
+    const { datasetKey, time, datapoint, sensorname } = body;
+    const deviceApi = await DeviceApi.findOne({
+      "datasets.datasetKey": datasetKey,
+    });
+    if (!deviceApi) {
+      ctx.body = { error: "Invalid key" };
+      ctx.status = 403;
+      return ctx;
+    }
+
+    const datasetId = deviceApi.datasets.filter((elm) => {
+      return elm.datasetKey === datasetKey;
+    })[0].dataset;
+
+
+    ctx.time = time || Math.floor(new Date().getTime());
+    await Dataset.findOneAndUpdate({ _id: datasetId, timeSeries: { '$not': { '$elemMatch': { name: sensorname } } } },
+      { '$push': { timeSeries: { name: sensorname, start: ctx.time, end: ctx.time } } });
+
+    // Add datapoint
+    await Dataset.findOneAndUpdate({ _id: datasetId, "timeSeries.name": sensorname }, {
+      '$push': {
+        "timeSeries.$.data": {
+          timestamp: ctx.time,
+          datapoint: datapoint,
+        }
+      }
+    });
+
+    // Updating all 4 values in one query does not work
+    await Dataset.findOneAndUpdate({ _id: datasetId, "timeSeries.name": sensorname },
+      {
+        '$max': { end: ctx.time },
+        '$min': { start: ctx.time }
+      });
+
+    await Dataset.findOneAndUpdate({ _id: datasetId, "timeSeries.name": sensorname },
+      {
+        '$min': { "timeSeries.$.start": ctx.time },
+        '$max': { "timeSeries.$.end": ctx.time },
+      });
+
+
+    ctx.status = 200;
+    ctx.body = { message: "Added data" };
+    return ctx;
+  } catch (e) {
+    console.log(e)
     ctx.status = 400;
-    ctx.body = {error: "Wrong input parameters"}
-    return ctx; 
+    ctx.body = { error: "Error adding increment" }
   }
-
-  const { datasetKey, time, datapoint, sensorname } = body;
-  const deviceApi = await DeviceApi.findOne({
-    "datasets.datasetKey": datasetKey,
-  });
-  if (!deviceApi) {
-    ctx.body = { error: "Invalid key" };
-    ctx.status = 403;
-    return ctx;
-  }
-
-  const project = await Project.findOne(deviceApi.projectId);
-  if (!project.enableDeviceApi) {
-    ctx.body = { error: "This feature is disabled" };
-    ctx.status = 403;
-    return ctx;
-  }
-  const datasetId = deviceApi.datasets.filter((elm) => {
-    return elm.datasetKey === datasetKey;
-  })[0].dataset;
-  const dataset = await Dataset.findOne(datasetId);
-  var dataTime = time;
-  if (!dataTime) {
-    dataTime = Math.floor(new Date().getTime());
-  }
-
-  var timeSeriesIndex = dataset.timeSeries.findIndex(
-    (elm) => elm.name === sensorname
-  );
-  if (timeSeriesIndex === -1) {
-    const timeSeries = { name: sensorname, start: dataTime, end: dataTime };
-    dataset.timeSeries.push(timeSeries);
-    timeSeriesIndex = dataset.timeSeries.length - 1;
-  }
-
-  dataset.timeSeries[timeSeriesIndex].data.push({
-    timestamp: dataTime,
-    datapoint: datapoint,
-  });
-
-  if (dataset.timeSeries[timeSeriesIndex].end < dataTime) {
-    dataset.timeSeries[timeSeriesIndex].end = dataTime;
-  }
-  if (dataset.timeSeries[timeSeriesIndex].start > dataTime) {
-    dataset.timeSeries[timeSeriesIndex].start = dataTime;
-  }
-
-  if (dataset.end < dataTime) {
-    dataset.end = dataTime;
-  }
-  if (dataset.start > dataTime) {
-    dataset.start = dataTime;
-  }
-  await dataset.save();
-
-  ctx.status = 200;
-  ctx.body = { message: "Added data" };
-  return ctx;
-} catch(e) {
-  ctx.status = 400;
-  ctx.body = {error: "Error adding increment"}
-}
 }
 
 async function uploadDataset(ctx) {

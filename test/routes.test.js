@@ -300,8 +300,7 @@ describe("Testing API Routes", () => {
       dataset.save();
     });
 
-    // TODO: Fix this
-    it.skip("Add multiple datasetIncrements and not waiting for backend result", async () => {
+    it("Add multiple datasetIncrements and not waiting for backend result", async () => {
       async function reqFn(time, datapoint, sensorname) {
         return request.post("/api/deviceApi/addDatasetIncrement").send({
           datasetKey: datasetKey,
@@ -312,13 +311,14 @@ describe("Testing API Routes", () => {
       }
       requests = [];
       for (i = 0; i < 10; i++) {
-        requests.push(reqFn(i, 456, "testSensor"));
+        requests.push(reqFn(234 + i, 456 + i, "newTestSensor"));
       }
       var vals = await Promise.all(requests);
-      const datasets = await DatasetModel.find({});
       var dataset = await DatasetModel.find({});
       dataset = dataset[1];
       expect(dataset.timeSeries.length).to.equal(1);
+      expect(dataset.timeSeries[0].start).to.equal(234);
+      expect(dataset.timeSeries[0].end).to.equal(243);
       dataset.timeSeries = [];
       dataset.save();
     });
