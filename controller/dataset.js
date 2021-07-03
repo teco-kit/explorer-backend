@@ -41,7 +41,7 @@ async function autoCreateLabelings(dataset) {
 async function getDatasets(ctx) {
   const projectId = ctx.header.project;
   const project = await ProjectModel.findOne({ _id: projectId });
-  const datasets = await Model.find({ _id: project.datasets });
+  const datasets = await Model.find({ _id: project.datasets }, {"timeSeries": 0});
   ctx.body = datasets;
   ctx.status = 200;
 }
