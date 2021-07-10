@@ -5,6 +5,10 @@ const TimeSeries = new mongoose.Schema({
     type: String,
     required: [true, "timeSeries name cannot be empty"],
   },
+  dataset: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: [true, "timeSeries must be in a dataset"]
+  },
   unit: {
     type: String,
     default: "",

@@ -29,11 +29,11 @@ const Dataset = new mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
-	timeSeries: {
-		type: [TimeSeries],
+	timeSeries: [{
+		type: mongoose.Schema.Types.ObjectId,
 		ref: "TimeSeries",
 		default: [],
-	},
+	}],
 	fusedSeries: {
 		type: [FusedSeries],
 		ref: "FusedSeries",
