@@ -202,9 +202,47 @@ async function addDatasetIncrement(ctx) {
     ctx.body = { message: "Added data" };
     return ctx;
   } catch (e) {
-    console.log(e);
     ctx.status = 400;
     ctx.body = { error: "Error adding increment" };
+  }
+}
+
+async function addDatasetIncrementIot(ctx) {
+  try {
+    const body = ctx.request.body;
+
+    const sendObj = { datasetKey: body.datasetKey, data: [] };
+    var idx = -1;
+    for (var i = 0; i < body.data.length; i++) {
+      const sensorData = body.data[i].split(";");
+
+      if (!sendObj.data.some((e) => e.sensorname === sensorData[2])) {
+        sendObj.data.push({
+          sensorname: sensorData[2],
+          start: sensorData[0],
+          end: sensorData[0],
+          timeSeriesData: [],
+        });
+        idx = sendObj.data.length - 1;
+      } else {
+        idx = sendObj.data.findIndex((x) => x.sensorname === sensorData[2]);
+      }
+      sendObj.data[idx].timeSeriesData.push({
+        timestamp: sensorData[0],
+        datapoint: sensorData[1],
+      });
+      if (sensorData[0] < sendObj.data[idx].start) {
+        sendObj.data[idx].start = sensorData[0];
+      }
+      if (sensorData[0] > sendObj.data[idx].start) {
+        sendObj.data[idx].end = sensorData[0];
+      }
+    }
+    ctx.request.body = sendObj;
+    await addDatasetIncrementBatch(ctx);
+  } catch (e) {
+    ctx.status = 500;
+    ctx.body = { error: "Internal server error" };
   }
 }
 
@@ -250,7 +288,12 @@ async function addDatasetIncrementBatch(ctx) {
       await Dataset.findOneAndUpdate(
         { _id: datasetId, "timeSeries.name": sensorname },
         {
-          $push: { "timeSeries.$.data": { $each: timeSeriesData , $sort: {"timestamp": 1}} },
+          $push: {
+            "timeSeries.$.data": {
+              $each: timeSeriesData,
+              $sort: { timestamp: 1 },
+            },
+          },
         }
       );
       await Dataset.findOneAndUpdate(
@@ -261,11 +304,10 @@ async function addDatasetIncrementBatch(ctx) {
         }
       );
     }
-
-    ctx.globalStart = Math.min(data.map((elm) => elm.start));
-    ctx.globalEnd = Math.max(data.map((elm) => elm.end));
+    ctx.globalStart = Math.min(...data.map((elm) => elm.start));
+    ctx.globalEnd = Math.max(...data.map((elm) => elm.end));
     await Dataset.findOneAndUpdate(
-      { _id: datasetId},
+      { _id: datasetId },
       {
         $max: { end: ctx.globalEnd },
         $min: { start: ctx.globalStart },
@@ -276,7 +318,6 @@ async function addDatasetIncrementBatch(ctx) {
     ctx.body = { message: "Added data" };
     return ctx;
   } catch (e) {
-    console.log(e);
     ctx.status = 400;
     ctx.body = { error: "Error adding increment" };
   }
@@ -316,7 +357,6 @@ async function uploadDataset(ctx) {
     ctx.status = 200;
     return ctx;
   } catch (e) {
-    console.log(e);
     ctx.status = 400;
     ctx.body = { error: "Error creating the dataset" };
     return ctx;
@@ -332,4 +372,5 @@ module.exports = {
   initDatasetIncrement,
   addDatasetIncrement,
   addDatasetIncrementBatch,
+  addDatasetIncrementIot,
 };

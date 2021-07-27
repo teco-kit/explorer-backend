@@ -10,8 +10,8 @@ router.get("/setKey", async (ctx) => {
 });
 
 router.get("/getKey", async (ctx) => {
-	await controller.getApiKey(ctx);
-})
+  await controller.getApiKey(ctx);
+});
 
 router.get("/deleteKey", async (ctx) => {
   await controller.removeKey(ctx);
@@ -26,15 +26,19 @@ router.post("/switchActive", KoaBody(), async (ctx) => {
 });
 
 router.post("/initDatasetIncrement", KoaBody(), async (ctx) => {
-	await controller.initDatasetIncrement(ctx);
+  await controller.initDatasetIncrement(ctx);
 });
 
 router.post("/addDatasetIncrement", KoaBody(), async (ctx) => {
-	await controller.addDatasetIncrement(ctx);
+  await controller.addDatasetIncrement(ctx);
 });
 
 router.post("/addDatasetIncrementBatch", KoaBody(), async (ctx) => {
   await controller.addDatasetIncrementBatch(ctx);
+});
+
+router.post("/addDatasetIncrementIot", KoaBody(), async (ctx) => {
+  await controller.addDatasetIncrementIot(ctx);
 });
 
 module.exports = router;
