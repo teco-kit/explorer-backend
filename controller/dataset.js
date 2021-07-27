@@ -5,6 +5,7 @@ const DatasetLabeling = require("../models/datasetLabeling").model;
 const DatasetLabel = require("../models/datasetLabel").model;
 const ProjectModel = require("../models/project").model;
 const DeviceApi = require("../models/deviceApi").model;
+const TimeSeries = require("../models/timeSeries").model;
 
 /**
  * Util Function
@@ -41,7 +42,7 @@ async function autoCreateLabelings(dataset) {
 async function getDatasets(ctx) {
   const projectId = ctx.header.project;
   const project = await ProjectModel.findOne({ _id: projectId });
-  const datasets = await Model.find({ _id: project.datasets }, {"timeSeries": 0});
+  const datasets = await Model.find({ _id: project.datasets });
   ctx.body = datasets;
   ctx.status = 200;
 }
@@ -53,7 +54,9 @@ async function getDatasetById(ctx) {
   const project = await ProjectModel.findOne({ _id: ctx.header.project });
   const dataset = await Model.find({
     $and: [{ _id: ctx.params.id }, { _id: project.datasets }],
-  });
+  })
+    .populate("timeSeries")
+    .exec();
   if (dataset.length === 1) {
     ctx.body = dataset[0];
     ctx.status = 200;
@@ -94,8 +97,20 @@ async function createDataset(ctx) {
     return ctx;
   }
 
-  const document = new Model(dataset);
+  const document = new Model({ ...dataset, timeSeries: undefined });
   await document.save();
+
+  const newTimeSeries = [];
+  for (var i = 0; i < dataset.timeSeries.length; i++) {
+    var tmpSeries = new TimeSeries({
+      ...dataset.timeSeries[i],
+      dataset: document._id,
+    });
+    await tmpSeries.save();
+    document.timeSeries.push(tmpSeries._id);
+  }
+  await document.save();
+
   await ProjectModel.findByIdAndUpdate(ctx.header.project, {
     $push: { datasets: document._id },
   });
@@ -109,16 +124,32 @@ async function createDataset(ctx) {
  * update a dataset specified by id
  */
 async function updateDatasetById(ctx) {
-  const project = await ProjectModel.findOne({ _id: ctx.header.project });
-  if (project.datasets.includes(ctx.params.id)) {
-    await Model.findByIdAndUpdate(ctx.params.id, { $set: ctx.request.body });
-    ctx.body = { message: `updated dataset with id: ${ctx.params.id}` };
-    ctx.status = 200;
-  } else {
-    ctx.body = { error: "Forbidden" };
-    ctx.status = 403;
+  try {
+    const dataset = ctx.request.body;
+    const project = await ProjectModel.findOne({ _id: ctx.header.project });
+    if (project.datasets.includes(ctx.params.id)) {
+      if (dataset.timeSeries) {
+        await Promise.all(
+          dataset.timeSeries.map((elm) =>
+            TimeSeries.findByIdAndUpdate(elm._id, elm)
+          )
+        );
+        await Model.findByIdAndUpdate(ctx.params.id, dataset);
+      } else {
+        dataset.timeSeries = undefined;
+        await Model.findByIdAndUpdate(ctx.params.id, dataset);
+      }
+
+      ctx.body = { message: `updated dataset with id: ${ctx.params.id}` };
+      ctx.status = 200;
+    } else {
+      ctx.body = { error: "Forbidden" };
+      ctx.status = 403;
+    }
+    return ctx;
+  } catch (e) {
+    console.log(e);
   }
-  return ctx;
 }
 
 /**
@@ -137,7 +168,12 @@ async function deleteDatasetById(ctx) {
       $set: { datasets: newDatasets },
     });
 
-    await DeviceApi.updateMany({projectId: project._id}, {$pull: {datasets: {dataset: ctx.params.id}}})
+    await TimeSeries.deleteMany({ _id: { $in: dataset.timeSeries } });
+
+    await DeviceApi.updateMany(
+      { projectId: project._id },
+      { $pull: { datasets: { dataset: ctx.params.id } } }
+    );
 
     ctx.body = { message: `deleted dataset with id: ${ctx.params.id}` };
     ctx.status = 200;
@@ -153,5 +189,5 @@ module.exports = {
   getDatasetById,
   createDataset,
   updateDatasetById,
-  deleteDatasetById
+  deleteDatasetById,
 };

@@ -2,6 +2,7 @@ const Project = require("../models/project").model;
 const crypto = require("crypto");
 const Dataset = require("../models/dataset").model;
 const DeviceApi = require("../models/deviceApi").model;
+const TimeSeries = require("../models/timeSeries").model;
 
 async function switchActive(ctx) {
   const { authId } = ctx.state;
@@ -155,49 +156,60 @@ async function addDatasetIncrement(ctx) {
       return elm.datasetKey === datasetKey;
     })[0].dataset;
 
-    ctx.time = time || Math.floor(new Date().getTime());
+    const newTimeSeries = await TimeSeries.findOneAndUpdate(
+      {
+        dataset: datasetId,
+        name: sensorname,
+      },
+      {
+        name: sensorname,
+        $min: { start: time },
+        $max: { end: time },
+      },
+      {
+        upsert: true,
+        new: true,
+      }
+    );
     await Dataset.findOneAndUpdate(
       {
         _id: datasetId,
-        timeSeries: { $not: { $elemMatch: { name: sensorname } } },
       },
       {
-        $push: {
-          timeSeries: { name: sensorname, start: ctx.time, end: ctx.time },
+        $addToSet: {
+          timeSeries: newTimeSeries._id,
         },
       }
     );
 
     // Add datapoint
-    await Dataset.findOneAndUpdate(
-      { _id: datasetId, "timeSeries.name": sensorname },
+    await TimeSeries.findOneAndUpdate(
+      { _id: newTimeSeries },
       {
         $push: {
-          "timeSeries.$.data": {
-            timestamp: ctx.time,
+          data: {
+            timestamp: time,
             datapoint: datapoint,
           },
         },
       }
     );
 
-    // Updating all 4 values in one query does not work
     await Dataset.findOneAndUpdate(
-      { _id: datasetId, "timeSeries.name": sensorname },
+      { _id: datasetId },
       {
-        $max: { end: ctx.time },
-        $min: { start: ctx.time },
+        $max: { end: time },
+        $min: { start: time },
       }
     );
 
-    await Dataset.findOneAndUpdate(
-      { _id: datasetId, "timeSeries.name": sensorname },
+    await TimeSeries.findOneAndUpdate(
+      { _id: newTimeSeries },
       {
-        $min: { "timeSeries.$.start": ctx.time },
-        $max: { "timeSeries.$.end": ctx.time },
+        $min: { start: time },
+        $max: { end: time },
       }
     );
-
     ctx.status = 200;
     ctx.body = { message: "Added data" };
     return ctx;
@@ -262,45 +274,49 @@ async function addDatasetIncrementBatch(ctx) {
     const datasetId = deviceApi.datasets.filter((elm) => {
       return elm.datasetKey === datasetKey;
     })[0].dataset;
-
     for (var i = 0; i < data.length; i++) {
       const sensorname = data[i].sensorname;
       const timeSeriesData = data[i].timeSeriesData;
       const startTime = data[i].start;
       const endTime = data[i].end;
 
+      const newTimeSeries = await TimeSeries.findOneAndUpdate(
+        {
+          dataset: datasetId,
+          name: sensorname,
+        },
+        {
+          name: sensorname,
+          start: 9999999999999,
+          end: 0,
+        },
+        {
+          upsert: true,
+          new: true,
+        }
+      );
       await Dataset.findOneAndUpdate(
         {
           _id: datasetId,
-          timeSeries: { $not: { $elemMatch: { name: sensorname } } },
         },
         {
-          $push: {
-            timeSeries: {
-              name: sensorname,
-              start: 9999999999999,
-              end: 0,
-            },
+          $addToSet: {
+            timeSeries: newTimeSeries._id,
           },
         }
       );
 
-      await Dataset.findOneAndUpdate(
-        { _id: datasetId, "timeSeries.name": sensorname },
+      await TimeSeries.findOneAndUpdate(
+        { _id: newTimeSeries },
         {
-          $push: {
-            "timeSeries.$.data": {
-              $each: timeSeriesData,
-              $sort: { timestamp: 1 },
-            },
-          },
+          $push: { data: { $each: timeSeriesData, $sort: { timestamp: 1 } } },
         }
       );
-      await Dataset.findOneAndUpdate(
-        { _id: datasetId, "timeSeries.name": sensorname },
+      await TimeSeries.findOneAndUpdate(
+        { _id: newTimeSeries },
         {
-          $min: { "timeSeries.$.start": startTime },
-          $max: { "timeSeries.$.end": endTime },
+          $min: { start: startTime },
+          $max: { end: endTime },
         }
       );
     }
