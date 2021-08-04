@@ -161,12 +161,7 @@ async function deleteDatasetById(ctx) {
     $and: [{ _id: ctx.params.id }, { _id: project.datasets }],
   });
   if (dataset !== null) {
-    const newDatasets = project.datasets.filter(
-      (item) => String(item) !== String(ctx.params.id)
-    );
-    await ProjectModel.findByIdAndUpdate(ctx.header.project, {
-      $set: { datasets: newDatasets },
-    });
+    await ProjectModel.updateOne({_id: ctx.header.project}, {$pull: {datasets: ctx.params.id}});
 
     await TimeSeries.deleteMany({ _id: { $in: dataset.timeSeries } });
 
